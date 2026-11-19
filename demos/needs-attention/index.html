@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Needs attention · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/platform.css">
+<style>
+.scene{position:absolute;inset:0;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;pointer-events:none;overflow:hidden}
+.scene.on{opacity:1;transform:none}
+.item{display:grid;grid-template-columns:28px minmax(0,1fr) auto 14px;gap:12px;align-items:center;padding:13px 14px;border-top:1px solid var(--line);font-size:12.5px;transition:opacity .5s,max-height .5s,padding .5s;max-height:80px;overflow:hidden}
+.item:first-child{border-top:0}
+.item .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:13px}
+.item b{display:block;font-weight:600}
+.item small{display:block;color:var(--grey);font-size:11.5px}
+.item .arr{color:var(--soft)}
+.item.gone{opacity:0;max-height:0;padding-top:0;padding-bottom:0}
+.held{border:1px solid var(--amber-line);background:var(--amber-bg);border-radius:10px;padding:12px;margin-top:6px}
+.held .h{font-weight:600;color:var(--amber);margin-bottom:8px}
+.it{background:#fff;border:1px solid var(--amber-line);border-radius:8px;padding:10px;transition:all .5s}
+.it p{margin:0 0 8px;font-size:12px}
+.it.ok{border-color:var(--green-line);background:var(--green-bg)}
+.acts{display:flex;flex-wrap:wrap;gap:6px}
+.crumb2{color:var(--grey);font-size:12px;margin-bottom:10px}
+.dayhead{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.dayhead h2{margin:0;font-size:17px}
+</style></head><body>
+<div class="fit" id="fit"><div class="app">
+<aside class="side" id="side"></aside>
+<section class="main">
+  <div class="scene on" id="s1"><div class="pagew">
+    <h1>Needs attention</h1>
+    <p class="desc">Everything waiting on a person, in one list. Each item opens the page where it's fixed.</p>
+    <div class="panel" id="inbox">
+      <div class="item"><span class="ic" style="background:var(--amber-bg)">🔑</span><div><b>Payer portal</b><small>Sign-in needs you · this portal texts a code to a phone NextOS doesn't hold</small></div><span class="chip wt">Sign-in</span><span class="arr">›</span></div>
+      <div class="item" id="batch"><span class="ic" style="background:var(--amber-bg)">≡</span><div><b>Batch for Wed, Sep 30</b><small>Insurance posting to review · 1 payment held, no bank deposit yet</small></div><span class="chip wt">Posting</span><span class="arr">›</span></div>
+      <div class="item"><span class="ic" style="background:var(--blue-bg)">✉</span><div><b>Referral packet · new patient</b><small>Records to chase · 1 imaging report missing</small></div><span class="chip bl">Records</span><span class="arr">›</span></div>
+    </div>
+  </div></div>
+  <div class="scene" id="s2"><div class="pagew">
+    <div class="crumb2">Needs attention › Insurance Posting</div>
+    <div class="dayhead"><h2>Wed, Sep 30</h2><span class="btn">QuickBooks file</span></div>
+    <div style="color:var(--grey);font-size:12px;margin:2px 0 10px">9 deposits, $15,815.00 · <span id="heldN">1 held</span></div>
+    <div class="held"><div class="h" id="heldH">⚠ 1 item needs a person</div>
+      <div class="it" id="it"><p id="itP"><b>Summit Health Plan payment, check 5520194</b> ($1,848.10, paid Sep 29) · No matching bank deposit within 3 days. Next step: upload that day's bank download, or check again once it posts.</p><div class="acts"><span class="btn dark" id="checkBtn">Check again</span><span class="btn">Upload bank file</span><span class="btn">Belongs to another day</span><span class="btn">Ask the agent</span></div></div>
+    </div>
+  </div></div>
+</section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script><script>NX.setWs(NX.WS.lake); NX.tag='Live in NextOS'; document.addEventListener('DOMContentLoaded', function(){ NX.pillsToTop(); });</script>
+<script>
+NX.init(); document.querySelector('.main').insertAdjacentHTML('beforeend', NX.cursorHTML);
+var $=NX.$;
+function side(n){ $('side').innerHTML = NX.appSide('','Needs attention',n); }
+function reset(){
+  side(3); $('s1').classList.add('on'); $('s2').classList.remove('on'); $('batch').classList.remove('gone');
+  $('it').classList.remove('ok'); $('itP').innerHTML='<b>Summit Health Plan payment, check 5520194</b> ($1,848.10, paid Sep 29) · No matching bank deposit within 3 days. Next step: upload that day\'s bank download, or check again once it posts.';
+  $('heldH').textContent='⚠ 1 item needs a person'; $('heldN').textContent='1 held';
+}
+function final(){ side(2); $('batch').classList.add('gone'); $('cap').classList.add('on'); $('capN').textContent='01'; $('capT').textContent='One list for everything that needs a person'; $('cursor').style.display='none'; }
+NX.loop(function(isFinal){
+  reset(); if(isFinal){ final(); return; }
+  NX.move(900,560); NX.cap('01','One list for everything that needs a person');
+  NX.at(2.2,function(){ NX.moveTo($('batch'),180,0); });
+  NX.at(3.4,function(){ NX.click($('batch')); NX.cap('02','Each item opens exactly where it\'s fixed'); });
+  NX.at(3.8,function(){ $('s1').classList.remove('on'); $('s2').classList.add('on'); });
+  NX.at(5.4,function(){ NX.moveTo($('checkBtn')); });
+  NX.at(6.6,function(){ NX.click($('checkBtn')); $('itP').innerHTML='Checking the latest bank download…'; });
+  NX.at(8.0,function(){ $('it').classList.add('ok'); $('itP').innerHTML='<b>✓ Matched.</b> The deposit arrived on Oct 1 · First Harbor Bank · $1,848.10, matched to the cent.'; $('heldH').textContent='✓ Nothing needs a person'; $('heldN').textContent='0 held'; NX.cap('03','Resolved items leave the list, and the fix is recorded'); });
+  NX.at(10.4,function(){ $('s2').classList.remove('on'); $('s1').classList.add('on'); side(3); });
+  NX.at(11.2,function(){ $('batch').classList.add('gone'); side(2); });
+  NX.at(12,function(){ NX.move(900,560); });
+}, 16);
+</script></body></html>

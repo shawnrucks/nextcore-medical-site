@@ -1,0 +1,132 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Su oficina administrativa en NextOS · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Your back office on NextOS
+(function(){
+  var NX = window.NX, $ = NX.$, FINAL = /[?&]final=1/.test(location.search);
+  NX.init(); NX.setWs(NX.WS.lake); NX.tag = 'En vivo en NextOS + se configura con usted';
+  var css = document.createElement('style');
+  css.textContent = [
+    '.scene{position:absolute;inset:46px 0 0 0;opacity:0;transform:translateY(10px) scale(.995);transition:opacity .55s ease,transform .55s ease;pointer-events:none;overflow:hidden}',
+    '.scene.on{opacity:1;transform:none}',
+    '.bo{width:800px;max-width:calc(100% - 60px);margin:0 auto;padding:44px 0;font-size:13.5px}',
+    '.focus .bo{max-width:none;margin:0 34px;padding:20px 0}','.focus .item{padding:11px 14px}','.focus .kpis{margin-bottom:12px}','.focus .bo .desc{margin-bottom:10px}',
+    '.bo h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:0 0 4px}',
+    '.bo .desc{color:var(--grey);margin:0 0 14px}',
+    '.item{display:grid;grid-template-columns:30px minmax(0,1fr) auto 14px;gap:12px;align-items:center;padding:16px 16px;border-top:1px solid var(--line);font-size:12.5px;transition:opacity .5s,max-height .5s,padding .5s;max-height:80px;overflow:hidden}',
+    '.item:first-child{border-top:0}',
+    '.item .av{width:26px;height:26px;border-radius:50%}',
+    '.item b{display:block;font-weight:600;font-size:13.5px}.item small{display:block;color:var(--grey);font-size:12px}',
+    '.item .arr{color:var(--soft)}',
+    '.item.gone{opacity:0;max-height:0;padding-top:0;padding-bottom:0;border-top-color:transparent}',
+    '.empty{display:none;padding:22px;text-align:center;color:var(--green);font-weight:600}',
+    '.empty.on{display:block;animation:rise .5s ease}',
+    '.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}',
+    '.kpis div{border:1px solid var(--line);border-radius:11px;padding:10px 12px}',
+    '.kpis span{display:block;font-size:10.5px;color:var(--grey)}',
+    '.kpis b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em}',
+    '.mini{display:grid;grid-template-columns:1fr 1fr;gap:12px}',
+    '.card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff;min-height:250px}',
+    '.card h6{margin:0 0 8px;font-size:12px;display:flex;justify-content:space-between;align-items:center}',
+    '.tl{display:grid;gap:7px}',
+    '.tl div{display:grid;grid-template-columns:64px 1fr;gap:8px;font-size:13.5px;line-height:1.5}',
+    '.tl div b{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--grey);padding-top:2px}',
+    '.tl div.ai b{color:var(--teal)}',
+    '.tl div:not(.on){display:none}.tl div.on{animation:rise .4s ease}',
+    '.got{border:1px solid var(--teal-line);background:var(--teal-bg);border-radius:9px;padding:9px 12px;margin-top:10px;font-size:13.5px;font-weight:600;opacity:0;transition:opacity .4s}',
+    '.got.on{opacity:1}.got span{display:block;font-family:var(--mono);font-size:9.5px;color:var(--grey)}',
+    '.pt{display:grid;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:12px}',
+    '.pt div{display:grid;grid-template-columns:1.1fr .7fr .8fr .9fr;gap:8px;padding:12px 14px;border-top:1px solid var(--line);align-items:center;transition:background .5s;font-size:13px}',
+    '.pt div:first-child{border-top:0;background:#FAFAF9;font-family:var(--mono);font-size:9.5px;color:var(--grey)}',
+    '.pt div.ok{background:#EEF7F1}',
+    '.tot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px}',
+    '.tot b{font-size:20px;letter-spacing:-.02em}',
+    '.wv{display:flex;gap:3px;align-items:center;height:26px}.wv i{width:3px;border-radius:2px;background:var(--teal);height:5px;transition:height .18s}'
+  ].join('');
+  document.head.appendChild(css);
+  $('side').innerHTML = NX.appSide('', 'Requiere atención', 4);
+  var m = document.querySelector('.main');
+  var bars = ''; for (var i=0;i<24;i++) bars += '<i></i>';
+  var G = NX.agentColor;
+  m.innerHTML =
+    '<div class="top"><i style="background:#1D1F1E"></i>Lakeview Surgery Center<span class="sub">Oficina administrativa · jueves</span><div class="acts"><span>Agentes</span><span>Ver en vivo</span></div></div>'+
+    '<div class="scene on" id="s1"><div class="bo"><h1>Requiere atención</h1><p class="desc">Seis agentes trabajan en la oficina administrativa. Solo las decisiones llegan a una persona.</p>'+
+      '<div class="kpis"><div><span>Autorizaciones enviadas esta semana</span><b>41</b></div><div><span>Llamadas a aseguradoras</span><b>63</b></div><div><span>Pagos registrados</span><b>$212k</b></div><div><span>Esperando su aprobación</span><b id="wait">4</b></div></div>'+
+      '<div class="panel" id="list">'+
+        '<div class="item" id="i1"><i class="av" style="background:'+G('Agente de autorización previa')+'"></i><div><b>Autorización previa lista para enviar · Maria L.</b><small>Artroscopia de rodilla 24 nov · todos los requisitos de la aseguradora adjuntos</small></div><span class="chip wt">Aprobar</span><span class="arr">›</span></div>'+
+        '<div class="item" id="i2"><i class="av" style="background:'+G('Agente telefónico')+'"></i><div><b>Llamada a la aseguradora terminada · Summit Health Plan</b><small>Número de aprobación obtenido · ¿registrarlo en el caso?</small></div><span class="chip wt">Aprobar</span><span class="arr">›</span></div>'+
+        '<div class="item" id="i3"><i class="av" style="background:'+G('Agente de registro de pagos')+'"></i><div><b>Registro de pagos de seguros · 31 oct</b><small>9 pagos conciliados con el banco, al centavo</small></div><span class="chip wt">Aprobar</span><span class="arr">›</span></div>'+
+        '<div class="item" id="i4"><i class="av" style="background:'+G('Agente de citas')+'"></i><div><b>Quirófano 1 a las 10:30 cubierto desde la lista de espera</b><small>Kevin J. confirmó por teléfono · la enfermera jefe debe aprobar</small></div><span class="chip wt">Aprobar</span><span class="arr">›</span></div>'+
+        '<div class="empty" id="empty">✓ Nada necesita a una persona en este momento</div>'+
+      '</div></div></div>'+
+    '<div class="scene" id="s2"><div class="bo"><div style="color:var(--grey);font-size:12px;margin-bottom:8px">Requiere atención › Agente de autorizaciones</div><h1>¿Enviar esta autorización a Summit Health Plan?</h1><p class="desc">El agente llenó el portal de la aseguradora en su propio navegador y guardó un borrador. No se envía nada hasta que usted lo apruebe.</p>'+
+      '<div class="mini"><div class="card"><h6>Lo que se enviará<span class="chip gy">Borrador</span></h6><div class="tbl" style="margin:0;border:0"><div style="grid-template-columns:1fr 1.3fr"><span>CAMPO</span><span>VALOR</span></div><div style="grid-template-columns:1fr 1.3fr"><span>Procedimiento</span><span>29881 · artroscopia de rodilla</span></div><div style="grid-template-columns:1fr 1.3fr"><span>Diagnóstico</span><span>M23.221</span></div><div style="grid-template-columns:1fr 1.3fr"><span>Fecha</span><span>24 nov · Lakeview</span></div><div style="grid-template-columns:1fr 1.3fr"><span>Adjuntos</span><span>nota · resonancia · registro de fisioterapia</span></div></div></div>'+
+      '<div class="card"><h6>Requisitos de la aseguradora<span class="chip ok">3 de 3</span></h6><div class="tbl" style="margin:0;border:0"><div style="grid-template-columns:1.4fr 1fr"><span>REQUISITO</span><span>RESULTADO</span></div><div style="grid-template-columns:1.4fr 1fr"><span>Tratamiento conservador</span><span class="chip ok">6 sem. de fisioterapia</span></div><div style="grid-template-columns:1.4fr 1fr"><span>Imagen en 90 días</span><span class="chip ok">Resonancia 10/28</span></div><div style="grid-template-columns:1.4fr 1fr"><span>Afiliado activo</span><span class="chip ok">Activo</span></div></div></div></div>'+
+      '<div class="apv" id="apv" style="margin-top:14px"><div class="h">Aprobar y enviar<span class="chip wt" id="apvChip">Esperando su aprobación</span></div><div class="row"><span class="btn dark" id="apvBtn">Aprobar y enviar</span><span class="btn">Cambiar</span><span class="who" id="apvWho">Solo Jordan Park puede aprobar esto</span></div></div>'+
+    '</div></div>'+
+    '<div class="scene" id="s3"><div class="bo"><div style="color:var(--grey);font-size:12px;margin-bottom:8px">Agente telefónico · llamada saliente</div><h1>Llamando a Summit Health Plan</h1><p class="desc">Por el menú telefónico, en espera y luego con una persona. El agente dice que es automatizado.</p>'+
+      '<div class="mini"><div class="card"><h6>Transcripción en vivo<span class="chip ok spin" id="callChip">En la llamada · 08:41</span></h6><div class="tl" id="tl">'+
+        '<div><b>Representante</b><span>Servicios a proveedores, habla Dana.</span></div>'+
+        '<div class="ai"><b>NextOS</b><span>Hola, Dana. Soy un asistente automatizado y llamo de parte de Lakeview por el caso PA-77120.</span></div>'+
+        '<div><b>Representante</b><span>Esa se aprobó esta mañana. Aprobación A-559310, vigente hasta el 24 de diciembre.</span></div>'+
+        '<div class="ai"><b>NextOS</b><span>Gracias. ¿Me da un número de referencia de la llamada?</span></div>'+
+        '<div><b>Representante</b><span>Referencia 20261119-4471.</span></div>'+
+      '</div></div><div class="card"><h6>Datos tomados de la llamada</h6><div class="wv" id="wv">'+bars+'</div>'+
+        '<div class="got" id="g1"><span>ESTADO DE LA AUTORIZACIÓN</span>Aprobada · A-559310</div><div class="got" id="g2"><span>VIGENTE HASTA</span>24 dic 2026</div><div class="got" id="g3"><span>REFERENCIA DE LA LLAMADA</span>20261119-4471 · Dana</div></div></div>'+
+    '</div></div>'+
+    '<div class="scene" id="s4"><div class="bo"><div style="color:var(--grey);font-size:12px;margin-bottom:8px">Agente de registro de pagos · 31 oct</div><h1>Pagos de seguros, conciliados al centavo</h1><p class="desc">Las EOB, la descarga del banco y el EMR, cotejados entre sí antes de escribir nada.</p>'+
+      '<div class="pt" id="pt"><div><span>PACIENTE</span><span>CPT</span><span>PAGADO</span><span>CONCILIADO</span></div>'+
+        '<div><span>Maria L.</span><span>29881</span><span>$2,496.00</span><span class="chip gy">Verificando</span></div>'+
+        '<div><span>James W.</span><span>64721</span><span>$1,128.00</span><span class="chip gy">Verificando</span></div>'+
+        '<div><span>Lena H.</span><span>29826</span><span>$2,104.80</span><span class="chip gy">Verificando</span></div>'+
+        '<div><span>Omar B.</span><span>20610</span><span>$684.00</span><span class="chip gy">Verificando</span></div>'+
+        '<div><span>+ 5 Bluewater PPO</span><span>—</span><span>$3,980.15</span><span class="chip gy">Verificando</span></div>'+
+      '</div><div class="tot"><span>Depósitos bancarios 30 oct · First Harbor Bank</span><b id="tot">$0.00</b></div></div></div>';
+  m.insertAdjacentHTML('beforeend', NX.cursorHTML);
+  NX.pillsToTop();
+
+  var rows = [].slice.call(document.querySelectorAll('#pt > div')).slice(1);
+  var tls = [].slice.call(document.querySelectorAll('#tl > div'));
+  var waveIv = null;
+  function scene(n){ for (var i=1;i<=4;i++) $('s'+i).classList.toggle('on', i===n); }
+  function wave(on){ if (waveIv){ clearInterval(waveIv); waveIv = null; } var w = $('wv').children; if (on) waveIv = NX.every(160, function(){ [].forEach.call(w, function(b){ b.style.height = (4+Math.random()*20)+'px'; }); }); else [].forEach.call(w, function(b){ b.style.height = '5px'; }); }
+  function reset(){
+    scene(1); ['i1','i2','i3','i4'].forEach(function(i){ $(i).classList.remove('gone'); }); $('empty').classList.remove('on'); $('wait').textContent = '4';
+    $('side').innerHTML = NX.appSide('', 'Requiere atención', 4);
+    $('apv').classList.remove('ok'); $('apvChip').className = 'chip wt'; $('apvChip').textContent = 'Esperando su aprobación'; $('apvWho').textContent = 'Solo Jordan Park puede aprobar esto';
+    tls.forEach(function(t){ t.classList.remove('on'); }); ['g1','g2','g3'].forEach(function(g){ $(g).classList.remove('on'); }); wave(false);
+    $('callChip').className = 'chip ok spin'; $('callChip').textContent = 'En la llamada · 08:41';
+    rows.forEach(function(r){ r.classList.remove('ok'); var c = r.lastChild; c.className = 'chip gy'; c.textContent = 'Verificando'; }); $('tot').textContent = '$0.00';
+  }
+  function gone(id, left){ $(id).classList.add('gone'); $('wait').textContent = String(left); $('side').innerHTML = NX.appSide('', 'Requiere atención', left); if (!left) $('empty').classList.add('on'); }
+  function finalState(){
+    $('cursor').style.display = 'none'; $('cap').classList.add('on'); $('capN').textContent = '01'; $('capT').textContent = 'Seis agentes llevan la oficina administrativa. Las personas aprueban las decisiones.';
+  }
+  NX.loop(function(isFinal){
+    reset();
+    if (isFinal || FINAL){ finalState(); return; }
+    $('cursor').style.display = '';
+    NX.move(640, 560); NX.cap('01', 'Seis agentes llevan la oficina administrativa. Usted solo ve las decisiones.');
+    NX.at(1.6, function(){ NX.moveTo($('i1'), 200, 0); });
+    NX.at(2.5, function(){ NX.click($('i1')); });
+    NX.at(2.9, function(){ scene(2); NX.cap('02', 'Autorización previa: el agente llenó el portal de la aseguradora; usted aprueba'); NX.move(640, 560); });
+    NX.at(4.4, function(){ NX.moveTo($('apvBtn')); });
+    NX.at(5.3, function(){ NX.click($('apvBtn')); $('apv').classList.add('ok'); $('apvChip').className = 'chip ok'; $('apvChip').textContent = 'Enviada · PA-77120'; $('apvWho').textContent = 'Aprobado por Jordan Park · número de caso confirmado'; });
+    NX.at(6.6, function(){ scene(3); wave(true); NX.cap('03', 'El agente telefónico llama a la aseguradora y registra la respuesta'); NX.move(720, 600); });
+    tls.forEach(function(t, i){ NX.at(7.0 + i*0.9, function(){ t.classList.add('on'); if (i===2){ $('g1').classList.add('on'); $('g2').classList.add('on'); } if (i===4) $('g3').classList.add('on'); }); });
+    NX.at(11.6, function(){ wave(false); $('callChip').className = 'chip gy'; $('callChip').textContent = 'Llamada terminada · 09:52'; });
+    NX.at(12.2, function(){ scene(4); NX.cap('04', 'Pagos conciliados con el banco y el EMR, al centavo'); });
+    var tot = 0, amts = [2496, 1128, 2104.8, 684, 3980.15];
+    rows.forEach(function(r, i){ NX.at(12.8 + i*0.55, function(){ r.classList.add('ok'); var c = r.lastChild; c.className = 'chip ok'; c.textContent = 'Elegido'; tot += amts[i]; $('tot').textContent = '$' + tot.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }); });
+    NX.at(16.2, function(){ scene(1); NX.cap('05', 'Cada aprobación limpia la lista. Cada paso queda en el registro de auditoría.'); });
+    NX.at(16.9, function(){ gone('i1', 3); });
+    NX.at(17.4, function(){ gone('i2', 2); });
+    NX.at(17.9, function(){ gone('i3', 1); });
+  }, 21.5);
+})();
+
+</script></body></html>

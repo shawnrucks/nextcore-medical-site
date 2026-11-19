@@ -1,0 +1,37 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payer phone call · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Payer phone call
+NX.callDemo({
+  ws:'lake', agent:'Phone Agent', topSub:'Payer and patient calls', tag:'Live in NextOS', badge:2,
+  to:'Summit Health Plan · provider line', num:'Outbound · number on file', voiceNote:'Automated voice agent · says so when asked',
+  menu:[['1','English'],['3','Providers'],['2','Prior authorization status'],['0','Speak with a representative']],
+  lines:[
+    ['sys','Calling for case PA-77120 · Maria L. · knee scope Nov 24'],
+    ['Payer menu','Thank you for calling Summit Health Plan. For English, press 1.'],
+    ['Payer menu','Members press 2. Providers press 3.'],
+    ['Payer menu','For authorization status, press 2. To speak with someone, press 0.'],
+    ['sys','On hold · 6 min 40 s'],
+    ['Rep','Provider services, this is Dana. How can I help?'],
+    ['AI','Hi Dana, I’m an automated assistant calling for Lakeview Surgery Center about authorization case PA-77120.'],
+    ['Rep','Can I get the member ID and date of birth?'],
+    ['AI','Member ID <span class="hid">SHP-•••••02</span>, date of birth <span class="hid">••/••/19••</span>.'],
+    ['Rep','Thanks. That one was approved this morning. Approval number A-559310, valid through December 24.'],
+    ['AI','Thank you. Can you confirm it covers CPT 29881 at Lakeview on November 24?'],
+    ['Rep','Yes, 29881, one unit, facility Lakeview, November 24.'],
+    ['AI','Great. And may I have a call reference number?'],
+    ['Rep','Sure, reference 20261119-4471.']
+  ],
+  script:[{menu:0,line:0,d:.8},{line:1,d:1.2},{menu:1,line:2,d:1.2},{menu:2,line:3,d:1.1},{menu:3,d:.8},{hold:1,line:4,d:2.4},{talk:1,line:5,d:1.4},{line:6,d:1.9,cap:1},{line:7,d:1.3},{line:8,d:1.6},{line:9,field:0,d:1.6},{field:1,d:.7},{line:10,d:1.6},{line:11,field:2,d:1.4},{line:12,d:1.2},{line:13,field:3,d:1.5}],
+  fields:[['Auth status','Approved'],['Approval number','A-559310 · to Dec 24'],['Covers','29881 · 1 unit · Lakeview · Nov 24'],['Call reference','20261119-4471 · Dana']],
+  approve:{ title:'Save to the chart and the case?', lines:['Approval A-559310 written to Maria L.’s case','Surgery stays on the Nov 24 board','Call recording and transcript kept'], btn:'Approve' },
+  endNote:'approved', dur:'09:52', speed:9,
+  caps:['The Phone Agent calls the payer for you','It works the phone menu and waits on hold','It talks to the representative and captures every detail','Jordan approves what gets written back'],
+  len:36
+});
+
+</script></body></html>

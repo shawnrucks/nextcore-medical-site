@@ -1,0 +1,41 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acreditación de proveedores · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Credentialing
+NX.agentDemo({
+  ws:'harbor', agent:'Agente de acreditación', topSub:'Reacreditación · T1', tag:'Se configura con usted', badge:2,
+  q:'¿Quién del personal médico tiene algo que vence en los próximos 90 días?',
+  portal:{ name:'Oficina del personal médico', url:'staff.harborregional.example/roster', nav:['Nómina','Junta de licencias','Perfil','Resumen'], views:{
+    roster:{ type:'table', nav:'Nómina', url:'staff.harborregional.example/roster', title:'Nómina del personal médico', sub:'212 practitioners',
+      cols:['NAME','SPECIALTY','LICENSE','DEA','BOARD'], w:'1.2fr 1fr .9fr .9fr .9fr',
+      rows:[['Dr. Sam Ellis','Radiología','[ok]2028','[ok]2027','[ok]2030'],['Dr. Priya Nair','Cardiología','[wt]31 ene','[ok]2027','[ok]2029'],['Dr. Luis Ortega','Anestesiología','[ok]2027','[wt]14 feb','[ok]2031'],['Dr. Mei Chen','Pediatría','[ok]2028','[ok]2028','[wt]31 dic']], hl:[1,2,3] },
+    board:{ type:'table', site:'Junta médica estatal', nav:'Junta de licencias', url:'verify.statemedboard.example/lookup', title:'Consulta de licencia', sub:'primary source',
+      cols:['NAME','LICENSE','STATUS','EXPIRES'], w:'1.2fr 1fr 1fr 1fr',
+      rows:[['Dr. Priya Nair','MD-44120','[ok]Activa · renovada','31 ene 2029']], okr:[0] },
+    prof:{ type:'form', site:'Portal de acreditación', nav:'Perfil', url:'portal.credentialing.example/profile/nair', title:'Perfil del profesional · Dra. Priya Nair', sub:'draft changes',
+      fields:[['Licencia estatal','MD-44120 · vence 01/31/2029'],['Verificado en','Sitio web de la junta estatal · hoy'],['Seguro de mala praxis','Póliza vigente · 2027'],['Declaración jurada','Pendiente · enviado a la Dra. Nair']], btns:['Guardar','Presentar'] },
+    sum:{ type:'table', nav:'Resumen', url:'staff.harborregional.example/expiring', title:'Vencen en 90 días', sub:'3 found',
+      cols:['NAME','ITEM','STATUS'], w:'1.2fr 1fr 1.4fr',
+      rows:[['Dr. Priya Nair','Licencia','[ok]Renovada, perfil actualizado'],['Dr. Luis Ortega','DEA','[wt]Recordatorio redactado'],['Dr. Mei Chen','Certificación','[wt]Recordatorio redactado']] }
+  }},
+  steps:[
+    {k:'Revisando la nómina', d:'212 profesionales, 3 por vencer pronto', v:'roster'},
+    {k:'Consultando la junta estatal', d:'La Dra. Nair ya renovó', v:'board', flash:0},
+    {k:'Actualizando su perfil', d:'nuevo vencimiento y fecha de verificación', v:'prof', fill:true},
+    {k:'Redactando recordatorios', d:'para los otros dos', v:'sum'}
+  ],
+  answer:[
+    '<p>Tres elementos vencen en los próximos 90 días. La Dra. Nair ya renovó su licencia, así que la verifiqué en el sitio de la junta estatal y actualicé su perfil. El Dr. Ortega (DEA, 14 feb) y la Dra. Chen (certificación de especialidad, 31 dic) necesitan recordatorios.</p>'
+  ],
+  approve:{ title:'¿Presentar el perfil de la Dra. Nair y enviar 2 recordatorios?', lines:['Actualización de perfil en el portal de acreditación, verificada hoy','Correos de recordatorio al Dr. Ortega y a la Dra. Chen desde la oficina del personal médico','Nueva verificación en 14 días'], btn:'Aprobar' },
+  result:[['ok','Perfil presentado'],['ok','2 recordatorios enviados'],['gy','Próxima revisión de la nómina · lunes']],
+  after:['<p class="muted">Cada verificación registra dónde y cuándo se comprobó, así el expediente está listo para la próxima auditoría.</p>'],
+  caps:['Pregunte por toda la nómina a la vez','El agente verifica cada elemento en la fuente primaria','Actualiza perfiles y redacta recordatorios','Una persona aprueba lo que se presenta y se envía'],
+  len:34
+});
+
+</script></body></html>

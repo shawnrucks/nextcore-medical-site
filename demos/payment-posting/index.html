@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insurance payment posting · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Insurance payment posting
+NX.agentDemo({
+  ws:'lake', agent:'Posting Agent', topSub:'Insurance posting · Oct 31', tag:'Live in NextOS · supervised', badge:2,
+  q:'Post Friday’s insurance payments.',
+  portal:{ name:'Document share', url:'docs.lakeview.example/remits/1031', nav:['Remits','Bank','EMR','QuickBooks'], views:{
+    eob:{ type:'doc', nav:'Remits', url:'docs.lakeview.example/remits/1031/summit-eob.pdf', title:'Remittance · Summit Health Plan', sub:'EOB PDF · 4 claims',
+      html:'<b>Check / EFT:</b> 8830214 · <b>Paid:</b> Oct 30 · <mark>Total $6,412.80</mark><br>Claim 1 · Maria L. · 29881 · allowed $3,120.00 · paid $2,496.00<br>Claim 2 · James W. · 64721 · allowed $1,410.00 · paid $1,128.00<br>Claim 3 · Lena H. · 29826 · paid $2,104.80 · Claim 4 · Omar B. · 20610 · paid $684.00' },
+    bank:{ type:'table', site:'First Harbor Bank', nav:'Bank', url:'business.firstharbor.example/activity', title:'Deposits · Oct 30 to Nov 1', sub:'bank download',
+      cols:['DATE','DESCRIPTION','AMOUNT'], w:'.7fr 2fr 1fr',
+      rows:[['10/30','HCCLAIMPMT SUMMIT HP 8830214','$6,412.80'],['10/30','HCCLAIMPMT BLUEWATER 55120','$3,980.15'],['10/31','DEPOSIT · patient payments','$1,215.00']], hl:[0] },
+    emr:{ type:'table', site:'Lakeview EMR', nav:'EMR', url:'emr.lakeview.example/billing/claims', title:'Open claims · Summit Health Plan', sub:'matched by claim number',
+      cols:['PATIENT','CPT','BILLED','PAID','MATCH'], w:'1fr .6fr .8fr .8fr .8fr',
+      rows:[['Maria L.','29881','$4,200.00','$2,496.00','[ok]Exact'],['James W.','64721','$1,900.00','$1,128.00','[ok]Exact'],['Lena H.','29826','$2,850.00','$2,104.80','[ok]Exact'],['Omar B.','20610','$950.00','$684.00','[ok]Exact']], okr:[0,1,2,3] },
+    qb:{ type:'table', site:'QuickBooks', nav:'QuickBooks', url:'quickbooks.lakeview.example/deposits/new', title:'Deposit file · ready to import', sub:'not imported yet',
+      cols:['ACCOUNT','PAYER','AMOUNT'], w:'1.3fr 1.3fr 1fr',
+      rows:[['Insurance receipts','Summit Health Plan','$6,412.80'],['Insurance receipts','Bluewater PPO','$3,980.15']] }
+  }},
+  steps:[
+    {k:'Reading the remittances', d:'2 EOB PDFs, 9 claims', v:'eob'},
+    {k:'Matching to the bank', d:'both deposits found, to the cent', v:'bank', flash:0},
+    {k:'Finding each patient in the EMR', d:'9 of 9 claims matched', v:'emr'},
+    {k:'Preparing the QuickBooks file', d:'held for approval', v:'qb'}
+  ],
+  answer:[
+    '<p>Friday’s payments are ready to post. Every payment matches a bank deposit to the cent and an open claim in the EMR.</p>',
+    '<div class="tbl"><div style="grid-template-columns:1.4fr 1fr 1fr"><span>PAYER</span><span>CLAIMS</span><span>AMOUNT</span></div><div style="grid-template-columns:1.4fr 1fr 1fr"><span>Summit Health Plan</span><span>4 of 4 matched</span><span>$6,412.80</span></div><div style="grid-template-columns:1.4fr 1fr 1fr"><span>Bluewater PPO</span><span>5 of 5 matched</span><span>$3,980.15</span></div></div>'
+  ],
+  approve:{ title:'Post 9 payments and write the QuickBooks file?', lines:['$10,392.95 across 2 deposits, matched to the cent','Payments posted to 9 claims in the EMR','QuickBooks deposit file written for import'], btn:'Approve and post' },
+  result:[['ok','9 payments posted'],['ok','QuickBooks file written'],['bl','Balances read back from the EMR']],
+  after:['<p class="muted">Posted at 8:12 AM. I re-opened each claim after posting and read back the new balance. Nothing needs a person today.</p>'],
+  caps:['Ask for the day’s posting','The agent reads EOBs, the bank and the EMR','Everything matches to the cent before anything is written','Jordan approves; the agent posts and reads every balance back'],
+  len:36
+});
+
+</script></body></html>

@@ -1,0 +1,130 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rutinas · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/platform.css">
+<style>
+.pagew{width:820px}
+.ok-note{border:1px solid var(--green-line);background:var(--green-bg);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#2F5B44}
+.ok-note b{display:block;color:var(--green);font-size:12.5px}
+.rcard{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;background:#fff;transition:box-shadow .4s}
+.rcard.hl{box-shadow:0 0 0 2px rgba(29,31,30,.12)}
+.rtop{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.rtop b{font-size:14px;font-weight:600}
+.rtop .sch{display:block;color:var(--grey);font-size:11.5px;margin-top:2px}
+.rdesc{color:#3A3D3C;font-size:12px;margin:8px 0 10px;max-width:560px}
+.rmeta{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.ver{font-family:var(--mono);font-size:10.5px;color:var(--grey);background:var(--chip);border-radius:999px;padding:2px 8px}
+.lock{font-family:var(--mono);font-size:10.5px;color:var(--ink);background:#EDEDEB;border-radius:999px;padding:2px 8px}
+.rbtns{display:flex;gap:6px;align-items:center}
+.tog{width:30px;height:17px;border-radius:999px;background:var(--dark);position:relative}
+.tog::after{content:"";position:absolute;right:2px;top:2px;width:13px;height:13px;border-radius:50%;background:#fff}
+.run{border-top:1px solid var(--line);margin-top:12px;padding-top:10px;display:none}
+.run.on{display:block}
+.rs{display:grid;grid-template-columns:22px minmax(0,1fr) auto 54px;gap:10px;align-items:center;padding:6px 0;font-size:12px;opacity:.35;transition:opacity .35s}
+.rs.on{opacity:1}
+.rs .n{font-family:var(--mono);font-size:10.5px;color:var(--soft)}
+.rs time{font-family:var(--mono);font-size:10.5px;color:var(--soft);text-align:right}
+.passbar{margin-top:8px;border:1px solid var(--green-line);background:var(--green-bg);color:var(--green);border-radius:8px;padding:8px 10px;font-size:12px;display:none}
+.passbar.on{display:block}
+.drawer{position:absolute;right:0;top:0;bottom:0;width:420px;background:#fff;border-left:1px solid var(--line);box-shadow:-20px 0 40px -30px rgba(0,0,0,.35);padding:20px 22px;transform:translateX(100%);transition:transform .5s cubic-bezier(.3,0,.2,1);z-index:5;overflow:hidden}
+.drawer.on{transform:none}
+.drawer h3{margin:8px 0 2px;font-size:17px}
+.drawer .sub{color:var(--grey);font-size:11.5px;margin-bottom:12px}
+.pst{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid #F0F1EF;font-size:12px}
+.pst .n{font-family:var(--mono);font-size:10.5px;color:var(--soft)}
+.pst small{display:block;color:var(--grey);font-size:11px}
+.pst .lk{font-size:11px;color:var(--grey)}
+.allow{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.allow div{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:11.5px}
+.allow b{display:block;font-size:11px;font-family:var(--mono);letter-spacing:.03em;margin-bottom:4px}
+.allow .y b{color:var(--green)}.allow .x b{color:var(--red)}
+.foot{margin-top:12px;font-size:11.5px;color:var(--grey);border-top:1px solid var(--line);padding-top:10px}
+.acts{margin-top:4px}
+.ar{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:10px;padding:7px 0;border-top:1px solid #F0F1EF;font-size:12px}
+.ar span:first-child{color:var(--grey)}
+</style></head><body>
+<div class="fit" id="fit"><div class="app">
+<aside class="side" id="side"></aside>
+<section class="main">
+  <div class="pagew">
+    <h1>Rutinas</h1>
+    <p class="desc">Edite nombres y horarios, revise la actividad registrada o vea una prueba. Enseñe o cambie el trabajo en sí con su agente.</p>
+    <div class="ok-note"><b>Las ejecuciones programadas están activas</b>Cada rutina ejecuta la versión que se probó y aprobó. Cambiar un paso crea una versión nueva que tiene que volver a pasar las pruebas.</div>
+    <div class="rcard" id="r1">
+      <div class="rtop"><div><b>Registro diario de pagos de seguros</b><span class="sch">Cada día hábil a las 6:00 AM · America/New_York</span></div><div class="rbtns"><span class="btn" id="pbBtn">Guion</span><span class="btn">Editar</span><span class="btn" id="actBtn">Actividad</span><span class="btn dark" id="testBtn">Probar ahora</span><span class="tog"></span></div></div>
+      <p class="rdesc">Leer las EOB y las descargas del banco del día, conciliar cada depósito al centavo, buscar a los pacientes en el EMR y preparar el lote para revisión. Sin registros financieros.</p>
+      <div class="rmeta"><span class="ver">Versión 7</span><span class="lock">🔒 Congelada</span><span class="chip ok">Aprobada</span><span class="chip ok">Programada</span><span class="ver">Próxima ejecución: mañana 6:00 AM</span></div>
+      <div class="run" id="run">
+        <div class="rs"><span class="n">01</span><span>Iniciar sesión en el EMR · Midtown, Riverside</span><span class="chip ok">listo</span><time>0:11</time></div>
+        <div class="rs"><span class="n">02</span><span>Descargar las EOB de los documentos compartidos</span><span class="chip ok">12 archivos</span><time>0:19</time></div>
+        <div class="rs"><span class="n">03</span><span>Descargar archivos del banco · First Harbor, Union Ridge</span><span class="chip ok">2 archivos</span><time>0:31</time></div>
+        <div class="rs"><span class="n">04</span><span>Conciliar cada EOB con un depósito, al centavo</span><span class="chip ok">10 conciliados</span><time>0:58</time></div>
+        <div class="rs"><span class="n">05</span><span>Buscar paciente, sede y tipo de seguro</span><span class="chip ok">15 encontrados</span><time>1:41</time></div>
+        <div class="rs"><span class="n">06</span><span>Retener lo que no sea confiable</span><span class="chip wt">2 retenidos</span><time>1:49</time></div>
+        <div class="rs"><span class="n">07</span><span>Armar el lote para revisión · sin registrar</span><span class="chip ok">listo</span><time>2:14</time></div>
+        <div class="passbar" id="pass">✓ Prueba aprobada en 2 min 14 s · ejecutó exactamente la Versión 7 · evidencia guardada de cada paso</div>
+      </div>
+    </div>
+    <div class="rcard">
+      <div class="rtop"><div><b>Revisión del acceso al EMR</b><span class="sch">Cada 12 minutos, 6:00 AM – 7:00 PM · días hábiles</span></div><div class="rbtns"><span class="btn">Guion</span><span class="btn">Actividad</span><span class="tog"></span></div></div>
+      <p class="rdesc">Confirmar que cada acceso al EMR sigue con la sesión abierta, y volver a abrirla si el sitio la cerró.</p>
+      <div class="rmeta"><span class="ver">Versión 3</span><span class="lock">🔒 Congelada</span><span class="chip ok">Aprobada</span><span class="chip ok">Programada</span></div>
+    </div>
+    <div class="rcard">
+      <div class="rtop"><div><b>Lista semanal de seguimiento con aseguradoras</b><span class="sch">Lunes a las 7:00 AM</span></div><div class="rbtns"><span class="btn">Guion</span><span class="btn">Actividad</span><span class="tog"></span></div></div>
+      <p class="rdesc">Reunir las reclamaciones sin pagar de más de 30 días y redactar seguimientos para revisión. No se envía nada.</p>
+      <div class="rmeta"><span class="ver">Versión 2</span><span class="lock">🔒 Congelada</span><span class="chip ok">Aprobada</span><span class="chip ok">Programada</span></div>
+    </div>
+  </div>
+  <div class="drawer" id="drawer">
+    <div id="dPlay">
+      <span class="lock">🔒 Congelada · Versión 7</span>
+      <h3>Guion · Registro diario de pagos de seguros</h3>
+      <div class="sub">Probada y aprobada por Jordan Park, gerente de la oficina administrativa, el 30 de sep</div>
+      <div class="pst"><span class="n">01</span><div>Iniciar sesión en el EMR<small>Midtown y Riverside · solo lectura</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">02</span><div>Descargar las EOB<small>Documentos compartidos · solo lectura</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">03</span><div>Descargar archivos del banco<small>First Harbor, Union Ridge · solo lectura</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">04</span><div>Conciliar cada EOB con un depósito<small>Al centavo, dentro de 3 días</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">05</span><div>Buscar los datos del paciente<small>Sede y tipo de seguro desde el EMR</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">06</span><div>Retener lo que no sea confiable<small>Con el siguiente paso para una persona</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">07</span><div>Armar el lote para revisión<small>Sin registrar · requiere aprobación</small></div><span class="lk">🔒</span></div>
+      <div class="allow"><div class="y"><b>PUEDE USAR</b>EMR (lectura) · documentos compartidos (lectura) · portales bancarios (lectura)</div><div class="x"><b>NO PUEDE</b>Registrar en QuickBooks · enviar correos · ningún sitio que no esté en la lista</div></div>
+      <div class="foot">Ejecuta exactamente estos pasos, sin que la IA vuelva a planificar. Cambiar un paso crea la Versión 8, que tiene que pasar una prueba y ser aprobada.</div>
+    </div>
+    <div id="dAct" style="display:none">
+      <span class="ver">Actividad</span>
+      <h3>Registro diario de pagos de seguros</h3>
+      <div class="sub">Cada ejecución registra lo que hizo, lo que retuvo y lo que cambió.</div>
+      <div class="acts">
+        <div class="ar"><span>Hoy 6:00 AM</span><span>9 depósitos listos · 2 retenidos para una persona</span><span class="chip ok">Aprobada</span></div>
+        <div class="ar"><span>Mar 6:00 AM</span><span>11 depósitos listos · 1 retenido</span><span class="chip ok">Aprobada</span></div>
+        <div class="ar"><span>Lun 6:00 AM</span><span>8 depósitos listos · 0 retenidos</span><span class="chip ok">Aprobada</span></div>
+        <div class="ar"><span>Vie 6:00 AM</span><span>12 depósitos listos · 2 retenidos</span><span class="chip ok">Aprobada</span></div>
+        <div class="ar"><span>Jue 6:00 AM</span><span>10 depósitos listos · 1 retenido</span><span class="chip ok">Aprobada</span></div>
+      </div>
+      <div class="foot">Cada ejecución guarda su evidencia: archivos de origen, conciliaciones, consultas y la versión exacta que se ejecutó.</div>
+    </div>
+  </div>
+</section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script><script>NX.setWs(NX.WS.lake); NX.tag='En vivo en NextOS'; document.addEventListener('DOMContentLoaded', function(){ NX.pillsToTop(); });</script>
+<script>
+NX.init(); document.getElementById('side').innerHTML = NX.appSide('Agente de registro de pagos','Rutinas',2); document.querySelector('.main').insertAdjacentHTML('beforeend', NX.cursorHTML);
+var $=NX.$;
+function reset(){ $('drawer').classList.remove('on'); $('dPlay').style.display='block'; $('dAct').style.display='none'; $('run').classList.remove('on'); $('pass').classList.remove('on'); document.querySelectorAll('.rs').forEach(function(r){ r.classList.remove('on'); }); $('r1').classList.remove('hl'); }
+function final(){ $('run').classList.add('on'); document.querySelectorAll('.rs').forEach(function(r){ r.classList.add('on'); }); $('pass').classList.add('on'); $('cap').classList.add('on'); $('capN').textContent='03'; $('capT').textContent='Vea una prueba paso a paso, con evidencia de cada paso'; $('cursor').style.display='none'; }
+NX.loop(function(isFinal){
+  reset(); if(isFinal){ final(); return; }
+  NX.move(980,600); NX.cap('01','Las rutinas se ejecutan según un horario, con la versión que se probó y aprobó');
+  NX.at(1.6,function(){ $('r1').classList.add('hl'); NX.moveTo($('pbBtn')); });
+  NX.at(2.8,function(){ NX.click($('pbBtn')); $('drawer').classList.add('on'); NX.cap('02','Cada rutina es un guion bloqueado: pasos definidos, sistemas aprobados, nada improvisado'); });
+  NX.at(3.4,function(){ NX.move(1060,560); });
+  NX.at(9.2,function(){ $('drawer').classList.remove('on'); });
+  NX.at(9.6,function(){ NX.moveTo($('testBtn')); });
+  NX.at(10.8,function(){ NX.click($('testBtn')); $('run').classList.add('on'); NX.cap('03','Vea una prueba paso a paso, con evidencia de cada paso'); });
+  document.querySelectorAll('.rs').forEach(function(r,i){ NX.at(11.3+i*0.85,function(){ r.classList.add('on'); }); });
+  NX.at(17.6,function(){ $('pass').classList.add('on'); });
+  NX.at(19.4,function(){ NX.moveTo($('actBtn')); });
+  NX.at(20.6,function(){ NX.click($('actBtn')); $('dPlay').style.display='none'; $('dAct').style.display='block'; $('drawer').classList.add('on'); NX.cap('04','Cada ejecución deja un registro: lo que hizo, lo que retuvo y qué versión se ejecutó'); });
+  NX.at(21.2,function(){ NX.move(1060,620); });
+}, 27);
+</script></body></html>

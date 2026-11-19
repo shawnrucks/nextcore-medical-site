@@ -1,0 +1,42 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro de pagos de seguros · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Insurance payment posting
+NX.agentDemo({
+  ws:'lake', agent:'Agente de registro de pagos', topSub:'Registro de pagos de seguros · 31 oct', tag:'En vivo en NextOS · supervisado', badge:2,
+  q:'Registra los pagos de seguros del viernes.',
+  portal:{ name:'Documentos compartidos', url:'docs.lakeview.example/remits/1031', nav:['Remesas','Banco','EMR','QuickBooks'], views:{
+    eob:{ type:'doc', nav:'Remesas', url:'docs.lakeview.example/remits/1031/summit-eob.pdf', title:'Remesa · Summit Health Plan', sub:'PDF de EOB · 4 reclamaciones',
+      html:'<b>Cheque / EFT:</b> 8830214 · <b>Pagado:</b> 30 oct · <mark>Total $6,412.80</mark><br>Reclamación 1 · Maria L. · 29881 · permitido $3,120.00 · pagado $2,496.00<br>Reclamación 2 · James W. · 64721 · permitido $1,410.00 · pagado $1,128.00<br>Reclamación 3 · Lena H. · 29826 · pagado $2,104.80 · Reclamación 4 · Omar B. · 20610 · pagado $684.00' },
+    bank:{ type:'table', site:'First Harbor Bank', nav:'Banco', url:'business.firstharbor.example/activity', title:'Depósitos · 30 oct al 1 nov', sub:'bank download',
+      cols:['DATE','DESCRIPTION','AMOUNT'], w:'.7fr 2fr 1fr',
+      rows:[['10/30','HCCLAIMPMT SUMMIT HP 8830214','$6,412.80'],['10/30','HCCLAIMPMT BLUEWATER 55120','$3,980.15'],['10/31','DEPÓSITO · pagos de pacientes','$1,215.00']], hl:[0] },
+    emr:{ type:'table', site:'Lakeview EMR', nav:'EMR', url:'emr.lakeview.example/billing/claims', title:'Reclamaciones abiertas · Summit Health Plan', sub:'conciliados por número de reclamación',
+      cols:['PATIENT','CPT','BILLED','PAID','MATCH'], w:'1fr .6fr .8fr .8fr .8fr',
+      rows:[['Maria L.','29881','$4,200.00','$2,496.00','[ok]Exacto'],['James W.','64721','$1,900.00','$1,128.00','[ok]Exacto'],['Lena H.','29826','$2,850.00','$2,104.80','[ok]Exacto'],['Omar B.','20610','$950.00','$684.00','[ok]Exacto']], okr:[0,1,2,3] },
+    qb:{ type:'table', site:'QuickBooks', nav:'QuickBooks', url:'quickbooks.lakeview.example/deposits/new', title:'Archivo de depósitos · listo para importar', sub:'aún no importado',
+      cols:['ACCOUNT','PAYER','AMOUNT'], w:'1.3fr 1.3fr 1fr',
+      rows:[['Cobros de seguros','Summit Health Plan','$6,412.80'],['Cobros de seguros','Bluewater PPO','$3,980.15']] }
+  }},
+  steps:[
+    {k:'Leyendo las remesas', d:'2 PDF de EOB, 9 reclamaciones', v:'eob'},
+    {k:'Conciliando con el banco', d:'ambos depósitos encontrados, al centavo', v:'bank', flash:0},
+    {k:'Buscando a cada paciente en el EMR', d:'9 de 9 reclamaciones conciliadas', v:'emr'},
+    {k:'Preparando el archivo de QuickBooks', d:'retenido para aprobación', v:'qb'}
+  ],
+  answer:[
+    '<p>Los pagos del viernes están listos para registrarse. Cada pago coincide al centavo con un depósito bancario y con una reclamación abierta en el EMR.</p>',
+    '<div class="tbl"><div style="grid-template-columns:1.4fr 1fr 1fr"><span>ASEGURADORA</span><span>RECLAMACIONES</span><span>MONTO</span></div><div style="grid-template-columns:1.4fr 1fr 1fr"><span>Summit Health Plan</span><span>4 de 4 conciliadas</span><span>$6,412.80</span></div><div style="grid-template-columns:1.4fr 1fr 1fr"><span>Bluewater PPO</span><span>5 de 5 conciliadas</span><span>$3,980.15</span></div></div>'
+  ],
+  approve:{ title:'¿Registrar 9 pagos y generar el archivo de QuickBooks?', lines:['$10,392.95 en 2 depósitos, conciliados al centavo','Pagos registrados en 9 reclamaciones del EMR','Archivo de depósitos de QuickBooks listo para importar'], btn:'Aprobar y registrar' },
+  result:[['ok','9 pagos registrados'],['ok','Archivo de QuickBooks generado'],['bl','Saldos confirmados en el EMR']],
+  after:['<p class="muted">Registrado a las 8:12 AM. Volví a abrir cada reclamación después de registrar y confirmé el nuevo saldo. Hoy nada necesita a una persona.</p>'],
+  caps:['Pida el registro de pagos del día','El agente lee las EOB, el banco y el EMR','Todo coincide al centavo antes de escribir nada','Jordan aprueba; el agente registra y confirma cada saldo'],
+  len:36
+});
+
+</script></body></html>

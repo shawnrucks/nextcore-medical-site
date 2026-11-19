@@ -1,0 +1,42 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informe de cierre de mes para el director financiero · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Month-end CFO report
+NX.agentDemo({
+  ws:'lake', agent:'Analista financiero', topSub:'Preparación del cierre de mes', tag:'En vivo en NextOS', badge:2,
+  q:'Prepara el resumen de una página de octubre para la reunión de socios.',
+  portal:{ name:'QuickBooks', url:'quickbooks.lakeview.example/reports/pl', nav:['Estado de resultados','Casos','Aseguradoras','Resumen'], views:{
+    pl:{ type:'table', nav:'Estado de resultados', url:'quickbooks.lakeview.example/reports/pl?month=oct', title:'Estado de resultados · octubre', sub:'QuickBooks Online',
+      cols:['LINE','OCTOBER','SEPTEMBER','CHANGE'], w:'1.6fr 1fr 1fr .8fr',
+      rows:[['Ingresos netos por pacientes','$1,284,300','$1,190,800','[ok]+7.9%'],['Insumos e implantes','$318,900','$301,200','[wt]+5.9%'],['Costos de personal','$402,100','$398,700','+0.9%'],['Margen operativo','$412,600','$352,400','[ok]+17.1%']] },
+    cases:{ type:'table', site:'Lakeview EMR', nav:'Casos', url:'emr.lakeview.example/reports/cases', title:'Casos por especialidad · octubre', sub:'Lakeview EMR',
+      cols:['SPECIALTY','CASES','VS SEPT'], w:'1.6fr 1fr 1fr',
+      rows:[['Ortopedia','214','[ok]+18'],['Manejo del dolor','131','+4'],['Endoscopia gastrointestinal','188','[no]−9'],['ENT','62','+2']] },
+    payers:{ type:'table', nav:'Aseguradoras', url:'quickbooks.lakeview.example/reports/ar', title:'Días en cuentas por cobrar por aseguradora', sub:'',
+      cols:['PAYER','DAYS','VS SEPT'], w:'1.6fr 1fr 1fr',
+      rows:[['Summit Health Plan','31','[ok]−4'],['Bluewater PPO','44','[wt]+6'],['Harborline HMO','29','−1']], hl:[1] },
+    sum:{ type:'doc', site:'Informe para socios', nav:'Resumen', url:'docs.lakeview.example/reports/oct-one-pager', title:'Resumen de octubre en una página', sub:'draft',
+      html:'Ingresos +7.9 %, margen +17 %. Lo impulsó Ortopedia (+18 casos). <mark>Atención: los días en cuentas por cobrar de Bluewater subieron 6.</mark> Gastroenterología bajó 9 casos (un médico de licencia).' }
+  }},
+  steps:[
+    {k:'Extrayendo octubre de QuickBooks', d:'estado de resultados, antigüedad de cuentas por cobrar', v:'pl'},
+    {k:'Extrayendo el volumen de casos', d:'595 casos por especialidad', v:'cases'},
+    {k:'Revisando los días de pago por aseguradora', d:'Bluewater se puso más lento', v:'payers', flash:1},
+    {k:'Escribiendo el resumen', d:'gráfica y 3 puntos clave', v:'sum'}
+  ],
+  answer:[
+    '<p><b>Octubre, Lakeview Surgery Center</b> · ingresos +7.9 %, margen operativo +17 %.</p>',
+    '<div class="tbl" style="padding:10px 12px"><svg viewBox="0 0 560 120" width="100%" height="120" aria-label="Ingresos mensuales, datos de muestra"><g font-family="IBM Plex Mono,monospace" font-size="9" fill="#6F7371"><text x="0" y="116">May</text><text x="94" y="116">Jun</text><text x="188" y="116">Jul</text><text x="282" y="116">Ago</text><text x="376" y="116">Sep</text><text x="470" y="116">Oct</text></g><g fill="#DCE3F4"><rect x="0" y="44" width="62" height="58" rx="4"/><rect x="94" y="40" width="62" height="62" rx="4"/><rect x="188" y="48" width="62" height="54" rx="4"/><rect x="282" y="36" width="62" height="66" rx="4"/><rect x="376" y="30" width="62" height="72" rx="4"/></g><rect x="470" y="14" width="62" height="88" rx="4" fill="#0F5C57"/><text x="470" y="9" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1D1F1E">$1.28M</text></svg></div>',
+    '<ul><li>Ortopedia sumó 18 casos; ya es el 36 % del volumen.</li><li>Bluewater PPO está pagando 6 días más lento. Vale la pena llamar a su representante.</li><li>Gastroenterología bajó 9 casos mientras un médico está de licencia; regresa en diciembre.</li></ul>'
+  ],
+  result:[['ok','Resumen guardado en la carpeta de los socios'],['bl','Las cifras cuadran con QuickBooks'],['gy','Solo lectura: no se cambió nada']],
+  after:['<p class="muted">Cada cifra enlaza con el informe de donde salió. Solo leo de QuickBooks y del EMR; no puedo cambiar ninguno de los dos.</p>'],
+  caps:['Pida el resumen del mes en una frase','El agente extrae datos de QuickBooks y del EMR','Escribe el resumen de una página con la gráfica','Solo lectura: cada cifra cuadra con su fuente'],
+  len:32
+});
+
+</script></body></html>

@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Denials and appeals · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Denials and appeals
+NX.agentDemo({
+  ws:'harbor', agent:'Denials Agent', topSub:'Appeals worklist', tag:'Set up with you', badge:4,
+  q:'Work this week’s medical-necessity denials, highest dollar first.',
+  portal:{ name:'Harbor billing system', url:'billing.harborregional.example/denials', nav:['Denials','Claim','Notes','Appeal'], views:{
+    list:{ type:'table', nav:'Denials', url:'billing.harborregional.example/denials?code=CO-50', title:'Denials · medical necessity (CO-50)', sub:'this week',
+      cols:['CLAIM','PATIENT','SERVICE','AMOUNT','DAYS LEFT'], w:'.9fr 1fr 1.3fr .8fr .8fr',
+      rows:[['H-20931','Patricia N.','Shoulder MRI','$2,840','[wt]41'],['H-20877','George A.','Cardiac stress test','$1,960','[wt]38'],['H-20812','Irene C.','Sleep study','$1,420','[ok]55']], hl:[0] },
+    claim:{ type:'doc', nav:'Claim', url:'billing.harborregional.example/claims/H-20931', title:'Claim H-20931 · denial detail', sub:'Bluewater PPO',
+      html:'<b>Service:</b> MRI right shoulder without contrast (73221), 10/14.<br><b>Denial:</b> CO-50, <mark>“not medically necessary: no documented trial of conservative care.”</mark><br><b>Appeal deadline:</b> Dec 29 · first-level, written.' },
+    notes:{ type:'doc', site:'Harbor EMR', nav:'Notes', url:'emr.harborregional.example/patient/77120/notes', title:'Clinical notes found', sub:'3 notes',
+      html:'09/02 · <mark>Physical therapy started, 8 sessions.</mark><br>09/30 · <mark>Pain unchanged after PT; cannot lift arm overhead.</mark><br>10/10 · Ordering physician notes new weakness, orders MRI.' },
+    appeal:{ type:'doc', nav:'Appeal', url:'billing.harborregional.example/appeals/new', title:'Appeal letter · draft for signature', sub:'not sent',
+      html:'Re: Claim H-20931, Patricia N.<br>We ask you to reconsider. The record shows <mark>8 sessions of physical therapy from 9/02</mark> with no improvement and <mark>new weakness on 9/30 and 10/10</mark>, which meet your plan’s imaging criteria. Notes enclosed.<br>— for signature by the ordering physician' }
+  }},
+  steps:[
+    {k:'Sorting the worklist', d:'3 denials, $6,220 at stake', v:'list', flash:0},
+    {k:'Reading the denial', d:'reason: no conservative care documented', v:'claim'},
+    {k:'Searching the chart', d:'PT and new symptoms are documented', v:'notes'},
+    {k:'Drafting the appeal', d:'cites the notes, ready to sign', v:'appeal'}
+  ],
+  answer:[
+    '<p>The denial says no conservative care was documented, but the chart has 8 therapy sessions and new nerve symptoms before the MRI. I drafted a first-level appeal that cites both, with the notes attached.</p>',
+    '<p class="muted">The other two denials are drafted the same way and are in the worklist for review.</p>'
+  ],
+  approve:{ title:'Send the appeal for the physician’s signature?', lines:['Claim H-20931 · $2,840 · deadline Dec 29','Letter and 3 notes go to Dr. Ellis to review and sign','Nothing goes to the payer until it is signed'], btn:'Route for signature' },
+  result:[['ok','Sent to Dr. Ellis to sign'],['bl','Deadline tracked · Dec 29'],['gy','2 more drafts in the worklist']],
+  after:['<p class="muted">When Dr. Ellis signs, I’ll submit it on the payer portal, read back the appeal number and check status weekly.</p>'],
+  caps:['Start with the denials worth the most','The agent reads the denial and searches the chart','It drafts an appeal that cites the record','A physician signs before anything is sent'],
+  len:36
+});
+
+</script></body></html>

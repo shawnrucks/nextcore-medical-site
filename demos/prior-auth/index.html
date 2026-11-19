@@ -1,0 +1,39 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prior authorization · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Prior authorization
+NX.agentDemo({
+  ws:'lake', agent:'Prior Auth Agent', topSub:'Auth requests · next week', tag:'Set up with you', nav:'', badge:2,
+  q:'Start the auth for Maria L.’s knee scope on Nov 24.',
+  portal:{ name:'Summit Health Plan', url:'provider.summithealthplan.example/auth', nav:['Chart','Coverage','New request','Status'], views:{
+    chart:{ type:'doc', site:'Lakeview EMR', nav:'Chart', url:'emr.lakeview.example/chart/48213', title:'Chart · Maria L.', sub:'Lakeview EMR · sample patient',
+      html:'<b>Plan:</b> Right knee arthroscopy, partial medial meniscectomy (29881).<br><b>History:</b> <mark>Six weeks of physical therapy</mark>, no relief. Locking and pain on stairs.<br><b>Imaging:</b> <mark>MRI 10/28: complex tear, posterior horn, medial meniscus.</mark><br><b>Surgeon:</b> Dr. Alex Rivera · <b>Date:</b> Nov 24 at Lakeview' },
+    cover:{ type:'table', nav:'Coverage', url:'provider.summithealthplan.example/coverage', title:'Coverage rules · outpatient surgery', sub:'Summit Health Plan',
+      cols:['CPT','Description','Auth','Notes'], w:'60px 1.6fr 90px 1.4fr',
+      rows:[['29880','Knee scope, both menisci','[wt]Required','Clinical notes'],['29881','Knee scope, one meniscus','[wt]Required','Notes + imaging'],['29888','ACL reconstruction','[wt]Required','Notes + imaging'],['20610','Joint injection','[ok]Not required','—']], hl:[1] },
+    form:{ type:'form', nav:'New request', url:'provider.summithealthplan.example/auth/new', title:'New prior authorization', sub:'Draft · not sent',
+      fields:[['Member ID','SHP-4471902'],['Procedure (CPT)','29881 · knee scope, one meniscus'],['Diagnosis (ICD-10)','M23.221 · medial meniscus tear'],['Surgeon','Dr. Alex Rivera'],['Facility','Lakeview Surgery Center'],['Date of service','11/24/2026'],['Attachments','surgeon-note.pdf · mri-1028.pdf · pt-log.pdf','att']],
+      btns:['Save draft','Submit'] }
+  }},
+  steps:[
+    {k:'Reading the chart', d:'surgeon note, MRI, therapy log', v:'chart'},
+    {k:'Checking the payer’s rules', d:'29881 needs auth with notes and imaging', v:'cover', flash:1},
+    {k:'Filling the request', d:'7 fields and 3 attachments', v:'form', fill:true},
+    {k:'Saved as a draft', d:'nothing is sent without a person', v:'form'}
+  ],
+  answer:[
+    '<p>The request is filled in and saved as a draft on the Summit Health Plan portal. Everything the payer asks for 29881 is attached.</p>',
+    '<div class="tbl"><div style="grid-template-columns:1.2fr 1fr"><span>CHECK</span><span>RESULT</span></div><div style="grid-template-columns:1.2fr 1fr"><span>Conservative care documented</span><span class="chip ok">6 weeks PT</span></div><div style="grid-template-columns:1.2fr 1fr"><span>Imaging within 90 days</span><span class="chip ok">MRI 10/28</span></div><div style="grid-template-columns:1.2fr 1fr"><span>Member active on date of service</span><span class="chip ok">Active</span></div></div>'
+  ],
+  approve:{ title:'Submit this auth to Summit Health Plan?', lines:['Maria L. · 29881 right knee · Nov 24','3 attachments · surgeon Dr. Alex Rivera','The agent will read back the case number after it submits'], btn:'Approve and submit' },
+  result:[['ok','Submitted · case PA-77120'],['bl','Case number read back from the portal'],['gy','Status check every morning at 9']],
+  after:['<p class="muted">Submitted at 10:42 AM. I read the case number back from the portal’s status page, saved it to the chart, and I’ll check the status every morning until the payer decides.</p>'],
+  caps:['Ask for the auth in plain words','The agent works the payer portal in its own browser','It shows exactly what it will send','Jordan approves; the agent submits and reads back the case number'],
+  len:36
+});
+
+</script></body></html>

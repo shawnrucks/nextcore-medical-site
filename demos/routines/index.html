@@ -1,0 +1,130 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Routines · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/platform.css">
+<style>
+.pagew{width:820px}
+.ok-note{border:1px solid var(--green-line);background:var(--green-bg);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#2F5B44}
+.ok-note b{display:block;color:var(--green);font-size:12.5px}
+.rcard{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;background:#fff;transition:box-shadow .4s}
+.rcard.hl{box-shadow:0 0 0 2px rgba(29,31,30,.12)}
+.rtop{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.rtop b{font-size:14px;font-weight:600}
+.rtop .sch{display:block;color:var(--grey);font-size:11.5px;margin-top:2px}
+.rdesc{color:#3A3D3C;font-size:12px;margin:8px 0 10px;max-width:560px}
+.rmeta{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.ver{font-family:var(--mono);font-size:10.5px;color:var(--grey);background:var(--chip);border-radius:999px;padding:2px 8px}
+.lock{font-family:var(--mono);font-size:10.5px;color:var(--ink);background:#EDEDEB;border-radius:999px;padding:2px 8px}
+.rbtns{display:flex;gap:6px;align-items:center}
+.tog{width:30px;height:17px;border-radius:999px;background:var(--dark);position:relative}
+.tog::after{content:"";position:absolute;right:2px;top:2px;width:13px;height:13px;border-radius:50%;background:#fff}
+.run{border-top:1px solid var(--line);margin-top:12px;padding-top:10px;display:none}
+.run.on{display:block}
+.rs{display:grid;grid-template-columns:22px minmax(0,1fr) auto 54px;gap:10px;align-items:center;padding:6px 0;font-size:12px;opacity:.35;transition:opacity .35s}
+.rs.on{opacity:1}
+.rs .n{font-family:var(--mono);font-size:10.5px;color:var(--soft)}
+.rs time{font-family:var(--mono);font-size:10.5px;color:var(--soft);text-align:right}
+.passbar{margin-top:8px;border:1px solid var(--green-line);background:var(--green-bg);color:var(--green);border-radius:8px;padding:8px 10px;font-size:12px;display:none}
+.passbar.on{display:block}
+.drawer{position:absolute;right:0;top:0;bottom:0;width:420px;background:#fff;border-left:1px solid var(--line);box-shadow:-20px 0 40px -30px rgba(0,0,0,.35);padding:20px 22px;transform:translateX(100%);transition:transform .5s cubic-bezier(.3,0,.2,1);z-index:5;overflow:hidden}
+.drawer.on{transform:none}
+.drawer h3{margin:8px 0 2px;font-size:17px}
+.drawer .sub{color:var(--grey);font-size:11.5px;margin-bottom:12px}
+.pst{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid #F0F1EF;font-size:12px}
+.pst .n{font-family:var(--mono);font-size:10.5px;color:var(--soft)}
+.pst small{display:block;color:var(--grey);font-size:11px}
+.pst .lk{font-size:11px;color:var(--grey)}
+.allow{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.allow div{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:11.5px}
+.allow b{display:block;font-size:11px;font-family:var(--mono);letter-spacing:.03em;margin-bottom:4px}
+.allow .y b{color:var(--green)}.allow .x b{color:var(--red)}
+.foot{margin-top:12px;font-size:11.5px;color:var(--grey);border-top:1px solid var(--line);padding-top:10px}
+.acts{margin-top:4px}
+.ar{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:10px;padding:7px 0;border-top:1px solid #F0F1EF;font-size:12px}
+.ar span:first-child{color:var(--grey)}
+</style></head><body>
+<div class="fit" id="fit"><div class="app">
+<aside class="side" id="side"></aside>
+<section class="main">
+  <div class="pagew">
+    <h1>Routines</h1>
+    <p class="desc">Edit names and schedules, review recorded activity, or watch a test. Teach or change the work itself with your agent.</p>
+    <div class="ok-note"><b>Scheduled runs are on</b>Each routine runs the version that was tested and approved. Changing a step makes a new version that has to pass again.</div>
+    <div class="rcard" id="r1">
+      <div class="rtop"><div><b>Daily insurance posting</b><span class="sch">Every weekday at 6:00 AM · America/New_York</span></div><div class="rbtns"><span class="btn" id="pbBtn">Playbook</span><span class="btn">Edit</span><span class="btn" id="actBtn">Activity</span><span class="btn dark" id="testBtn">Test now</span><span class="tog"></span></div></div>
+      <p class="rdesc">Read the day's EOBs and bank downloads, match each deposit to the cent, look up patients in the EMR, and prepare the batch for review. No financial posting.</p>
+      <div class="rmeta"><span class="ver">Version 7</span><span class="lock">🔒 Frozen</span><span class="chip ok">Passed</span><span class="chip ok">On schedule</span><span class="ver">Next run: tomorrow 6:00 AM</span></div>
+      <div class="run" id="run">
+        <div class="rs"><span class="n">01</span><span>Sign in to EMR · Midtown, Riverside</span><span class="chip ok">done</span><time>0:11</time></div>
+        <div class="rs"><span class="n">02</span><span>Download EOBs from the document share</span><span class="chip ok">12 files</span><time>0:19</time></div>
+        <div class="rs"><span class="n">03</span><span>Download bank files · First Harbor, Union Ridge</span><span class="chip ok">2 files</span><time>0:31</time></div>
+        <div class="rs"><span class="n">04</span><span>Match each EOB to one deposit, to the cent</span><span class="chip ok">10 matched</span><time>0:58</time></div>
+        <div class="rs"><span class="n">05</span><span>Look up patient, location, insurance type</span><span class="chip ok">15 found</span><time>1:41</time></div>
+        <div class="rs"><span class="n">06</span><span>Hold anything that can't be trusted</span><span class="chip wt">2 held</span><time>1:49</time></div>
+        <div class="rs"><span class="n">07</span><span>Build the batch for review · no posting</span><span class="chip ok">ready</span><time>2:14</time></div>
+        <div class="passbar" id="pass">✓ Test passed in 2 min 14 s · ran Version 7 exactly · evidence saved for every step</div>
+      </div>
+    </div>
+    <div class="rcard">
+      <div class="rtop"><div><b>EMR login check</b><span class="sch">Every 12 minutes, 6:00 AM – 7:00 PM · weekdays</span></div><div class="rbtns"><span class="btn">Playbook</span><span class="btn">Activity</span><span class="tog"></span></div></div>
+      <p class="rdesc">Confirm each EMR login is still signed in, and sign it back in if the site logged it out.</p>
+      <div class="rmeta"><span class="ver">Version 3</span><span class="lock">🔒 Frozen</span><span class="chip ok">Passed</span><span class="chip ok">On schedule</span></div>
+    </div>
+    <div class="rcard">
+      <div class="rtop"><div><b>Weekly payer follow-up list</b><span class="sch">Mondays at 7:00 AM</span></div><div class="rbtns"><span class="btn">Playbook</span><span class="btn">Activity</span><span class="tog"></span></div></div>
+      <p class="rdesc">Collect unpaid claims older than 30 days and draft follow-ups for review. Nothing is sent.</p>
+      <div class="rmeta"><span class="ver">Version 2</span><span class="lock">🔒 Frozen</span><span class="chip ok">Passed</span><span class="chip ok">On schedule</span></div>
+    </div>
+  </div>
+  <div class="drawer" id="drawer">
+    <div id="dPlay">
+      <span class="lock">🔒 Frozen · Version 7</span>
+      <h3>Playbook · Daily insurance posting</h3>
+      <div class="sub">Tested and approved by Jordan Park, Business Office Manager, on Sep 30</div>
+      <div class="pst"><span class="n">01</span><div>Sign in to EMR<small>Midtown and Riverside · read only</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">02</span><div>Download EOBs<small>Document share · read only</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">03</span><div>Download bank files<small>First Harbor, Union Ridge · read only</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">04</span><div>Match each EOB to one deposit<small>To the cent, within 3 days</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">05</span><div>Look up patient details<small>Location and insurance type from the EMR</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">06</span><div>Hold what can't be trusted<small>With the next step for a person</small></div><span class="lk">🔒</span></div>
+      <div class="pst"><span class="n">07</span><div>Build the batch for review<small>No posting · approval required</small></div><span class="lk">🔒</span></div>
+      <div class="allow"><div class="y"><b>CAN USE</b>EMR (read) · document share (read) · bank portals (read)</div><div class="x"><b>CANNOT</b>Post to QuickBooks · send email · any site not listed</div></div>
+      <div class="foot">Runs exactly these steps, with no AI re-planning. Changing a step creates Version 8, which has to pass a test and be approved.</div>
+    </div>
+    <div id="dAct" style="display:none">
+      <span class="ver">Activity</span>
+      <h3>Daily insurance posting</h3>
+      <div class="sub">Every run records what it did, what it held, and what it changed.</div>
+      <div class="acts">
+        <div class="ar"><span>Today 6:00 AM</span><span>9 deposits ready · 2 held for a person</span><span class="chip ok">Passed</span></div>
+        <div class="ar"><span>Tue 6:00 AM</span><span>11 deposits ready · 1 held</span><span class="chip ok">Passed</span></div>
+        <div class="ar"><span>Mon 6:00 AM</span><span>8 deposits ready · 0 held</span><span class="chip ok">Passed</span></div>
+        <div class="ar"><span>Fri 6:00 AM</span><span>12 deposits ready · 2 held</span><span class="chip ok">Passed</span></div>
+        <div class="ar"><span>Thu 6:00 AM</span><span>10 deposits ready · 1 held</span><span class="chip ok">Passed</span></div>
+      </div>
+      <div class="foot">Each run keeps its evidence: source files, matches, lookups, and the exact version that ran.</div>
+    </div>
+  </div>
+</section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script><script>NX.setWs(NX.WS.lake); NX.tag='Live in NextOS'; document.addEventListener('DOMContentLoaded', function(){ NX.pillsToTop(); });</script>
+<script>
+NX.init(); document.getElementById('side').innerHTML = NX.appSide('Posting Agent','Routines',2); document.querySelector('.main').insertAdjacentHTML('beforeend', NX.cursorHTML);
+var $=NX.$;
+function reset(){ $('drawer').classList.remove('on'); $('dPlay').style.display='block'; $('dAct').style.display='none'; $('run').classList.remove('on'); $('pass').classList.remove('on'); document.querySelectorAll('.rs').forEach(function(r){ r.classList.remove('on'); }); $('r1').classList.remove('hl'); }
+function final(){ $('run').classList.add('on'); document.querySelectorAll('.rs').forEach(function(r){ r.classList.add('on'); }); $('pass').classList.add('on'); $('cap').classList.add('on'); $('capN').textContent='03'; $('capT').textContent='Watch a test run step by step, with evidence for each step'; $('cursor').style.display='none'; }
+NX.loop(function(isFinal){
+  reset(); if(isFinal){ final(); return; }
+  NX.move(980,600); NX.cap('01','Routines run on a schedule, using the version that was tested and approved');
+  NX.at(1.6,function(){ $('r1').classList.add('hl'); NX.moveTo($('pbBtn')); });
+  NX.at(2.8,function(){ NX.click($('pbBtn')); $('drawer').classList.add('on'); NX.cap('02','Each routine is a locked playbook: defined steps, approved systems, nothing improvised'); });
+  NX.at(3.4,function(){ NX.move(1060,560); });
+  NX.at(9.2,function(){ $('drawer').classList.remove('on'); });
+  NX.at(9.6,function(){ NX.moveTo($('testBtn')); });
+  NX.at(10.8,function(){ NX.click($('testBtn')); $('run').classList.add('on'); NX.cap('03','Watch a test run step by step, with evidence for each step'); });
+  document.querySelectorAll('.rs').forEach(function(r,i){ NX.at(11.3+i*0.85,function(){ r.classList.add('on'); }); });
+  NX.at(17.6,function(){ $('pass').classList.add('on'); });
+  NX.at(19.4,function(){ NX.moveTo($('actBtn')); });
+  NX.at(20.6,function(){ NX.click($('actBtn')); $('dPlay').style.display='none'; $('dAct').style.display='block'; $('drawer').classList.add('on'); NX.cap('04','Every run leaves a record: what it did, what it held, and which version ran'); });
+  NX.at(21.2,function(){ NX.move(1060,620); });
+}, 27);
+</script></body></html>

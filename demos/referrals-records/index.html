@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referrals and records · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Referrals and records
+NX.agentDemo({
+  ws:'cedar', agent:'Referral Agent', topSub:'New referrals · 4 offices', tag:'Set up with you', badge:2,
+  q:'Work the new referral from Bayside Family Medicine.',
+  portal:{ name:'Cedar referral inbox', url:'fax.cedarortho.example/inbox', nav:['Inbox','Referral','Checklist','Request'], views:{
+    inbox:{ type:'table', nav:'Inbox', url:'fax.cedarortho.example/inbox', title:'Referral inbox', sub:'fax and e-referral',
+      cols:['RECEIVED','FROM','PAGES','STATUS'], w:'.9fr 1.6fr .6fr 1fr',
+      rows:[['7:42 AM','Bayside Family Medicine','6','[wt]New'],['7:10 AM','Northpoint Urgent Care','3','[ok]Scheduled'],['Yesterday','Dr. Kim, Pine Clinic','9','[ok]Scheduled']], hl:[0] },
+    ref:{ type:'doc', nav:'Referral', url:'fax.cedarortho.example/doc/88213.pdf', title:'Referral · Thomas G.', sub:'6-page fax, read by the agent',
+      html:'<b>Reason:</b> Right shoulder pain, 4 months. <mark>Suspected rotator cuff tear.</mark><br><b>Requested:</b> Orthopedic consult, Dr. Shah or first available.<br><b>Insurance:</b> Bluewater PPO · member BW-2209183<br><b>Enclosed:</b> visit notes, X-ray report. <mark>MRI done 11/02 at Northgate Imaging: report not enclosed.</mark>' },
+    check:{ type:'table', nav:'Checklist', url:'pm.cedarortho.example/referrals/4471', title:'New-patient packet checklist', sub:'shoulder consult',
+      cols:['ITEM','STATUS'], w:'2fr 1fr',
+      rows:[['Referral order signed','[ok]Received'],['Visit notes','[ok]Received'],['X-ray report','[ok]Received'],['MRI report (11/02)','[no]Missing'],['Insurance active','[ok]Verified']], hl:[3] },
+    req:{ type:'form', nav:'Request', url:'records.northgateimaging.example/request', title:'Records request · Northgate Imaging', sub:'Draft · not sent',
+      fields:[['Patient','Thomas G. · DOB on file'],['Study','MRI right shoulder · 11/02/2026'],['Send to','Cedar Orthopedic · records fax'],['Needed by','Before consult on 11/21'],['Requested by','Riley Shah, Practice Administrator']], btns:['Send request','Save draft'] }
+  }},
+  steps:[
+    {k:'Opening the new referral', d:'6-page fax from Bayside Family Medicine', v:'inbox', flash:0},
+    {k:'Reading it', d:'reason, insurance and what was enclosed', v:'ref'},
+    {k:'Checking the packet', d:'MRI report is missing', v:'check', flash:3},
+    {k:'Drafting the records request', d:'to Northgate Imaging', v:'req', fill:true}
+  ],
+  answer:[
+    '<p>The referral is for a shoulder consult. Insurance is active and four of five items are in. The MRI report from 11/02 wasn’t enclosed, so I drafted a request to Northgate Imaging.</p>',
+    '<p>I held a 10:30 slot with Dr. Shah on Nov 21 and attached the referral to it.</p>'
+  ],
+  approve:{ title:'Send the records request and book the slot?', lines:['Records request to Northgate Imaging for the 11/02 shoulder MRI','Book Thomas G. with Dr. Shah · Nov 21 at 10:30','Phone Agent calls the patient to confirm'], btn:'Approve' },
+  result:[['ok','Request sent'],['ok','Consult booked · Nov 21'],['bl','Packet complete when the MRI report arrives']],
+  after:['<p class="muted">I’ll watch the records inbox and attach the MRI report to the packet the moment it arrives. If nothing comes in 2 days, I’ll ask the Phone Agent to call Northgate.</p>'],
+  caps:['A new referral lands in the inbox','The agent reads it and checks what is missing','It drafts the records request and holds a slot','Riley approves; the packet closes itself when records arrive'],
+  len:36
+});
+
+</script></body></html>

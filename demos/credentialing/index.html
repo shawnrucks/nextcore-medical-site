@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Credentialing · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Credentialing
+NX.agentDemo({
+  ws:'harbor', agent:'Credentialing Agent', topSub:'Re-credentialing · Q1', tag:'Set up with you', badge:2,
+  q:'Who on the medical staff has something expiring in the next 90 days?',
+  portal:{ name:'Medical staff office', url:'staff.harborregional.example/roster', nav:['Roster','License board','Profile','Summary'], views:{
+    roster:{ type:'table', nav:'Roster', url:'staff.harborregional.example/roster', title:'Medical staff roster', sub:'212 practitioners',
+      cols:['NAME','SPECIALTY','LICENSE','DEA','BOARD'], w:'1.2fr 1fr .9fr .9fr .9fr',
+      rows:[['Dr. Sam Ellis','Radiology','[ok]2028','[ok]2027','[ok]2030'],['Dr. Priya Nair','Cardiology','[wt]Jan 31','[ok]2027','[ok]2029'],['Dr. Luis Ortega','Anesthesia','[ok]2027','[wt]Feb 14','[ok]2031'],['Dr. Mei Chen','Pediatrics','[ok]2028','[ok]2028','[wt]Dec 31']], hl:[1,2,3] },
+    board:{ type:'table', site:'State medical board', nav:'License board', url:'verify.statemedboard.example/lookup', title:'License lookup', sub:'primary source',
+      cols:['NAME','LICENSE','STATUS','EXPIRES'], w:'1.2fr 1fr 1fr 1fr',
+      rows:[['Dr. Priya Nair','MD-44120','[ok]Active · renewed','Jan 31, 2029']], okr:[0] },
+    prof:{ type:'form', site:'Credentialing portal', nav:'Profile', url:'portal.credentialing.example/profile/nair', title:'Practitioner profile · Dr. Priya Nair', sub:'draft changes',
+      fields:[['State license','MD-44120 · expires 01/31/2029'],['Verified at','State board website · today'],['Malpractice','Policy on file · 2027'],['Attestation','Due · sent to Dr. Nair']], btns:['Save','Submit'] },
+    sum:{ type:'table', nav:'Summary', url:'staff.harborregional.example/expiring', title:'Expiring in 90 days', sub:'3 found',
+      cols:['NAME','ITEM','STATUS'], w:'1.2fr 1fr 1.4fr',
+      rows:[['Dr. Priya Nair','License','[ok]Renewed, profile updated'],['Dr. Luis Ortega','DEA','[wt]Reminder drafted'],['Dr. Mei Chen','Board cert','[wt]Reminder drafted']] }
+  }},
+  steps:[
+    {k:'Scanning the roster', d:'212 practitioners, 3 expiring soon', v:'roster'},
+    {k:'Checking the state board', d:'Dr. Nair already renewed', v:'board', flash:0},
+    {k:'Updating her profile', d:'new expiry and verification date', v:'prof', fill:true},
+    {k:'Drafting reminders', d:'for the other two', v:'sum'}
+  ],
+  answer:[
+    '<p>Three items expire in the next 90 days. Dr. Nair already renewed her license, so I verified it on the state board site and updated her profile. Dr. Ortega (DEA, Feb 14) and Dr. Chen (board certification, Dec 31) need reminders.</p>'
+  ],
+  approve:{ title:'Submit Dr. Nair’s profile and send 2 reminders?', lines:['Profile update to the credentialing portal, verified today','Reminder emails to Dr. Ortega and Dr. Chen from the medical staff office','Follow-up check in 14 days'], btn:'Approve' },
+  result:[['ok','Profile submitted'],['ok','2 reminders sent'],['gy','Next roster scan · Monday']],
+  after:['<p class="muted">Every verification records where it was checked and when, so the file is ready for the next survey.</p>'],
+  caps:['Ask about the whole roster at once','The agent checks each item at the primary source','It updates profiles and drafts reminders','A person approves what is submitted and sent'],
+  len:34
+});
+
+</script></body></html>

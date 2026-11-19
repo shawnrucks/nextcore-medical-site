@@ -1,0 +1,43 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verificación de elegibilidad · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Eligibility checks
+NX.agentDemo({
+  ws:'cedar', agent:'Agente de recepción', topSub:'Elegibilidad para mañana', tag:'Se configura con usted', badge:3,
+  q:'Verifica el seguro de todos los pacientes de mañana, en los cuatro consultorios.',
+  portal:{ name:'Sistema de gestión de Cedar', url:'pm.cedarortho.example/schedule', nav:['Agenda','Bluewater PPO','Summit Health','Resultados'], views:{
+    sched:{ type:'table', nav:'Agenda', url:'pm.cedarortho.example/schedule?date=tomorrow', title:'Mañana · 38 pacientes', sub:'4 offices',
+      cols:['TIME','PATIENT','OFFICE','PLAN'], w:'54px 1.2fr 1fr 1fr',
+      rows:[['8:00','Ana R.','Main St','Bluewater PPO'],['8:15','Ben T.','Main St','Summit Health'],['8:30','Carla M.','Westside','Bluewater PPO'],['8:45','David K.','Westside','Harborline HMO'],['9:00','Elena P.','Lakeshore','Summit Health'],['9:15','Frank O.','Norte','Bluewater PPO'],['…','32 more','','']] },
+    blue:{ type:'table', site:'Bluewater PPO', nav:'Bluewater PPO', url:'providers.bluewaterppo.example/eligibility', title:'Resultados de elegibilidad', sub:'Portal de Bluewater PPO',
+      cols:['MEMBER','STATUS','DEDUCIBLE PENDIENTE','COPAY'], w:'1.1fr 1fr 1fr .8fr',
+      rows:[['Ana R.','[ok]Activo','$0','$40'],['Carla M.','[ok]Activo','$1,250','$40'],['Frank O.','[no]Plan terminó 10/31','—','—'],['Grace W.','[ok]Activo','$300','$40']], hl:[2] },
+    summit:{ type:'table', site:'Summit Health Plan', nav:'Summit Health', url:'provider.summithealthplan.example/eligibility', title:'Resultados de elegibilidad', sub:'Portal de Summit Health Plan',
+      cols:['MEMBER','STATUS','DEDUCIBLE PENDIENTE','REFERRAL'], w:'1.1fr 1fr 1fr 1fr',
+      rows:[['Ben T.','[ok]Activo','$0','—'],['Elena P.','[ok]Activo','[wt]$2,500 · nuevo año del plan','—'],['Henry S.','[ok]Activo','$150','[wt]Se necesita del médico de cabecera']], hl:[1,2] },
+    res:{ type:'table', site:'Sistema de gestión de Cedar', nav:'Resultados', url:'pm.cedarortho.example/eligibility/summary', title:'Resumen para la recepción', sub:'38 checked',
+      cols:['RESULT','COUNT'], w:'2fr 1fr',
+      rows:[['[ok]Puede atenderse','35'],['[no]Plan inactivo','1'],['[wt]Nuevo deducible','1'],['[wt]Necesita referido','1']], okr:[0] }
+  }},
+  steps:[
+    {k:'Leyendo la agenda de mañana', d:'38 pacientes, 4 consultorios, 5 aseguradoras', v:'sched'},
+    {k:'Consultando Bluewater PPO', d:'14 members', v:'blue', flash:2},
+    {k:'Consultando Summit Health Plan', d:'11 members', v:'summit', flash:1},
+    {k:'Escribiendo los resultados en cada cita', d:'notas en la agenda, nada cambió en facturación', v:'res'}
+  ],
+  answer:[
+    '<p>Los 38 pacientes están verificados. 35 no tienen problemas. Tres necesitan a la recepción antes de llegar:</p>',
+    '<div class="tbl"><div style="grid-template-columns:1fr 1.6fr 1.4fr"><span>PACIENTE</span><span>PROBLEMA</span><span>PASO SUGERIDO</span></div><div style="grid-template-columns:1fr 1.6fr 1.4fr"><span>Frank O. · 9:15</span><span class="chip no">Plan terminó 31 oct</span><span>Llamar por la tarjeta nueva</span></div><div style="grid-template-columns:1fr 1.6fr 1.4fr"><span>Elena P. · 9:00</span><span class="chip wt">Deducible de $2,500, año nuevo</span><span>Estimado al registrarse</span></div><div style="grid-template-columns:1fr 1.6fr 1.4fr"><span>Henry S. · 10:30</span><span class="chip wt">Necesita referido</span><span>Pedirlo al médico de cabecera</span></div></div>'
+  ],
+  approve:{ title:'¿Pedirle al agente telefónico que llame hoy a estos tres?', lines:['Frank O.: pedir la nueva tarjeta del seguro','Henry S.: pedir el referido a su médico de cabecera','Elena P.: compartir un estimado al registrarse, sin llamada'], btn:'Aprobar llamadas' },
+  result:[['ok','35 sin problemas · 3 marcados'],['bl','Notas agregadas a cada cita'],['gy','2 llamadas en cola para el agente telefónico']],
+  after:['<p class="muted">Listo antes de las 7 AM. La recepción ve cada alerta en la propia cita, y el agente telefónico informará aquí después de las llamadas.</p>'],
+  caps:['Una sola solicitud cubre todo el día','El agente consulta el portal de cada aseguradora en su propio navegador','Solo las excepciones vuelven a una persona','Riley aprueba las llamadas de seguimiento'],
+  len:36
+});
+
+</script></body></html>

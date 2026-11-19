@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MRI reading support · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: MRI reading support
+(function(){
+  var T = 'font-family="IBM Plex Mono,monospace" paint-order="stroke" stroke="#000" stroke-width="3"';
+  var sag = '<svg viewBox="0 0 612 700" preserveAspectRatio="xMidYMid meet">'+
+    '<image href="../_/mri/knee-sag.jpg" width="612" height="700"/>'+
+    '<g class="meas"><circle cx="346" cy="380" r="26" fill="none" stroke="#F2C14E" stroke-width="3" stroke-dasharray="8 6"/><line x1="368" y1="364" x2="430" y2="300" stroke="#F2C14E" stroke-width="2"/><text x="360" y="288" fill="#F2C14E" font-size="22" '+T+'>meniscus · check</text></g>'+
+    '<g class="meas"><line x1="150" y1="392" x2="320" y2="392" stroke="#7FD1C3" stroke-width="2"/><text x="150" y="430" fill="#7FD1C3" font-size="22" '+T+'>joint space · 4.1 mm</text></g>'+
+    '</svg>';
+  var cor = '<svg viewBox="0 0 304 308" preserveAspectRatio="xMidYMid meet">'+
+    '<image href="../_/mri/knee-cor.jpg" width="304" height="308"/>'+
+    '<g class="meas"><circle cx="262" cy="183" r="15" fill="none" stroke="#F2C14E" stroke-width="1.6" stroke-dasharray="4 3"/><text x="150" y="222" fill="#F2C14E" font-size="11" '+T+'>medial · signal</text></g>'+
+    '<g class="meas"><line x1="160" y1="118" x2="160" y2="150" stroke="#7FD1C3" stroke-width="1.2"/><text x="166" y="108" fill="#7FD1C3" font-size="11" '+T+'>ACL intact</text></g>'+
+    '</svg>';
+  NX.readDemo({
+    ws:'north', agent:'Read Queue', topSub:'Studies awaiting review', tag:'Research program', badge:1, acts:['Worklist','Prior studies'],
+    images:[{lab:'SAGITTAL · PD FS', svg:sag, note:'Real MRI · Ptrump16 · CC BY-SA 4.0'},{lab:'CORONAL · PD', svg:cor, note:'Real MRI · Lefevre et al. 2016 · CC BY 4.0'}],
+    chips:[['no','Research stage · not FDA-cleared'],['gy','A radiologist makes every read']],
+    study:'MRI knee without contrast', studySub:'Sample worklist · published teaching images · fictional clinic',
+    fields:[['Medial meniscus','Tear, body to posterior horn','Grade 2 intrasubstance signal; no tear reaching the surface'],['Lateral meniscus','Intact',null],['ACL','Intact',null],['Joint effusion','Small','Trace'],['Cartilage','Preserved',null]],
+    approve:{ title:'Sign the report?', lines:['3 findings confirmed, 2 changed by the radiologist','The signed report goes to the surgeon, who decides on treatment','Patients never see AI drafts or AI numbers'], btn:'Sign report' },
+    caps:['A study opens with AI suggestions drawn as drafts','The radiologist checks each finding','Changes are kept, so the model learns where it was wrong','The radiologist describes; the surgeon decides'],
+    len:30
+  });
+})();
+
+</script></body></html>

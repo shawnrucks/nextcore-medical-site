@@ -1,0 +1,71 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logins that stay working · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/platform.css">
+<style>
+.hdr{display:flex;justify-content:space-between;align-items:center}
+.sub2{display:flex;justify-content:space-between;align-items:center;margin:8px 0 8px;font-size:12px;color:var(--grey)}
+.sub2 b{color:var(--ink);font-variant-numeric:tabular-nums}
+.rel{padding:3px 8px;border-radius:7px;transition:background .6s}
+.rel.hl{background:var(--green-bg)}
+.conn{display:grid;grid-template-columns:22px minmax(0,1.3fr) auto minmax(0,1.1fr) minmax(0,1.3fr) auto;gap:12px;align-items:center;padding:11px 14px;border-top:1px solid var(--line);font-size:12px;transition:background .6s}
+.conn:first-child{border-top:0}
+.conn .ic{width:18px;height:18px;border-radius:5px;background:#EEF0EE;display:grid;place-items:center;font-size:10px;color:var(--grey)}
+.conn b{display:block;font-weight:600}
+.conn small{display:block;color:var(--grey);font-size:11px}
+.conn .used{color:var(--grey);font-size:11px}
+.conn .st{color:var(--grey);font-size:11px}
+.conn .st b{display:inline;color:var(--ink);font-weight:600}
+.log{margin-top:14px}
+.log h4{margin:0 0 6px;font-size:12.5px}
+.lrow{display:grid;grid-template-columns:74px minmax(0,1fr) 150px 70px;gap:10px;padding:7px 12px;border-top:1px solid var(--line);font-size:11.5px;opacity:0;transform:translateY(4px);transition:all .4s ease}
+.lrow.on{opacity:1;transform:none}
+.lrow time{font-family:var(--mono);color:var(--soft)}
+.lrow .w{font-family:var(--mono)}
+.lrow .by{color:var(--grey)}
+.lrow .d{color:var(--green);font-family:var(--mono);font-size:10.5px}
+</style></head><body>
+<div class="fit" id="fit"><div class="app">
+<aside class="side" id="side"></aside>
+<section class="main">
+  <div class="pagew">
+    <div class="hdr"><h1>Connections</h1><span class="btn dark">Connect a system</span></div>
+    <p class="desc">Manage the websites, apps, and services your assistants use.</p>
+    <div class="note">🔒 Logins stay in this workspace's protected vault, not in your conversations.</div>
+    <div class="sub2"><span>Every website login and app your assistants use.</span><span class="rel" id="rel">Login reliability, last 7 days: <b id="relN">96%</b></span></div>
+    <div class="panel" id="list">
+      <div class="conn"><span class="ic">◧</span><div><b>EMR · Midtown</b><small>nextos.assistant</small></div><span class="chip ok">Ready</span><span class="used">Used by: Posting Agent, Prior Auth Agent</span><span class="st">Kept signed in · checked 2 min ago</span><span class="btn">Open</span></div>
+      <div class="conn" id="rv"><span class="ic">◧</span><div><b>EMR · Riverside</b><small>nextos.assistant</small></div><span id="rvChip" class="chip ok">Ready</span><span class="used">Used by: Prior Auth Agent</span><span class="st" id="rvSt">Kept signed in · checked 4 min ago</span><span class="btn">Open</span></div>
+      <div class="conn"><span class="ic">◧</span><div><b>Bank portal · First Harbor</b><small>nextos.assistant</small></div><span class="chip ok">Ready</span><span class="used">Used by: Posting Agent</span><span class="st">Kept signed in · device trusted until Nov 9</span><span class="btn">Open</span></div>
+      <div class="conn"><span class="ic">◧</span><div><b>Document share</b><small>nextos.assistant</small></div><span class="chip ok">Ready</span><span class="used">Used by: Posting Agent</span><span class="st">Login verified · checked 6 min ago</span><span class="btn">Open</span></div>
+      <div class="conn"><span class="ic">◩</span><div><b>QuickBooks</b><small>Through a connected app, as you</small></div><span class="chip ok">Ready</span><span class="used">Used by: Assistants acting as you</span><span class="st">Connected 2 days ago</span><span class="btn">Open</span></div>
+      <div class="conn"><span class="ic">◩</span><div><b>Gmail</b><small>Through a connected app, as you</small></div><span class="chip gy">Not set up</span><span class="used">Used by: Assistants acting as you</span><span class="st">Not connected yet</span><span class="btn">Connect</span></div>
+    </div>
+    <div class="log panel" style="padding-top:8px"><h4 style="padding:0 12px">Recent sign-in activity · EMR · Riverside</h4>
+      <div class="lrow" data-t="5.2"><time>6:58:12</time><span class="w">saved_session_recovered</span><span class="by">This deployment</span><span class="d">Allowed</span></div>
+      <div class="lrow" data-t="6.2"><time>6:58:14</time><span class="w">password from the vault</span><span class="by">This deployment</span><span class="d">Allowed</span></div>
+      <div class="lrow" data-t="7.2"><time>6:58:16</time><span class="w">authenticator code entered by NextOS</span><span class="by">This deployment</span><span class="d">Allowed</span></div>
+      <div class="lrow" data-t="8.2"><time>6:58:18</time><span class="w">sign_in_location_chosen · Riverside</span><span class="by">This deployment</span><span class="d">Allowed</span></div>
+      <div class="lrow" data-t="9.4"><time>6:58:29</time><span class="w">keeper_signed_back_in</span><span class="by">This deployment</span><span class="d">Allowed</span></div>
+    </div>
+  </div>
+</section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script><script>NX.setWs(NX.WS.lake); NX.tag='Live in NextOS'; document.addEventListener('DOMContentLoaded', function(){ NX.pillsToTop(); });</script>
+<script>
+NX.init(); document.getElementById('side').innerHTML = NX.adminSide('Connections'); document.querySelector('.main').insertAdjacentHTML('beforeend', NX.cursorHTML);
+var $=NX.$;
+function setRv(chip, cls, st){ var c=$('rvChip'); c.className='chip '+cls; c.textContent=chip; $('rvSt').innerHTML=st; $('rv').classList.remove('flash'); void $('rv').offsetWidth; $('rv').classList.add('flash'); }
+function final(){ document.querySelectorAll('.lrow').forEach(function(r){r.classList.add('on')}); setRv('Ready','ok','<b>Signed back in · 17 seconds</b> · nobody typed a password'); $('cap').classList.add('on'); $('capN').textContent='02'; $('capT').textContent='When a site signs an agent out, NextOS signs it back in'; $('cursor').style.display='none'; }
+NX.loop(function(isFinal){
+  if(isFinal){ final(); return; }
+  document.querySelectorAll('.lrow').forEach(function(r){ r.classList.remove('on'); NX.at(+r.dataset.t, function(){ r.classList.add('on'); }); });
+  setRv('Ready','ok','Kept signed in · checked 4 min ago'); $('relN').textContent='96%'; $('rel').classList.remove('hl');
+  NX.move(820,520); NX.cap('01','Every login your agents use, kept signed in all day');
+  NX.at(3.2,function(){ setRv('Session expired','wt','The EMR signed this login out at 6:58 AM'); NX.moveTo($('rvChip'),20,10); });
+  NX.at(4.8,function(){ setRv('Signing back in','bl spin','Recovering the saved session…'); NX.cap('02','When a site signs an agent out, NextOS signs it back in'); });
+  NX.at(7.2,function(){ $('rvSt').innerHTML='Authenticator code entered by NextOS…'; });
+  NX.at(9.6,function(){ setRv('Ready','ok','<b>Signed back in · 17 seconds</b> · nobody typed a password'); });
+  NX.at(11.4,function(){ NX.moveTo(document.querySelectorAll('.lrow')[2],120,0); NX.cap('03','No one types a password or code, and every step is recorded'); });
+  NX.at(16.5,function(){ NX.moveTo($('rel'),40,0); $('rel').classList.add('hl'); $('relN').textContent='97%'; NX.cap('04','Reliability you can see, login by login'); });
+}, 23);
+</script></body></html>

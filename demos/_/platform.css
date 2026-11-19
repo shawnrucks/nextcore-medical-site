@@ -1,0 +1,4 @@
+/* Platform demos: group the honesty tag and sample-data pill bottom-right */
+.pills-abs{position:absolute;right:16px;bottom:24px;z-index:25;display:flex;gap:6px;align-items:center}
+.focus .pills-abs{right:12px;bottom:14px}
+.pills > *{position:static!important;transform:none!important;flex:none;white-space:nowrap;margin:0!important}

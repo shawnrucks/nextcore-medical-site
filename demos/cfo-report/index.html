@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Month-end CFO report · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Month-end CFO report
+NX.agentDemo({
+  ws:'lake', agent:'CFO Analyst', topSub:'Month-end close prep', tag:'Live in NextOS', badge:2,
+  q:'Build the October one-pager for the partners meeting.',
+  portal:{ name:'QuickBooks', url:'quickbooks.lakeview.example/reports/pl', nav:['Profit and loss','Cases','Payers','Summary'], views:{
+    pl:{ type:'table', nav:'Profit and loss', url:'quickbooks.lakeview.example/reports/pl?month=oct', title:'Profit and loss · October', sub:'QuickBooks Online',
+      cols:['LINE','OCTOBER','SEPTEMBER','CHANGE'], w:'1.6fr 1fr 1fr .8fr',
+      rows:[['Net patient revenue','$1,284,300','$1,190,800','[ok]+7.9%'],['Supplies and implants','$318,900','$301,200','[wt]+5.9%'],['Staff costs','$402,100','$398,700','+0.9%'],['Operating margin','$412,600','$352,400','[ok]+17.1%']] },
+    cases:{ type:'table', site:'Lakeview EMR', nav:'Cases', url:'emr.lakeview.example/reports/cases', title:'Cases by specialty · October', sub:'Lakeview EMR',
+      cols:['SPECIALTY','CASES','VS SEPT'], w:'1.6fr 1fr 1fr',
+      rows:[['Orthopedics','214','[ok]+18'],['Pain management','131','+4'],['GI endoscopy','188','[no]−9'],['ENT','62','+2']] },
+    payers:{ type:'table', nav:'Payers', url:'quickbooks.lakeview.example/reports/ar', title:'Days in A/R by payer', sub:'',
+      cols:['PAYER','DAYS','VS SEPT'], w:'1.6fr 1fr 1fr',
+      rows:[['Summit Health Plan','31','[ok]−4'],['Bluewater PPO','44','[wt]+6'],['Harborline HMO','29','−1']], hl:[1] },
+    sum:{ type:'doc', site:'Partners report', nav:'Summary', url:'docs.lakeview.example/reports/oct-one-pager', title:'October one-pager', sub:'draft',
+      html:'Revenue up 7.9%, margin up 17%. Orthopedics drove it (+18 cases). <mark>Watch: Bluewater days in A/R up 6.</mark> GI down 9 cases (one physician on leave).' }
+  }},
+  steps:[
+    {k:'Pulling October from QuickBooks', d:'profit and loss, A/R aging', v:'pl'},
+    {k:'Pulling case volume', d:'595 cases by specialty', v:'cases'},
+    {k:'Checking payer days', d:'Bluewater slowed down', v:'payers', flash:1},
+    {k:'Writing the one-pager', d:'chart and 3 talking points', v:'sum'}
+  ],
+  answer:[
+    '<p><b>October, Lakeview Surgery Center</b> · revenue up 7.9%, operating margin up 17%.</p>',
+    '<div class="tbl" style="padding:10px 12px"><svg viewBox="0 0 560 120" width="100%" height="120" aria-label="Monthly revenue, sample data"><g font-family="IBM Plex Mono,monospace" font-size="9" fill="#6F7371"><text x="0" y="116">May</text><text x="94" y="116">Jun</text><text x="188" y="116">Jul</text><text x="282" y="116">Aug</text><text x="376" y="116">Sep</text><text x="470" y="116">Oct</text></g><g fill="#DCE3F4"><rect x="0" y="44" width="62" height="58" rx="4"/><rect x="94" y="40" width="62" height="62" rx="4"/><rect x="188" y="48" width="62" height="54" rx="4"/><rect x="282" y="36" width="62" height="66" rx="4"/><rect x="376" y="30" width="62" height="72" rx="4"/></g><rect x="470" y="14" width="62" height="88" rx="4" fill="#0F5C57"/><text x="470" y="9" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1D1F1E">$1.28M</text></svg></div>',
+    '<ul><li>Orthopedics added 18 cases; it is now 36% of volume.</li><li>Bluewater PPO is paying 6 days slower. Worth a call with their rep.</li><li>GI is down 9 cases while one physician is on leave; back in December.</li></ul>'
+  ],
+  result:[['ok','One-pager saved to the partners folder'],['bl','Numbers tie to QuickBooks'],['gy','Read-only: nothing was changed']],
+  after:['<p class="muted">Every number links back to the report it came from. I only read from QuickBooks and the EMR; I can’t change either.</p>'],
+  caps:['Ask for the month in one sentence','The agent pulls QuickBooks and the EMR','It writes the one-pager with the chart','Read-only: every number ties back to its source'],
+  len:32
+});
+
+</script></body></html>

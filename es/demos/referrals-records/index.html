@@ -1,0 +1,41 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referidos y expedientes · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Referrals and records
+NX.agentDemo({
+  ws:'cedar', agent:'Agente de referidos', topSub:'Nuevos referidos · 4 consultorios', tag:'Se configura con usted', badge:2,
+  q:'Trabaja el referido nuevo de Bayside Family Medicine.',
+  portal:{ name:'Bandeja de referidos de Cedar', url:'fax.cedarortho.example/inbox', nav:['Bandeja de entrada','Referido','Lista de verificación','Solicitud'], views:{
+    inbox:{ type:'table', nav:'Bandeja de entrada', url:'fax.cedarortho.example/inbox', title:'Bandeja de referidos', sub:'fax y referido electrónico',
+      cols:['RECEIVED','FROM','PAGES','STATUS'], w:'.9fr 1.6fr .6fr 1fr',
+      rows:[['7:42 AM','Bayside Family Medicine','6','[wt]Nuevo'],['7:10 AM','Northpoint Urgent Care','3','[ok]Agendado'],['Ayer','Dra. Kim, Pine Clinic','9','[ok]Agendado']], hl:[0] },
+    ref:{ type:'doc', nav:'Referido', url:'fax.cedarortho.example/doc/88213.pdf', title:'Referido · Thomas G.', sub:'Fax de 6 páginas, leído por el agente',
+      html:'<b>Motivo:</b> Dolor de hombro derecho, 4 meses. <mark>Sospecha de desgarro del manguito rotador.</mark><br><b>Se solicita:</b> Consulta de ortopedia, Dr. Shah o el primero disponible.<br><b>Seguro:</b> Bluewater PPO · afiliado BW-2209183<br><b>Adjuntos:</b> notas de consulta, informe de radiografía. <mark>Resonancia hecha el 11/02 en Northgate Imaging: informe no adjunto.</mark>' },
+    check:{ type:'table', nav:'Lista de verificación', url:'pm.cedarortho.example/referrals/4471', title:'Lista del paquete de paciente nuevo', sub:'shoulder consult',
+      cols:['ITEM','STATUS'], w:'2fr 1fr',
+      rows:[['Orden de referido firmada','[ok]Recibido'],['Notas de consulta','[ok]Recibido'],['Informe de radiografía','[ok]Recibido'],['Informe de resonancia (11/02)','[no]Falta'],['Seguro activo','[ok]Verificado']], hl:[3] },
+    req:{ type:'form', nav:'Solicitud', url:'records.northgateimaging.example/request', title:'Solicitud de expedientes · Northgate Imaging', sub:'Borrador · no enviado',
+      fields:[['Paciente','Thomas G. · fecha de nacimiento registrada'],['Estudio','Resonancia de hombro derecho · 11/02/2026'],['Enviar a','Cedar Orthopedic · fax de expedientes'],['Se necesita para','Antes de la consulta del 11/21'],['Solicitado por','Riley Shah, administradora del consultorio']], btns:['Enviar solicitud','Guardar borrador'] }
+  }},
+  steps:[
+    {k:'Abriendo el referido nuevo', d:'Fax de 6 páginas de Bayside Family Medicine', v:'inbox', flash:0},
+    {k:'Leyéndolo', d:'motivo, seguro y lo que se adjuntó', v:'ref'},
+    {k:'Revisando el paquete', d:'Falta el informe de la resonancia', v:'check', flash:3},
+    {k:'Redactando la solicitud de expedientes', d:'a Northgate Imaging', v:'req', fill:true}
+  ],
+  answer:[
+    '<p>El referido es para una consulta de hombro. El seguro está activo y tenemos cuatro de cinco elementos. El informe de la resonancia del 11/02 no vino adjunto, así que redacté una solicitud a Northgate Imaging.</p>',
+    '<p>Reservé un espacio a las 10:30 con el Dr. Shah el 21 nov y le adjunté el referido.</p>'
+  ],
+  approve:{ title:'¿Enviar la solicitud de expedientes y reservar el espacio?', lines:['Solicitud de expedientes a Northgate Imaging por la resonancia de hombro del 11/02','Agendar a Thomas G. con el Dr. Shah · 21 nov a las 10:30','El agente telefónico llama al paciente para confirmar'], btn:'Aprobar' },
+  result:[['ok','Solicitud enviada'],['ok','Consulta agendada · 21 nov'],['bl','El paquete se completa cuando llegue el informe de la resonancia']],
+  after:['<p class="muted">Vigilaré la bandeja de expedientes y adjuntaré el informe de la resonancia al paquete en cuanto llegue. Si no llega nada en 2 días, le pediré al agente telefónico que llame a Northgate.</p>'],
+  caps:['Llega un referido nuevo a la bandeja','El agente lo lee y revisa qué falta','Redacta la solicitud de expedientes y reserva un espacio','Riley aprueba; el paquete se cierra solo cuando llegan los expedientes'],
+  len:36
+});
+
+</script></body></html>

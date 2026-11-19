@@ -1,0 +1,84 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audit and policy · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/platform.css">
+<style>
+.pagew{width:880px}
+.hdr{display:flex;justify-content:space-between;align-items:center}
+.tabs{display:flex;gap:6px;margin:4px 0 12px}
+.tab{padding:5px 11px;border-radius:7px;font-size:12px;border:1px solid var(--line);background:#fff}
+.tab.on{background:var(--dark);color:#fff;border-color:var(--dark)}
+.tbl{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.th,.tr{display:grid;grid-template-columns:78px minmax(0,1.25fr) minmax(0,1.3fr) minmax(0,1fr) 108px minmax(0,1.15fr);gap:10px;align-items:center;padding:8px 12px;font-size:11.5px}
+.th{font-family:var(--mono);font-size:10.5px;color:var(--grey);letter-spacing:.04em;background:#FAFAF9;border-bottom:1px solid var(--line)}
+.tr{border-top:1px solid #F0F1EF;animation:rowIn .45s ease both}
+.tr:first-of-type{border-top:0}
+@keyframes rowIn{from{opacity:0;transform:translateY(-6px);background:#FFF7E0}to{opacity:1;transform:none;background:transparent}}
+.tr time{font-family:var(--mono);color:var(--soft)}
+.tr .w{font-family:var(--mono);font-size:11px}
+.tr .on{color:var(--grey);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dec{font-size:11.5px}
+.dec.ok{color:var(--green)}
+.dec.no{color:var(--red);font-weight:600}
+.tr.blk{background:#FFF8F8}
+.tr.sel{outline:2px solid var(--red);outline-offset:-2px}
+.drawer{position:absolute;right:0;top:0;bottom:0;width:380px;background:#fff;border-left:1px solid var(--line);box-shadow:-20px 0 40px -30px rgba(0,0,0,.35);padding:22px 22px;transform:translateX(100%);transition:transform .5s cubic-bezier(.3,0,.2,1);z-index:5}
+.drawer.on{transform:none}
+.drawer h3{margin:6px 0 4px;font-size:17px}
+.drawer .kv{display:grid;grid-template-columns:110px 1fr;gap:8px;padding:8px 0;border-top:1px solid var(--line);font-size:12.5px}
+.drawer .kv span:first-child{color:var(--grey)}
+.why{margin-top:12px;border:1px solid #F0D2D2;background:#FFF5F5;border-radius:10px;padding:10px 12px;font-size:12.5px;color:#6E2A2A}
+</style></head><body>
+<div class="fit" id="fit"><div class="app">
+<aside class="side" id="side"></aside>
+<section class="main">
+  <div class="pagew">
+    <div class="hdr"><h1>Audit</h1><span class="btn">Refresh</span></div>
+    <p class="desc">Every action an agent took, and every one this deployment's policy refused.</p>
+    <div class="tabs"><span class="tab on" id="tabAll">Everything</span><span class="tab">Computer actions</span><span class="tab" id="tabBlk">Blocked</span><span class="tab">Did not happen</span><span class="tab">Nobody watching</span></div>
+    <div class="tbl"><div class="th"><span>WHEN</span><span>WHAT</span><span>ON</span><span>AGENT</span><span>STARTED BY</span><span>DECISION</span></div><div id="rows"></div></div>
+  </div>
+  <div class="drawer" id="drawer">
+    <span class="chip no">Refused</span>
+    <h3>Upload report to an unlisted website</h3>
+    <div class="kv"><span>Agent</span><span>Posting Agent</span></div>
+    <div class="kv"><span>Destination</span><span>reports-share.example.net</span></div>
+    <div class="kv"><span>Started by</span><span>The agent</span></div>
+    <div class="kv"><span>Rule</span><span>Approved destinations only</span></div>
+    <div class="kv"><span>Result</span><span>Nothing was sent</span></div>
+    <div class="why">The agent asked. The policy decided. Rules live outside the prompt, so asking for more never authorizes more.</div>
+  </div>
+</section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script><script>NX.setWs(NX.WS.lake); NX.tag='Live in NextOS'; document.addEventListener('DOMContentLoaded', function(){ NX.pillsToTop(); });</script>
+<script>
+NX.init(); document.getElementById('side').innerHTML = NX.adminSide('Audit'); document.querySelector('.main').insertAdjacentHTML('beforeend', NX.cursorHTML);
+var $=NX.$;
+var ALL=[
+ ['7:02:41','navigate','emr.example-health.com','Prior Auth Agent','The agent','Allowed'],
+ ['7:02:44','click','Search patients (button)','Prior Auth Agent','The agent','Allowed'],
+ ['7:02:47','read','Patient 702218 · coverage','Prior Auth Agent','The agent','Allowed'],
+ ['7:03:05','computer.control_taken','Agent\'s computer','Prior Auth Agent','A person','You have control'],
+ ['7:03:19','computer.control_released','Agent\'s computer','Prior Auth Agent','A person','The wheel was handed back'],
+ ['7:04:12','upload','reports-share.example.net','Posting Agent','The agent','BLOCK'],
+ ['7:04:30','download','bank-download-0930.csv','Posting Agent','The agent','Allowed'],
+ ['7:05:02','send_email','external address','Front Desk Support','The agent','BLOCK'],
+ ['7:05:40','keeper_signed_back_in','EMR · Riverside','-','This deployment','Allowed'],
+ ['7:06:15','delete','QuickBooks deposit 1187','CFO Analyst','The agent','BLOCK']
+];
+var REASON={'7:04:12':'Refused · approved destinations only','7:05:02':'Refused · needs approval first','7:06:15':'Refused · not in this agent\'s role'};
+function row(r){ var blk=r[5]==='BLOCK'; var dec=blk?'<span class="dec no">'+REASON[r[0]]+'</span>':'<span class="dec ok">'+r[5]+'</span>'; return '<div class="tr'+(blk?' blk':'')+'" data-t="'+r[0]+'"><time>'+r[0]+'</time><span class="w">'+r[1]+'</span><span class="on">'+r[2]+'</span><span>'+r[3]+'</span><span>'+r[4]+'</span>'+dec+'</div>'; }
+function render(list){ $('rows').innerHTML=list.slice().reverse().map(row).join(''); }
+function final(){ render(ALL.filter(function(r){return r[5]==='BLOCK'})); $('tabAll').classList.remove('on'); $('tabBlk').classList.add('on'); $('drawer').classList.add('on'); $('cap').classList.add('on'); $('capN').textContent='02'; $('capT').textContent='Every refusal shows the rule that made it'; $('cursor').style.display='none'; }
+NX.loop(function(isFinal){
+  if(isFinal){ final(); return; }
+  $('drawer').classList.remove('on'); $('tabAll').classList.add('on'); $('tabBlk').classList.remove('on');
+  var shown=[]; render(shown); NX.move(980,640);
+  NX.cap('01','Every action an agent takes, recorded as it happens');
+  ALL.forEach(function(r,i){ NX.at(0.4+i*0.75,function(){ shown.push(r); var div=document.createElement('div'); div.innerHTML=row(r); $('rows').insertBefore(div.firstChild,$('rows').firstChild); }); });
+  NX.at(8.4,function(){ NX.moveTo($('tabBlk')); NX.cap('02','Every refusal shows the rule that made it'); });
+  NX.at(9.6,function(){ NX.click($('tabBlk')); $('tabAll').classList.remove('on'); $('tabBlk').classList.add('on'); render(ALL.filter(function(r){return r[5]==='BLOCK'})); });
+  NX.at(10.8,function(){ var el=document.querySelector('.tr[data-t="7:04:12"]'); if(el) NX.moveTo(el,-120,0); });
+  NX.at(12.0,function(){ var el=document.querySelector('.tr[data-t="7:04:12"]'); if(el){ NX.click(); el.classList.add('sel'); } $('drawer').classList.add('on'); NX.cap('03','Policy lives outside the prompt. Asking for more never authorizes more.'); });
+  NX.at(13.0,function(){ NX.move(1100,520); });
+}, 20);
+</script></body></html>

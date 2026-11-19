@@ -1,0 +1,39 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autorización previa · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Prior authorization
+NX.agentDemo({
+  ws:'lake', agent:'Agente de autorización previa', topSub:'Solicitudes de autorización · próxima semana', tag:'Se configura con usted', nav:'', badge:2,
+  q:'Inicia la autorización para la artroscopia de rodilla de Maria L. el 24 nov.',
+  portal:{ name:'Summit Health Plan', url:'provider.summithealthplan.example/auth', nav:['Expediente','Cobertura','Nueva solicitud','Estado'], views:{
+    chart:{ type:'doc', site:'Lakeview EMR', nav:'Expediente', url:'emr.lakeview.example/chart/48213', title:'Expediente · Maria L.', sub:'Lakeview EMR · paciente de muestra',
+      html:'<b>Plan:</b> Artroscopia de rodilla derecha, meniscectomía medial parcial (29881).<br><b>Antecedentes:</b> <mark>Seis semanas de fisioterapia</mark>, sin alivio. Bloqueo y dolor en escaleras.<br><b>Imagen:</b> <mark>Resonancia 10/28: desgarro complejo, cuerno posterior, menisco medial.</mark><br><b>Cirujano:</b> Dr. Alex Rivera · <b>Fecha:</b> 24 nov en Lakeview' },
+    cover:{ type:'table', nav:'Cobertura', url:'provider.summithealthplan.example/coverage', title:'Reglas de cobertura · cirugía ambulatoria', sub:'Summit Health Plan',
+      cols:['CPT','Descripción','Autoriz.','Notas'], w:'60px 1.6fr 90px 1.4fr',
+      rows:[['29880','Artroscopia de rodilla, ambos meniscos','[wt]Se requiere','Notas clínicas'],['29881','Artroscopia de rodilla, un menisco','[wt]Se requiere','Notas + imágenes'],['29888','Reconstrucción del LCA','[wt]Se requiere','Notas + imágenes'],['20610','Inyección articular','[ok]No se requiere','—']], hl:[1] },
+    form:{ type:'form', nav:'Nueva solicitud', url:'provider.summithealthplan.example/auth/new', title:'Nueva autorización previa', sub:'Borrador · no enviado',
+      fields:[['Número de afiliado','SHP-4471902'],['Procedimiento (CPT)','29881 · artroscopia de rodilla, un menisco'],['Diagnóstico (ICD-10)','M23.221 · desgarro del menisco medial'],['Cirujano','Dr. Alex Rivera'],['Centro','Lakeview Surgery Center'],['Fecha del servicio','11/24/2026'],['Adjuntos','surgeon-note.pdf · mri-1028.pdf · pt-log.pdf','att']],
+      btns:['Guardar borrador','Presentar'] }
+  }},
+  steps:[
+    {k:'Leyendo el expediente', d:'nota del cirujano, resonancia, registro de terapia', v:'chart'},
+    {k:'Revisando las reglas de la aseguradora', d:'29881 requiere autorización con notas e imágenes', v:'cover', flash:1},
+    {k:'Llenando la solicitud', d:'7 campos y 3 adjuntos', v:'form', fill:true},
+    {k:'Guardada como borrador', d:'no se envía nada sin una persona', v:'form'}
+  ],
+  answer:[
+    '<p>La solicitud está llena y guardada como borrador en el portal de Summit Health Plan. Todo lo que la aseguradora pide para el 29881 está adjunto.</p>',
+    '<div class="tbl"><div style="grid-template-columns:1.2fr 1fr"><span>REQUISITO</span><span>RESULTADO</span></div><div style="grid-template-columns:1.2fr 1fr"><span>Tratamiento conservador documentado</span><span class="chip ok">6 semanas de fisioterapia</span></div><div style="grid-template-columns:1.2fr 1fr"><span>Imagen en los últimos 90 días</span><span class="chip ok">Resonancia 10/28</span></div><div style="grid-template-columns:1.2fr 1fr"><span>Afiliado activo en la fecha del servicio</span><span class="chip ok">Activo</span></div></div>'
+  ],
+  approve:{ title:'¿Enviar esta autorización a Summit Health Plan?', lines:['Maria L. · 29881 rodilla derecha · 24 nov','3 adjuntos · cirujano Dr. Alex Rivera','El agente confirmará el número de caso después de enviar'], btn:'Aprobar y enviar' },
+  result:[['ok','Enviada · caso PA-77120'],['bl','Número de caso confirmado en el portal'],['gy','Revisión del estado cada mañana a las 9']],
+  after:['<p class="muted">Enviada a las 10:42 AM. Confirmé el número de caso en la página de estado del portal, lo guardé en el expediente y revisaré el estado cada mañana hasta que la aseguradora responda.</p>'],
+  caps:['Pida la autorización con sus propias palabras','El agente trabaja el portal de la aseguradora en su propio navegador','Muestra exactamente lo que va a enviar','Jordan aprueba; el agente envía y confirma el número de caso'],
+  len:36
+});
+
+</script></body></html>

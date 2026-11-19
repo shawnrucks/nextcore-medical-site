@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patient phone calls · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Patient phone calls
+NX.callDemo({
+  ws:'cedar', agent:'Phone Agent', topSub:'Patient callbacks', tag:'Live in NextOS', badge:3,
+  to:'Inbound · main line', connected:'Answered · talking', num:'Caller ID <span class="hid">(•••) •••-••18</span>', voiceNote:'Automated voice agent · English and Spanish',
+  menu:[['Inbound','Answered after 2 rings'],['Language','Spanish detected · switched'],['Intent','Reschedule a visit'],['Next step','Callback for the front desk']],
+  lines:[
+    ['sys','Incoming call · after hours · 6:48 PM'],
+    ['AI','Cedar Orthopedic Group. I’m an automated assistant. How can I help?'],
+    ['Caller','Hola, ¿habla español? Necesito cambiar mi cita.'],
+    ['AI','Claro que sí. Soy un asistente automatizado. ¿Me puede dar su nombre y fecha de nacimiento?'],
+    ['Caller','Rosa Delgado, <span class="hid">••/••/19••</span>.'],
+    ['AI','Gracias, Rosa. Veo su cita del jueves a las 9:30 con el Dr. Shah. ¿Qué día le queda mejor?'],
+    ['Caller','El lunes o martes por la mañana, por favor.'],
+    ['AI','Entendido. La recepción le llamará mañana a las 8 para confirmar. ¿Este número es el mejor? <span class="hid">(•••) •••-••18</span>'],
+    ['Caller','Sí, gracias.'],
+    ['sys','Call summary written in English for the front desk']
+  ],
+  script:[{menu:0,line:0,d:.8},{line:1,d:1.6},{line:2,menu:1,d:1.6},{line:3,d:1.9},{line:4,field:0,d:1.5,cap:1},{line:5,menu:2,d:2},{line:6,field:1,d:1.5},{line:7,menu:3,field:2,d:2.2},{line:8,d:1},{line:9,field:3,d:1.4}],
+  fields:[['Patient','Rosa Delgado · matched to chart'],['Request','Move Thu 9:30 with Dr. Shah to Mon or Tue morning'],['Language','Spanish'],['Callback','Tomorrow 8:00 AM · number on file']],
+  approve:{ title:'Add the callback to tomorrow’s front-desk list?', lines:['Callback for Rosa Delgado at 8:00 AM','Summary in English, original call in Spanish','Phone numbers stay masked in the transcript'], btn:'Approve' },
+  endNote:'callback set', dur:'02:14', speed:4,
+  caps:['After hours, the Phone Agent answers','It says it is automated and switches to Spanish','It captures the request; private numbers stay masked','A person approves the callback in the morning'],
+  len:32
+});
+
+</script></body></html>

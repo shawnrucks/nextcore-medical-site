@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scheduling and waitlist · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Scheduling and waitlist
+NX.calDemo({
+  ws:'lake', agent:'Scheduling Agent', topSub:'OR board and waitlist', tag:'Set up with you', badge:2,
+  title:'OR board · Thursday, Nov 20',
+  cols:['OR 1','OR 2','OR 3','Procedure room'],
+  rows:[
+    ['7:30','bk|Knee scope|Dr. Rivera','bk|Hip arthroscopy|Dr. Osei','bk|ACL repair|Dr. Lin','bk|Injection block|Dr. Park'],
+    ['9:00','bk|Carpal tunnel|Dr. Rivera','bk|Shoulder scope|Dr. Osei','bk|Meniscus repair|Dr. Lin','op'],
+    ['10:30','bk|Knee scope|Dr. Rivera','bk|Rotator cuff|Dr. Osei','op','bk|Injection block|Dr. Park'],
+    ['12:00','op','bk|Shoulder scope|Dr. Osei','bk|Knee scope|Dr. Lin','bk|Nerve block|Dr. Park'],
+    ['1:30','bk|Trigger finger|Dr. Rivera','op','bk|ACL repair|Dr. Lin','op'],
+    ['3:00','bk|Ankle scope|Dr. Rivera','bk|Hip arthroscopy|Dr. Osei','op','op']
+  ],
+  feed:[
+    ['7:02 AM','Cancellation: 10:30 Knee scope with Dr. Rivera (patient is sick).','w'],
+    ['7:02 AM','Waitlist: 4 patients want Dr. Rivera this week. Checking each one.'],
+    ['7:03 AM','Best match: Kevin J. · knee scope · auth approved · lives 12 min away · cleared by pre-op.'],
+    ['7:04 AM','Phone Agent called Kevin J. He can come at 10:30. Pre-op instructions read to him.'],
+    ['7:06 AM','Board updated as a hold. Waiting for the charge nurse to approve.','g']
+  ],
+  events:[
+    {slot:['sl2_0','cx','Knee scope','Cancelled · 10:30'], feed:0, d:1.8},
+    {slot:['sl2_0','hl cx','Knee scope','Finding a match…'], feed:1, cap:['02',1], d:2.0},
+    {feed:2, d:2.0},
+    {feed:3, cap:['03',2], d:2.2},
+    {slot:['sl2_0','nw hl','Knee scope · Kevin J.','Dr. Rivera · hold'], feed:4, d:1.8}
+  ],
+  onApprove:[['sl2_0','nw','Knee scope · Kevin J.','Dr. Rivera · confirmed']],
+  approve:{ title:'Confirm Kevin J. into OR 1 at 10:30?', lines:['Auth A-561002 is valid for this date','Pre-op cleared · arrival 9:00','Original patient moved to the waitlist'], btn:'Approve' },
+  caps:['A case cancels at 7 AM','The agent checks the waitlist against auth and pre-op','The Phone Agent calls the best match','The charge nurse approves; the slot is filled'],
+  len:24
+});
+
+</script></body></html>

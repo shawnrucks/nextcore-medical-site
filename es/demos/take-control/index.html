@@ -1,0 +1,117 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ver y tomar el control · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/platform.css">
+<style>
+.split{position:absolute;inset:0;display:grid;grid-template-columns:360px 1fr}
+.chatc{border-right:1px solid var(--line);display:flex;flex-direction:column}
+.chathead{display:flex;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);font-weight:600}
+.chathead i{width:20px;height:20px;border-radius:50%}
+.msgs{padding:18px 16px;display:grid;gap:10px;align-content:start}
+.u{justify-self:end;max-width:85%;background:#F1F2F0;border-radius:12px;padding:8px 12px;font-weight:500}
+.a{color:#2E3130}
+.tl{display:flex;gap:8px;align-items:center;color:#3A3D3C;font-size:12px}
+.tl .tri{color:var(--soft);font-size:10px}
+.tl .chip{margin-left:auto}
+.compw{padding:16px;display:flex;flex-direction:column;gap:10px;background:#FAFAF9}
+.comphead{display:flex;justify-content:space-between;align-items:center}
+.comphead b{font-weight:600}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--grey)}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:#2E9E62;animation:pulse 1.4s infinite}
+.banner{border-radius:10px;padding:9px 12px;font-size:12.5px;display:none}
+.banner.you{display:block;background:var(--dark);color:#fff}
+.banner.back{display:block;background:var(--green-bg);color:var(--green);border:1px solid var(--green-line)}
+.browser{flex:1;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;position:relative;transition:box-shadow .4s,border-color .4s}
+.browser.ctl{border-color:var(--dark);box-shadow:0 0 0 3px rgba(29,31,30,.15)}
+.urlbar{display:flex;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--grey)}
+.urlbar .dot{width:9px;height:9px;border-radius:50%;background:#E3E5E2}
+.emr{padding:18px 22px;font-size:12.5px}
+.emr .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.emr .top b{font-size:15px}
+.emr .loc{display:inline-flex;gap:4px}
+.emr .loc span{padding:3px 9px;border-radius:6px;background:#EEF0EE;font-size:11.5px}
+.emr .loc span.on{background:#2B4A9C;color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px}
+.f .lbl{font-size:11px}
+.f .field{min-height:32px}
+.sel{position:relative}
+.dd{position:absolute;left:0;right:0;top:56px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 30px -16px rgba(0,0,0,.35);display:none;z-index:2}
+.dd div{padding:7px 10px;font-size:12px}
+.dd div.h{background:#F1F2F0}
+.agentcur{position:absolute;width:16px;height:16px;border-radius:50%;background:rgba(43,74,156,.25);border:2px solid #2B4A9C;transition:transform .9s cubic-bezier(.5,0,.2,1);z-index:3}
+.agentcur::after{content:"Agent";position:absolute;left:18px;top:-4px;font-size:10px;font-family:var(--mono);color:#2B4A9C;background:#fff;border:1px solid #CBD5F0;border-radius:4px;padding:0 4px}
+.agentcur.paused{opacity:.35}
+.saveb{margin-top:14px}
+</style></head><body>
+<div class="fit" id="fit"><div class="app">
+<aside class="side" id="side"></aside>
+<section class="main">
+  <div class="split">
+    <div class="chatc">
+      <div class="chathead"><i id="agi"></i>Agente de autorizaciones</div>
+      <div class="msgs" id="msgs">
+        <div class="u">Revisa la cobertura del MRN 702218 en Riverside y actualiza la cuenta.</div>
+        <div class="tl fade" id="t1"><span class="tri">▸</span>Abrir el EMR · Riverside<span class="chip ok">sesión iniciada</span></div>
+        <div class="tl fade" id="t2"><span class="tri">▸</span>Buscar paciente 702218<span class="chip ok">encontrado</span></div>
+        <div class="tl fade" id="t3"><span class="tri">▸</span>Cobertura principal<span class="chip ok">Summit Health Plan · Comercial</span></div>
+        <div class="a fade" id="t4">En pausa mientras Jordan tiene el control.</div>
+        <div class="tl fade" id="t5"><span class="tri">▸</span>Control devuelto<span class="chip bl">registrado</span></div>
+        <div class="a fade" id="t6">Gracias. Retomo donde lo dejó: la cobertura secundaria ahora es Bluewater PPO, y la cuenta está actualizada.</div>
+      </div>
+    </div>
+    <div class="compw">
+      <div class="comphead"><div><b>Computadora del agente</b> · <span class="live" id="liveTxt">En vivo</span></div><span class="btn dark" id="ctlBtn">Tomar el control</span></div>
+      <div class="banner" id="banner"></div>
+      <div class="browser" id="browser">
+        <div class="urlbar"><span class="dot"></span><span class="dot"></span><span>emr.example-health.com/patients/702218</span></div>
+        <div class="emr">
+          <div class="top"><b>Cuenta del paciente</b><span class="loc"><span>Midtown</span><span class="on">Riverside</span></span></div>
+          <div class="grid2">
+            <div class="f"><div class="lbl">MRN</div><div class="field mono" id="fMrn"></div></div>
+            <div class="f"><div class="lbl">Cuenta</div><div class="field mono" id="fAcct"></div></div>
+            <div class="f"><div class="lbl">Seguro principal</div><div class="field" id="fPri"></div></div>
+            <div class="f sel"><div class="lbl">Seguro secundario</div><div class="field" id="fSec">—</div><div class="dd" id="dd"><div>Ninguno</div><div id="optMed">Bluewater PPO</div><div>Harborline HMO</div><div>Summit Health Plan</div></div></div>
+            <div class="f"><div class="lbl">Fecha del servicio</div><div class="field mono" id="fDos"></div></div>
+            <div class="f"><div class="lbl">Sede</div><div class="field">Riverside</div></div>
+          </div>
+          <span class="btn saveb" id="saveBtn">Guardar cuenta</span>
+        </div>
+        <div class="agentcur" id="acur"></div>
+      </div>
+    </div>
+  </div>
+</section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script><script>NX.setWs(NX.WS.lake); NX.tag='En vivo en NextOS'; document.addEventListener('DOMContentLoaded', function(){ NX.pillsToTop(); });</script>
+<script>
+NX.init(); document.getElementById('side').innerHTML = NX.appSide('Agente de autorización previa','',2); document.querySelector('.main').insertAdjacentHTML('beforeend', NX.cursorHTML);
+var $=NX.$; $('agi').style.background=NX.agentColor('Agente de autorización previa');
+function acurTo(el){ var b=$('browser').getBoundingClientRect(), r=el.getBoundingClientRect(), s=NX.fit.getBoundingClientRect().width/NX.baseW; $('acur').style.transform='translate('+((r.left-b.left+r.width*0.7)/s)+'px,'+((r.top-b.top+r.height/2)/s)+'px)'; }
+function banner(cls, txt){ var b=$('banner'); b.className='banner '+cls; b.textContent=txt; }
+function reset(){
+  ['t1','t2','t3','t4','t5','t6'].forEach(function(i){ $(i).classList.remove('on'); });
+  ['fMrn','fAcct','fPri','fDos'].forEach(function(i){ $(i).textContent=''; }); $('fSec').textContent='—'; $('dd').style.display='none';
+  banner('',''); $('browser').classList.remove('ctl'); $('acur').classList.remove('paused'); $('ctlBtn').textContent='Tomar el control'; $('liveTxt').textContent='En vivo';
+}
+function final(){ ['t1','t2','t3','t4','t5','t6'].forEach(function(i){ $(i).classList.add('on'); }); $('fMrn').textContent='702218'; $('fAcct').textContent='A-45219'; $('fPri').textContent='Summit Health Plan · Comercial'; $('fSec').textContent='Bluewater PPO'; $('fDos').textContent='09/21/26'; banner('back','Se devolvió el control · registrado en Auditoría'); $('cap').classList.add('on'); $('capN').textContent='02'; $('capT').textContent='Tome el control en cualquier momento. El agente se detiene.'; $('cursor').style.display='none'; }
+NX.loop(function(isFinal){
+  if(isFinal){ final(); return; }
+  reset(); NX.move(980,620); acurTo($('fMrn'));
+  NX.cap('01','Vea la pantalla de cada agente, en vivo');
+  NX.at(0.6,function(){ $('t1').classList.add('on'); });
+  NX.at(1.2,function(){ acurTo($('fMrn')); NX.type($('fMrn'),'702218',.6); });
+  NX.at(2.2,function(){ $('t2').classList.add('on'); acurTo($('fAcct')); $('fAcct').textContent='A-45219'; });
+  NX.at(3.2,function(){ acurTo($('fPri')); NX.type($('fPri'),'Summit Health Plan · Comercial',.7); $('fDos').textContent='09/21/26'; });
+  NX.at(4.2,function(){ $('t3').classList.add('on'); acurTo($('fSec')); });
+  NX.at(5.0,function(){ NX.moveTo($('ctlBtn')); });
+  NX.at(6.2,function(){ NX.click($('ctlBtn')); $('ctlBtn').textContent='Devolver'; $('browser').classList.add('ctl'); $('acur').classList.add('paused'); banner('you','Usted tiene el control · las acciones del agente en el navegador están en pausa'); $('liveTxt').textContent='Usted está al mando'; $('t4').classList.add('on'); NX.cap('02','Tome el control en cualquier momento. El agente se detiene.'); });
+  NX.at(7.4,function(){ NX.moveTo($('fSec')); });
+  NX.at(8.5,function(){ NX.click($('fSec')); $('dd').style.display='block'; });
+  NX.at(9.4,function(){ NX.moveTo($('optMed')); $('optMed').classList.add('h'); });
+  NX.at(10.4,function(){ NX.click($('optMed')); $('dd').style.display='none'; $('fSec').textContent='Bluewater PPO'; $('optMed').classList.remove('h'); });
+  NX.at(11.4,function(){ NX.moveTo($('ctlBtn')); });
+  NX.at(12.6,function(){ NX.click($('ctlBtn')); $('ctlBtn').textContent='Tomar el control'; $('browser').classList.remove('ctl'); $('acur').classList.remove('paused'); banner('back','Se devolvió el control · registrado en Auditoría'); $('liveTxt').textContent='En vivo'; $('t5').classList.add('on'); NX.cap('03','Devuélvalo. El agente continúa, y todo queda registrado.'); });
+  NX.at(13.6,function(){ acurTo($('saveBtn')); });
+  NX.at(14.6,function(){ $('saveBtn').classList.add('pressed'); setTimeout(function(){ $('saveBtn').classList.remove('pressed'); },220); $('t6').classList.add('on'); });
+  NX.at(15.2,function(){ NX.move(980,620); });
+}, 21);
+</script></body></html>

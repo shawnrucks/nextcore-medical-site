@@ -1,0 +1,6 @@
+knee-sag.jpg  "Knee MRI PD TSE FS Sagittal" by Ptrump16, Wikimedia Commons, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Cropped and resized; this derivative is CC BY-SA 4.0.
+              https://commons.wikimedia.org/wiki/File:Knee_MRI_PD_TSE_FS_Sagittal.jpg
+knee-cor.jpg  "Proton density MRI of a grade 2 medial meniscal tear", Lefevre N, Naouri JF, Herman S, Gerometta A, Klouche S, Bohu Y (2016),
+              Radiology Research and Practice, doi:10.1155/2016/8329296, CC BY 4.0, via Wikimedia Commons. Unmodified.
+              https://commons.wikimedia.org/wiki/File:Proton_density_MRI_of_a_grade_2_medial_meniscal_tear.jpg
+Both are published, de-identified teaching images. No Nextcore patient data.

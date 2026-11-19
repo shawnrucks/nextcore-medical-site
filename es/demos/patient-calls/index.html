@@ -1,0 +1,33 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Llamadas de pacientes · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Patient phone calls
+NX.callDemo({
+  ws:'cedar', agent:'Agente telefónico', topSub:'Devolución de llamadas a pacientes', tag:'En vivo en NextOS', badge:3,
+  to:'Entrante · línea principal', connected:'Contestada · en conversación', num:'Identificador <span class="hid">(•••) •••-••18</span>', voiceNote:'Agente de voz automatizado · inglés y español',
+  menu:[['Entrante','Contestada tras 2 timbres'],['Idioma','Español detectado · cambió de idioma'],['Motivo','Cambiar una cita'],['Siguiente paso','Devolución de llamada para la recepción']],
+  lines:[
+    ['sys','Llamada entrante · fuera de horario · 6:48 PM'],
+    ['AI','Cedar Orthopedic Group. I’m an automated assistant. How can I help?'],
+    ['Quien llama','Hola, ¿habla español? Necesito cambiar mi cita.'],
+    ['AI','Claro que sí. Soy un asistente automatizado. ¿Me puede dar su nombre y fecha de nacimiento?'],
+    ['Quien llama','Rosa Delgado, <span class="hid">••/••/19••</span>.'],
+    ['AI','Gracias, Rosa. Veo su cita del jueves a las 9:30 con el Dr. Shah. ¿Qué día le queda mejor?'],
+    ['Quien llama','El lunes o martes por la mañana, por favor.'],
+    ['AI','Entendido. La recepción le llamará mañana a las 8 para confirmar. ¿Este número es el mejor? <span class="hid">(•••) •••-••18</span>'],
+    ['Quien llama','Sí, gracias.'],
+    ['sys','Resumen de la llamada escrito para la recepción']
+  ],
+  script:[{menu:0,line:0,d:.8},{line:1,d:1.6},{line:2,menu:1,d:1.6},{line:3,d:1.9},{line:4,field:0,d:1.5,cap:1},{line:5,menu:2,d:2},{line:6,field:1,d:1.5},{line:7,menu:3,field:2,d:2.2},{line:8,d:1},{line:9,field:3,d:1.4}],
+  fields:[['Paciente','Rosa Delgado · vinculada al expediente'],['Solicitud','Pasar la cita del jueves 9:30 con el Dr. Shah al lunes o martes por la mañana'],['Idioma','Español'],['Devolución de llamada','Mañana 8:00 AM · número registrado']],
+  approve:{ title:'¿Agregar la devolución de llamada a la lista de recepción de mañana?', lines:['Devolver la llamada a Rosa Delgado a las 8:00 AM','Resumen para la recepción; la llamada original, en español','Los números de teléfono se ocultan en la transcripción'], btn:'Aprobar' },
+  endNote:'callback set', dur:'02:14', speed:4,
+  caps:['Fuera de horario, contesta el agente telefónico','Dice que es automatizado y cambia a español','Registra la solicitud; los números privados se ocultan','Una persona aprueba la devolución de la llamada por la mañana'],
+  len:32
+});
+
+</script></body></html>

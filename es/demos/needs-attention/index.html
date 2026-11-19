@@ -1,0 +1,70 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Requiere atención · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/platform.css">
+<style>
+.scene{position:absolute;inset:0;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;pointer-events:none;overflow:hidden}
+.scene.on{opacity:1;transform:none}
+.item{display:grid;grid-template-columns:28px minmax(0,1fr) auto 14px;gap:12px;align-items:center;padding:13px 14px;border-top:1px solid var(--line);font-size:12.5px;transition:opacity .5s,max-height .5s,padding .5s;max-height:80px;overflow:hidden}
+.item:first-child{border-top:0}
+.item .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:13px}
+.item b{display:block;font-weight:600}
+.item small{display:block;color:var(--grey);font-size:11.5px}
+.item .arr{color:var(--soft)}
+.item.gone{opacity:0;max-height:0;padding-top:0;padding-bottom:0}
+.held{border:1px solid var(--amber-line);background:var(--amber-bg);border-radius:10px;padding:12px;margin-top:6px}
+.held .h{font-weight:600;color:var(--amber);margin-bottom:8px}
+.it{background:#fff;border:1px solid var(--amber-line);border-radius:8px;padding:10px;transition:all .5s}
+.it p{margin:0 0 8px;font-size:12px}
+.it.ok{border-color:var(--green-line);background:var(--green-bg)}
+.acts{display:flex;flex-wrap:wrap;gap:6px}
+.crumb2{color:var(--grey);font-size:12px;margin-bottom:10px}
+.dayhead{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.dayhead h2{margin:0;font-size:17px}
+</style></head><body>
+<div class="fit" id="fit"><div class="app">
+<aside class="side" id="side"></aside>
+<section class="main">
+  <div class="scene on" id="s1"><div class="pagew">
+    <h1>Requiere atención</h1>
+    <p class="desc">Todo lo que espera a una persona, en una sola lista. Cada elemento abre la página donde se resuelve.</p>
+    <div class="panel" id="inbox">
+      <div class="item"><span class="ic" style="background:var(--amber-bg)">🔑</span><div><b>Portal de la aseguradora</b><small>El inicio de sesión lo necesita a usted · este portal envía un código a un teléfono que NextOS no tiene</small></div><span class="chip wt">Inicio de sesión</span><span class="arr">›</span></div>
+      <div class="item" id="batch"><span class="ic" style="background:var(--amber-bg)">≡</span><div><b>Lote del miércoles 30 de sep</b><small>Registro de pagos de seguros por revisar · 1 pago retenido, aún sin depósito bancario</small></div><span class="chip wt">Registro</span><span class="arr">›</span></div>
+      <div class="item"><span class="ic" style="background:var(--blue-bg)">✉</span><div><b>Paquete de referido · paciente nuevo</b><small>Expedientes por conseguir · falta 1 informe de imagen</small></div><span class="chip bl">Expedientes</span><span class="arr">›</span></div>
+    </div>
+  </div></div>
+  <div class="scene" id="s2"><div class="pagew">
+    <div class="crumb2">Requiere atención › Registro de pagos de seguros</div>
+    <div class="dayhead"><h2>Miércoles 30 de sep</h2><span class="btn">Archivo de QuickBooks</span></div>
+    <div style="color:var(--grey);font-size:12px;margin:2px 0 10px">9 depósitos, $15,815.00 · <span id="heldN">1 retenido</span></div>
+    <div class="held"><div class="h" id="heldH">⚠ 1 elemento necesita a una persona</div>
+      <div class="it" id="it"><p id="itP"><b>Pago de Summit Health Plan, cheque 5520194</b> ($1,848.10, pagado el 29 sep) · No hay un depósito bancario que coincida en 3 días. Siguiente paso: subir la descarga del banco de ese día, o volver a revisar cuando se acredite.</p><div class="acts"><span class="btn dark" id="checkBtn">Revisar de nuevo</span><span class="btn">Subir archivo del banco</span><span class="btn">Es de otro día</span><span class="btn">Preguntar al agente</span></div></div>
+    </div>
+  </div></div>
+</section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script><script>NX.setWs(NX.WS.lake); NX.tag='En vivo en NextOS'; document.addEventListener('DOMContentLoaded', function(){ NX.pillsToTop(); });</script>
+<script>
+NX.init(); document.querySelector('.main').insertAdjacentHTML('beforeend', NX.cursorHTML);
+var $=NX.$;
+function side(n){ $('side').innerHTML = NX.appSide('','Requiere atención',n); }
+function reset(){
+  side(3); $('s1').classList.add('on'); $('s2').classList.remove('on'); $('batch').classList.remove('gone');
+  $('it').classList.remove('ok'); $('itP').innerHTML='<b>Pago de Summit Health Plan, cheque 5520194</b> ($1,848.10, pagado el 29 sep) · No hay un depósito bancario que coincida en 3 días. Siguiente paso: subir la descarga del banco de ese día, o volver a revisar cuando se acredite.';
+  $('heldH').textContent='⚠ 1 asunto necesita a una persona'; $('heldN').textContent='1 held';
+}
+function final(){ side(2); $('batch').classList.add('gone'); $('cap').classList.add('on'); $('capN').textContent='01'; $('capT').textContent='Una sola lista para todo lo que necesita a una persona'; $('cursor').style.display='none'; }
+NX.loop(function(isFinal){
+  reset(); if(isFinal){ final(); return; }
+  NX.move(900,560); NX.cap('01','Una sola lista para todo lo que necesita a una persona');
+  NX.at(2.2,function(){ NX.moveTo($('batch'),180,0); });
+  NX.at(3.4,function(){ NX.click($('batch')); NX.cap('02','Cada elemento abre exactamente donde se resuelve'); });
+  NX.at(3.8,function(){ $('s1').classList.remove('on'); $('s2').classList.add('on'); });
+  NX.at(5.4,function(){ NX.moveTo($('checkBtn')); });
+  NX.at(6.6,function(){ NX.click($('checkBtn')); $('itP').innerHTML='Revisando la descarga más reciente del banco…'; });
+  NX.at(8.0,function(){ $('it').classList.add('ok'); $('itP').innerHTML='<b>✓ Conciliado.</b> El depósito llegó el 1 oct · First Harbor Bank · $1,848.10, conciliado al centavo.'; $('heldH').textContent='✓ Nada necesita a una persona'; $('heldN').textContent='0 held'; NX.cap('03','Lo resuelto sale de la lista, y la corrección queda registrada'); });
+  NX.at(10.4,function(){ $('s2').classList.remove('on'); $('s1').classList.add('on'); side(3); });
+  NX.at(11.2,function(){ $('batch').classList.add('gone'); side(2); });
+  NX.at(12,function(){ NX.move(900,560); });
+}, 16);
+</script></body></html>

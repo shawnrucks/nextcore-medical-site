@@ -1,0 +1,41 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agenda y lista de espera · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Scheduling and waitlist
+NX.calDemo({
+  ws:'lake', agent:'Agente de citas', topSub:'Tablero de quirófanos y lista de espera', tag:'Se configura con usted', badge:2,
+  title:'Tablero de quirófanos · jueves 20 nov',
+  cols:['Quirófano 1','Quirófano 2','Quirófano 3','Sala de procedimientos'],
+  rows:[
+    ['7:30','bk|Artroscopia de rodilla|Dr. Rivera','bk|Artroscopia de cadera|Dr. Osei','bk|Reparación del LCA|Dr. Lin','bk|Bloqueo con inyección|Dr. Park'],
+    ['9:00','bk|Túnel carpiano|Dr. Rivera','bk|Artroscopia de hombro|Dr. Osei','bk|Reparación de menisco|Dr. Lin','op'],
+    ['10:30','bk|Artroscopia de rodilla|Dr. Rivera','bk|Manguito rotador|Dr. Osei','op','bk|Bloqueo con inyección|Dr. Park'],
+    ['12:00','op','bk|Artroscopia de hombro|Dr. Osei','bk|Artroscopia de rodilla|Dr. Lin','bk|Bloqueo nervioso|Dr. Park'],
+    ['1:30','bk|Dedo en gatillo|Dr. Rivera','op','bk|Reparación del LCA|Dr. Lin','op'],
+    ['3:00','bk|Artroscopia de tobillo|Dr. Rivera','bk|Artroscopia de cadera|Dr. Osei','op','op']
+  ],
+  feed:[
+    ['7:02 AM','Cancelación: 10:30 artroscopia de rodilla con el Dr. Rivera (el paciente está enfermo).','w'],
+    ['7:02 AM','Lista de espera: 4 pacientes quieren al Dr. Rivera esta semana. Revisando a cada uno.'],
+    ['7:03 AM','Mejor opción: Kevin J. · artroscopia de rodilla · autorización aprobada · vive a 12 min · preoperatorio aprobado.'],
+    ['7:04 AM','El agente telefónico llamó a Kevin J. Puede venir a las 10:30. Se le leyeron las instrucciones preoperatorias.'],
+    ['7:06 AM','Tablero actualizado como reserva. Esperando la aprobación de la enfermera jefe.','g']
+  ],
+  events:[
+    {slot:['sl2_0','cx','Artroscopia de rodilla','Cancelado · 10:30'], feed:0, d:1.8},
+    {slot:['sl2_0','hl cx','Artroscopia de rodilla','Buscando una opción…'], feed:1, cap:['02',1], d:2.0},
+    {feed:2, d:2.0},
+    {feed:3, cap:['03',2], d:2.2},
+    {slot:['sl2_0','nw hl','Artroscopia de rodilla · Kevin J.','Dr. Rivera · reservado'], feed:4, d:1.8}
+  ],
+  onApprove:[['sl2_0','nw','Artroscopia de rodilla · Kevin J.','Dr. Rivera · confirmado']],
+  approve:{ title:'¿Confirmar a Kevin J. en el quirófano 1 a las 10:30?', lines:['La autorización A-561002 es válida para esta fecha','Preoperatorio aprobado · llegada 9:00','El paciente original pasó a la lista de espera'], btn:'Aprobar' },
+  caps:['Un caso se cancela a las 7 AM','El agente coteja la lista de espera con la autorización y el preoperatorio','El agente telefónico llama a la mejor opción','La enfermera jefe aprueba; el espacio queda cubierto'],
+  len:24
+});
+
+</script></body></html>

@@ -1,0 +1,40 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Denegaciones y apelaciones · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Denials and appeals
+NX.agentDemo({
+  ws:'harbor', agent:'Agente de denegaciones', topSub:'Lista de apelaciones', tag:'Se configura con usted', badge:4,
+  q:'Trabaja las denegaciones por necesidad médica de esta semana, de mayor a menor monto.',
+  portal:{ name:'Sistema de facturación de Harbor', url:'billing.harborregional.example/denials', nav:['Denegaciones','Reclamación','Notas','Apelación'], views:{
+    list:{ type:'table', nav:'Denegaciones', url:'billing.harborregional.example/denials?code=CO-50', title:'Denegaciones · necesidad médica (CO-50)', sub:'this week',
+      cols:['CLAIM','PATIENT','SERVICE','AMOUNT','DÍAS RESTANTES'], w:'.9fr 1fr 1.3fr .8fr .8fr',
+      rows:[['H-20931','Patricia N.','Resonancia de hombro','$2,840','[wt]41'],['H-20877','George A.','Prueba de esfuerzo cardíaca','$1,960','[wt]38'],['H-20812','Irene C.','Estudio del sueño','$1,420','[ok]55']], hl:[0] },
+    claim:{ type:'doc', nav:'Reclamación', url:'billing.harborregional.example/claims/H-20931', title:'Reclamación H-20931 · detalle de la denegación', sub:'Bluewater PPO',
+      html:'<b>Servicio:</b> Resonancia de hombro derecho sin contraste (73221), 10/14.<br><b>Denegación:</b> CO-50, <mark>“no médicamente necesario: no hay un ensayo documentado de tratamiento conservador.”</mark><br><b>Plazo de apelación:</b> 29 dic · primer nivel, por escrito.' },
+    notes:{ type:'doc', site:'Harbor EMR', nav:'Notas', url:'emr.harborregional.example/patient/77120/notes', title:'Notas clínicas encontradas', sub:'3 notes',
+      html:'09/02 · <mark>Inició fisioterapia, 8 sesiones.</mark><br>09/30 · <mark>Dolor sin cambios tras la fisioterapia; no puede levantar el brazo por encima de la cabeza.</mark><br>10/10 · El médico que ordena anota debilidad nueva y ordena una resonancia.' },
+    appeal:{ type:'doc', nav:'Apelación', url:'billing.harborregional.example/appeals/new', title:'Carta de apelación · borrador para firma', sub:'not sent',
+      html:'Ref.: Reclamación H-20931, Patricia N.<br>Le pedimos reconsiderar. El expediente muestra <mark>8 sesiones de fisioterapia desde el 9/02</mark> sin mejoría y <mark>debilidad nueva el 9/30 y el 10/10</mark>, que cumplen los criterios de imagen de su plan. Se adjuntan las notas.<br>— para firma del médico que ordena' }
+  }},
+  steps:[
+    {k:'Ordenando la lista de trabajo', d:'3 denegaciones, $6,220 en juego', v:'list', flash:0},
+    {k:'Leyendo la denegación', d:'motivo: no se documentó tratamiento conservador', v:'claim'},
+    {k:'Buscando en el expediente', d:'La fisioterapia y los síntomas nuevos están documentados', v:'notes'},
+    {k:'Redactando la apelación', d:'cita las notas, lista para firmar', v:'appeal'}
+  ],
+  answer:[
+    '<p>La denegación dice que no se documentó tratamiento conservador, pero el expediente tiene 8 sesiones de terapia y síntomas nerviosos nuevos antes de la resonancia. Redacté una apelación de primer nivel que cita ambos, con las notas adjuntas.</p>',
+    '<p class="muted">Las otras dos denegaciones se redactan igual y están en la lista de trabajo para revisión.</p>'
+  ],
+  approve:{ title:'¿Enviar la apelación para la firma del médico?', lines:['Reclamación H-20931 · $2,840 · plazo 29 dic','La carta y 3 notas van al Dr. Ellis para revisar y firmar','Nada va a la aseguradora hasta que esté firmado'], btn:'Enviar a firma' },
+  result:[['ok','Enviada al Dr. Ellis para firma'],['bl','Plazo vigilado · 29 dic'],['gy','2 borradores más en la lista de trabajo']],
+  after:['<p class="muted">Cuando el Dr. Ellis firme, la presentaré en el portal de la aseguradora, confirmaré el número de apelación y revisaré el estado cada semana.</p>'],
+  caps:['Empezar por las denegaciones de mayor valor','El agente lee la denegación y busca en el expediente','Redacta una apelación que cita el expediente','Un médico firma antes de enviar cualquier cosa'],
+  len:36
+});
+
+</script></body></html>

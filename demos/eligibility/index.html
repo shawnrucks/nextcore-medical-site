@@ -1,0 +1,43 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eligibility checks · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Eligibility checks
+NX.agentDemo({
+  ws:'cedar', agent:'Front Desk Agent', topSub:'Eligibility for tomorrow', tag:'Set up with you', badge:3,
+  q:'Check insurance for everyone on tomorrow’s schedule, all four offices.',
+  portal:{ name:'Cedar PM system', url:'pm.cedarortho.example/schedule', nav:['Schedule','Bluewater PPO','Summit Health','Results'], views:{
+    sched:{ type:'table', nav:'Schedule', url:'pm.cedarortho.example/schedule?date=tomorrow', title:'Tomorrow · 38 patients', sub:'4 offices',
+      cols:['TIME','PATIENT','OFFICE','PLAN'], w:'54px 1.2fr 1fr 1fr',
+      rows:[['8:00','Ana R.','Main St','Bluewater PPO'],['8:15','Ben T.','Main St','Summit Health'],['8:30','Carla M.','Westside','Bluewater PPO'],['8:45','David K.','Westside','Harborline HMO'],['9:00','Elena P.','Lakeshore','Summit Health'],['9:15','Frank O.','North','Bluewater PPO'],['…','32 more','','']] },
+    blue:{ type:'table', site:'Bluewater PPO', nav:'Bluewater PPO', url:'providers.bluewaterppo.example/eligibility', title:'Eligibility results', sub:'Bluewater PPO portal',
+      cols:['MEMBER','STATUS','DEDUCTIBLE LEFT','COPAY'], w:'1.1fr 1fr 1fr .8fr',
+      rows:[['Ana R.','[ok]Active','$0','$40'],['Carla M.','[ok]Active','$1,250','$40'],['Frank O.','[no]Plan ended 10/31','—','—'],['Grace W.','[ok]Active','$300','$40']], hl:[2] },
+    summit:{ type:'table', site:'Summit Health Plan', nav:'Summit Health', url:'provider.summithealthplan.example/eligibility', title:'Eligibility results', sub:'Summit Health Plan portal',
+      cols:['MEMBER','STATUS','DEDUCTIBLE LEFT','REFERRAL'], w:'1.1fr 1fr 1fr 1fr',
+      rows:[['Ben T.','[ok]Active','$0','—'],['Elena P.','[ok]Active','[wt]$2,500 · new plan year','—'],['Henry S.','[ok]Active','$150','[wt]Needed from PCP']], hl:[1,2] },
+    res:{ type:'table', site:'Cedar PM system', nav:'Results', url:'pm.cedarortho.example/eligibility/summary', title:'Summary for the front desk', sub:'38 checked',
+      cols:['RESULT','COUNT'], w:'2fr 1fr',
+      rows:[['[ok]Clear to see','35'],['[no]Inactive plan','1'],['[wt]New deductible','1'],['[wt]Referral needed','1']], okr:[0] }
+  }},
+  steps:[
+    {k:'Reading tomorrow’s schedule', d:'38 patients, 4 offices, 5 payers', v:'sched'},
+    {k:'Checking Bluewater PPO', d:'14 members', v:'blue', flash:2},
+    {k:'Checking Summit Health Plan', d:'11 members', v:'summit', flash:1},
+    {k:'Writing results to each visit', d:'notes on the schedule, nothing changed in billing', v:'res'}
+  ],
+  answer:[
+    '<p>All 38 patients are checked. 35 are clear. Three need the front desk before they arrive:</p>',
+    '<div class="tbl"><div style="grid-template-columns:1fr 1.6fr 1.4fr"><span>PATIENT</span><span>ISSUE</span><span>SUGGESTED STEP</span></div><div style="grid-template-columns:1fr 1.6fr 1.4fr"><span>Frank O. · 9:15</span><span class="chip no">Plan ended Oct 31</span><span>Call for new card</span></div><div style="grid-template-columns:1fr 1.6fr 1.4fr"><span>Elena P. · 9:00</span><span class="chip wt">$2,500 deductible, new year</span><span>Estimate at check-in</span></div><div style="grid-template-columns:1fr 1.6fr 1.4fr"><span>Henry S. · 10:30</span><span class="chip wt">Referral needed</span><span>Request from PCP</span></div></div>'
+  ],
+  approve:{ title:'Ask the Phone Agent to call these three today?', lines:['Frank O.: ask for the new insurance card','Henry S.: ask his primary care office for the referral','Elena P.: share an estimate at check-in, no call'], btn:'Approve calls' },
+  result:[['ok','35 clear · 3 flagged'],['bl','Notes added to each visit'],['gy','2 calls queued for the Phone Agent']],
+  after:['<p class="muted">Done before 7 AM. The front desk sees each flag on the visit itself, and the Phone Agent will report back here after the calls.</p>'],
+  caps:['One request covers the whole day','The agent checks each payer portal in its own browser','Only the exceptions come back to a person','Riley approves the follow-up calls'],
+  len:36
+});
+
+</script></body></html>
