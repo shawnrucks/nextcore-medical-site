@@ -1,0 +1,40 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cumplimiento de proveedores · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Vendor compliance
+NX.agentDemo({
+  ws:'harborComp', agent:'Agente de cumplimiento de proveedores', topSub:'Expedientes de proveedores', tag:'Se configura con usted', badge:2,
+  q:'¿Qué proveedores tienen documentos faltantes o por vencer?',
+  portal:{ name:'Expedientes de proveedores de Harbor', url:'vendors.harborregional.example/files', nav:['Proveedores','Contrato','Solicitud','Resumen'], views:{
+    list:{ type:'table', nav:'Proveedores', url:'vendors.harborregional.example/files', title:'Expedientes de proveedores', sub:'86 vendors',
+      cols:['VENDOR','SERVICE','W-9','INSURANCE','AGREEMENT','CONTRACT'], w:'1.2fr 1fr .6fr .9fr .9fr .9fr',
+      rows:[['Apex Billing Services','Facturación','[ok]Sí','[wt]15 dic','[ok]Sí','[ok]2027'],['DataVault IT','Hospedaje','[ok]Sí','[ok]2027','[wt]Ninguno','[ok]2026'],['CleanCare','Limpieza','[wt]Falta','[ok]2027','N/A','[ok]2027'],['Imaging Equipment Co','Arrendamiento','[ok]Sí','[ok]2027','N/A','[wt]1 dic']], hl:[0,1,2,3] },
+    con:{ type:'doc', site:'Carpeta de contratos', nav:'Contrato', url:'vendors.harborregional.example/files/datavault/contract', title:'DataVault IT · contrato marco', sub:'firmado en 2024',
+      html:'<p><b>Servicios:</b> hospedaje del archivo de facturación de pacientes</p><p><b>Maneja información de pacientes:</b> sí</p><p><b>Acuerdo de socio comercial:</b> <span class="tag wt">No está en archivo</span></p>' },
+    req:{ type:'form', nav:'Solicitud', url:'vendors.harborregional.example/requests/new', title:'Solicitud a DataVault IT · borrador', sub:'not sent',
+      fields:[['Para','Gerente de cuenta registrado'],['De','Buzón de cumplimiento'],['Falta','Acuerdo de socio comercial firmado'],['Responder antes de','1 dic']], btns:['Guardar borrador','Enviar'] },
+    sum:{ type:'table', nav:'Resumen', url:'vendors.harborregional.example/gaps', title:'Requiere acción', sub:'5 de 86',
+      cols:['VENDOR','ITEM','STATUS'], w:'1.2fr 1.2fr 1.2fr',
+      rows:[['Apex Billing Services','Certificado de seguro, 15 dic','[wt]Solicitud redactada'],['DataVault IT','Acuerdo de socio comercial','[no]Señalado a cumplimiento'],['SecureShred','Certificado de seguro vencido','[wt]Solicitud redactada'],['CleanCare','W-9','[wt]Solicitud redactada'],['Imaging Equipment Co','El arrendamiento termina el 1 dic','[wt]Recordatorio redactado']] }
+  }},
+  steps:[
+    {k:'Revisando cada expediente de proveedor', d:'86 proveedores, 5 con faltantes', v:'list'},
+    {k:'Leyendo el contrato', d:'DataVault maneja información de pacientes', v:'con'},
+    {k:'Redactando las solicitudes', d:'una por proveedor', v:'req', fill:true},
+    {k:'Listando lo que requiere acción', d:'con fechas límite', v:'sum'}
+  ],
+  answer:[
+    '<p>Cinco de 86 proveedores necesitan algo. Dos certificados de seguro están por vencer o vencidos, falta un W-9 y el arrendamiento del equipo de imagenología termina el 1 dic. DataVault IT aloja registros de facturación de pacientes y no tiene acuerdo de socio comercial en archivo, así que se lo señalé a usted.</p>'
+  ],
+  approve:{ title:'¿Enviar 4 solicitudes y 1 recordatorio?', lines:['Correos a proveedores desde el buzón de cumplimiento, cada uno con solo lo que falta','Recordatorio del arrendamiento al director de imagenología','DataVault IT queda señalado hasta que usted decida el siguiente paso'], btn:'Aprobar' },
+  result:[['ok','4 solicitudes enviadas'],['ok','1 recordatorio enviado'],['gy','Próxima revisión · lunes']],
+  after:['<p class="muted">Cada revisión registra qué se encontró y cuándo, para la próxima auditoría.</p>'],
+  caps:['Pregunte por todos los proveedores a la vez','El agente lee cada expediente y contrato de proveedor','Redacta una solicitud por cada documento faltante','El oficial de cumplimiento aprueba lo que se envía'],
+  len:34
+});
+
+</script></body></html>

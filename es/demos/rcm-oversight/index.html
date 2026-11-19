@@ -1,0 +1,41 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supervisión de la empresa de facturación · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Billing vendor oversight
+NX.agentDemo({
+  ws:'harborRev', agent:'Agente de supervisión de facturación', topSub:'Facturación tercerizada', tag:'Se configura con usted', badge:2,
+  q:'¿Cómo le va a nuestra empresa de facturación con las reclamaciones de más de 90 días?',
+  portal:{ name:'Informe de facturación de la empresa', url:'billing.vendorportal.example/harbor/aging', nav:['Antigüedad','Verificación con la aseguradora','Evaluación','Nota'], views:{
+    aging:{ type:'table', nav:'Antigüedad', url:'billing.vendorportal.example/harbor/aging?over=90', title:'Reclamaciones de más de 90 días', sub:'212 reclamaciones · $486,300',
+      cols:['CLAIM','PAYER','BALANCE','ÚLTIMA GESTIÓN','ISSUE'], w:'.9fr 1.1fr .9fr .9fr 1.3fr',
+      rows:[['CLM-90113','Bluewater PPO','$6,800','10 sep','[wt]Sin actividad en 60 días'],['CLM-90116','Summit Health Plan','$5,100','20 ago','[wt]Sin nota de la empresa'],['CLM-90115','Harborline HMO','$3,900','1 oct','[wt]Denegada, sin siguiente paso'],['CLM-90118','Bluewater PPO','$8,200','10 oct','[wt]Sin referencia de la aseguradora']], hl:[0,1,2,3] },
+    payer:{ type:'table', site:'Portal de proveedores de Bluewater PPO', nav:'Verificación con la aseguradora', url:'provider.bluewaterppo.example/claims/status', title:'Estado de la reclamación · CLM-90113', sub:'registro propio de la aseguradora',
+      cols:['DATE','STATUS','NOTE'], w:'.8fr 1fr 1.6fr',
+      rows:[['2 sep','Denegada','Autorización no está en archivo'],['10 sep','Plazo de apelación abierto','Cierra el 1 dic']], hl:[1] },
+    score:{ type:'table', nav:'Evaluación', url:'billing.vendorportal.example/harbor/scorecard', title:'Evaluación de la empresa', sub:'this month',
+      cols:['MEASURE','PROMISED','ACTUAL'], w:'1.5fr 1fr 1fr',
+      rows:[['Reclamaciones trabajadas en 14 días','95%','[wt]82%'],['Denegaciones con siguiente paso en 5 días','100%','[wt]88%'],['Referencia de la aseguradora en las notas','100%','[wt]91%']] },
+    note:{ type:'form', nav:'Nota', url:'mail.harborregional.example/compose', title:'Nota a la empresa de facturación · borrador', sub:'not sent',
+      fields:[['Para','Gerente de cuenta, empresa de facturación'],['Cc','Director, Ciclo de Ingresos'],['Adjuntos','38 reclamaciones estancadas, 4 denegaciones abiertas con plazos'],['Pedido','Siguiente paso en cada reclamación para el viernes']], btns:['Guardar borrador','Enviar'] }
+  }},
+  steps:[
+    {k:'Leyendo el informe de antigüedad de la empresa', d:'212 reclamaciones de más de 90 días', v:'aging'},
+    {k:'Revisando el registro de la aseguradora', d:'una denegación sin apelación iniciada', v:'payer', flash:1},
+    {k:'Evaluando a la empresa', d:'frente a lo que promete el contrato', v:'score'},
+    {k:'Redactando el seguimiento', d:'con las reclamaciones exactas', v:'note', fill:true}
+  ],
+  answer:[
+    '<p>La empresa tiene 212 reclamaciones de más de 90 días, por $486,300. 38 no se han trabajado en 30 días, frente a un compromiso de 14 días. Revisé las 12 más grandes en los portales de las aseguradoras: 4 fueron denegadas sin apelación iniciada y 3 no tienen referencia de la aseguradora en las notas.</p>'
+  ],
+  approve:{ title:'¿Enviar el seguimiento a la empresa de facturación?', lines:['38 reclamaciones estancadas, con sus saldos','4 denegaciones sin siguiente paso, con plazos de apelación','Nueva revisión en 7 días'], btn:'Aprobar' },
+  result:[['ok','Seguimiento enviado'],['gy','Nueva revisión · en 7 días']],
+  after:['<p class="muted">Usted ve el trabajo de la empresa como lo ven las aseguradoras.</p>'],
+  caps:['Pregunte cómo va la facturación tercerizada','El agente revisa el trabajo de la empresa en los portales de las aseguradoras','Redacta un seguimiento con las reclamaciones exactas','El director del ciclo de ingresos aprueba lo que se envía'],
+  len:34
+});
+
+</script></body></html>

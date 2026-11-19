@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intake packet check · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Intake packet check
+NX.agentDemo({
+  ws:'harborAccess', agent:'Intake Agent', topSub:'Tomorrow’s packets', tag:'Set up with you', badge:3,
+  q:'Check the intake packets for tomorrow’s 41 visits.',
+  portal:{ name:'Harbor registration', url:'reg.harborregional.example/packets', nav:['Packets','Documents','Outreach','Summary'], views:{
+    list:{ type:'table', nav:'Packets', url:'reg.harborregional.example/packets?date=tomorrow', title:'Intake packets · tomorrow', sub:'41 visits',
+      cols:['PATIENT','VISIT','ID','INSURANCE','CONSENT','ORDER','REFERRAL'], w:'1.1fr 1fr .6fr .8fr .7fr .6fr .8fr',
+      rows:[['Maria L.','Cardiology','[ok]Yes','[ok]Yes','[ok]Signed','[ok]Yes','[ok]Yes'],['David M.','Orthopedics','[ok]Yes','[ok]Yes','[wt]Unsigned','[ok]Yes','[ok]Yes'],['Angela R.','Ophthalmology','[ok]Yes','[wt]Old card','[ok]Signed','[ok]Yes','[ok]Yes'],['Priya S.','Oncology','[ok]Yes','[ok]Yes','[ok]Signed','[ok]Yes','[wt]Missing']], hl:[1,2,3] },
+    docs:{ type:'table', nav:'Documents', url:'reg.harborregional.example/packets/david-m', title:'Packet · David M.', sub:'Orthopedics · 9:30 AM',
+      cols:['DOCUMENT','RECEIVED','STATUS'], w:'1.4fr 1fr 1fr',
+      rows:[['Photo ID','Nov 12','[ok]On file'],['Insurance card','Nov 12','[ok]Current'],['Consent to treat','—','[wt]Not signed'],['Financial policy','Nov 12','[ok]Signed']], hl:[2] },
+    out:{ type:'form', nav:'Outreach', url:'reg.harborregional.example/outreach/new', title:'Patient message · draft', sub:'not sent',
+      fields:[['To','David M. · mobile on file'],['Channel','Text, English'],['Message','Please sign your consent form before tomorrow’s visit. Secure link inside.'],['If no reply','Registration calls at 7 AM']], btns:['Save draft','Send'] },
+    sum:{ type:'table', nav:'Summary', url:'reg.harborregional.example/packets/gaps', title:'Missing items', sub:'8 of 41',
+      cols:['ITEM','PATIENTS','REQUEST'], w:'1.3fr .8fr 1.4fr',
+      rows:[['Signed consent','5','[wt]Text drafted'],['Current insurance card','2','[wt]Text drafted'],['Referral from primary care','1','[wt]Fax drafted']] }
+  }},
+  steps:[
+    {k:'Opening tomorrow’s packets', d:'41 visits, 6 items each', v:'list'},
+    {k:'Checking each document', d:'David M. has an unsigned consent', v:'docs', flash:2},
+    {k:'Drafting the requests', d:'in the language each patient prefers', v:'out', fill:true},
+    {k:'Listing the gaps', d:'8 packets need something', v:'sum'}
+  ],
+  answer:[
+    '<p>33 of 41 packets are complete. Eight are missing something: five unsigned consents, two out-of-date insurance cards and one referral from a primary care office. I drafted a text to each patient and a fax for the referral.</p>'
+  ],
+  approve:{ title:'Send 8 requests?', lines:['7 patient texts, in English or Spanish, with a secure upload link','1 fax to the referring office','Recheck at 6 PM; what is still missing goes to registration at 7 AM'], btn:'Approve' },
+  result:[['ok','8 requests sent'],['gy','Recheck · 6 PM']],
+  after:['<p class="muted">Registration starts tomorrow with a short list instead of 41 folders.</p>'],
+  caps:['Ask for a whole day of packets at once','The agent checks every document in each packet','It drafts the request for each missing item','A person approves what goes to patients'],
+  len:34
+});
+
+</script></body></html>

@@ -4,7 +4,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="description" content="Hospitals spend billions collecting from insurers and months onboarding clinicians. NextOS puts agents on denials, payer calls, credentialing and patient a">
+<meta name="description" content="A hospital runs on hundreds of queues: packets, estimates, authorizations, pre-op papers, deposits, vendor files and claims. NextOS puts an agent on each o">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -1003,6 +1003,155 @@ footer .wm{font-size:18px;color:var(--ink)}
 .foot2 .wm{white-space:nowrap}.foot2 .wm span{display:inline;padding:0}
 .dark + section{padding-top:clamp(96px,13vw,180px)!important}
 .fz-k .htag{margin-left:6px}
+.pl3{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:0;max-width:980px}
+.pl3 li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:18px;align-items:baseline;padding:22px 0;border-top:1px solid var(--line)}
+.pl3 li:last-child{border-bottom:1px solid var(--line)}
+.pl3 span{font-family:var(--mono);font-size:12px;color:var(--grey);letter-spacing:.06em}
+.pl3 p{margin:0;font-size:clamp(20px,2vw,28px);letter-spacing:-.03em;line-height:1.25}
+.pl3 a{border-bottom:1px solid var(--line);white-space:nowrap}.pl3 a:hover{border-color:var(--ink)}
+.jr{margin-top:40px;border:1px solid var(--line);border-radius:28px;background:var(--card);padding:clamp(20px,2.6vw,36px);min-width:0}
+.jr-track{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));padding-top:4px}
+.jr-rail{position:absolute;left:calc(100%/16);right:calc(100%/16);top:15px;height:2px;background:var(--line);border-radius:2px}
+.jr-fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--ink);border-radius:2px;transition:width .9s var(--ease)}
+.jr-s{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;font:inherit;background:none;border:0;padding:0 4px 4px;cursor:pointer;color:var(--grey);min-width:0}
+.jr-s i{width:24px;height:24px;border-radius:50%;background:var(--card);border:2px solid var(--line);position:relative;z-index:1;transition:all .5s var(--ease)}
+.jr-s.done i{border-color:var(--ink);background:var(--ink)}
+.jr-s.on i{border-color:var(--ink);background:var(--card);box-shadow:0 0 0 6px rgba(20,22,21,.08)}
+.jr-s.on i::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--ink);animation:jrp 1.6s ease-in-out infinite}
+.jr-s.or i{border-style:dashed}
+.jr-s b{font-size:11px;letter-spacing:.05em;font-weight:500}
+.jr-s span{font-size:14px;font-weight:500;letter-spacing:-.01em;text-align:center;line-height:1.2}
+.jr-s.on,.jr-s.done{color:var(--ink)}
+.jr-s:hover span{text-decoration:underline;text-underline-offset:4px}
+.jr-s:focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:8px}
+@keyframes jrp{0%,100%{transform:scale(.7);opacity:.6}50%{transform:scale(1);opacity:1}}
+.jr-stage{position:relative;margin-top:28px}
+.jr-p{display:none;grid-template-columns:minmax(0,.8fr) minmax(0,1.5fr);gap:clamp(20px,3vw,44px);align-items:center}
+.jr-p.on{display:grid;animation:jri .7s var(--ease) both}
+@keyframes jri{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.jr-t .mono{color:var(--grey);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
+.jr-t h3{font-size:clamp(28px,3vw,44px);letter-spacing:-.05em;line-height:1;margin:10px 0 14px}
+.jr-t p{margin:0;color:#3F4441;font-size:16.5px;line-height:1.5}
+.jr-o{margin-top:18px;padding:14px 16px;border-radius:16px;background:#F1F2EF;font-weight:500;display:grid;gap:4px}
+.jr-o .mono{font-size:10.5px;font-weight:400}
+.jr-more{display:inline-flex;gap:8px;margin-top:18px;font-weight:500;border-bottom:1px solid var(--line);padding-bottom:3px}
+.jr-more:hover{border-color:var(--ink)}
+.jr-dw{position:relative;aspect-ratio:940/680;border-radius:20px;overflow:hidden;background:#E9EAE7;border:1px solid var(--line)}
+.jr-dw iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.jr-ready{display:grid;place-items:center;background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.jr-ready>div{width:min(80%,420px)}
+.jr-ready .mono{color:var(--fog);font-size:11.5px;letter-spacing:.06em}
+.jr-ready h4{font-size:clamp(26px,2.6vw,40px);letter-spacing:-.05em;margin:8px 0 18px;line-height:1}
+.jr-ready ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.jr-ready li{display:flex;gap:12px;align-items:center;font-size:16px;opacity:0;transform:translateX(-8px)}
+.jr-p.on .jr-ready li{animation:jrl .5s var(--ease) forwards;animation-delay:calc(.25s + var(--d))}
+.jr-ready li span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#B9E3C9;color:#123;font-size:13px;font-weight:700}
+@keyframes jrl{to{opacity:1;transform:none}}
+.jr-bk{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.jr-bk .mono{color:var(--grey);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.jr-bk div{display:flex;gap:8px;flex-wrap:wrap}
+.jr-bk a{font-size:14px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;transition:border-color .3s}
+.jr-bk a:hover{border-color:var(--ink)}
+@media (max-width:900px){.jr-p{grid-template-columns:minmax(0,1fr)}.jr-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:6px;padding-bottom:8px}.jr-s{flex:0 0 96px;scroll-snap-align:start}.jr-rail{display:none}}
+@media (prefers-reduced-motion:reduce){.jr-p.on,.jr-s.on i::after,.jr-p.on .jr-ready li{animation:none;opacity:1;transform:none}}
+</style><style>
+/* illustrations: inline SVG and CSS; still when reduced motion is on */
+.pl{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:clamp(10px,1.4vw,18px);margin-top:clamp(36px,4vw,56px);position:relative}
+.pl::before{content:"";position:absolute;left:46px;right:calc(100% / var(--n) - 30px);top:45px;height:2px;background:var(--line)}
+.pl::after{content:"";position:absolute;left:41px;top:41px;width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 6px rgba(31,122,77,.14);animation:plrun var(--run) linear infinite}
+@keyframes plrun{from{left:41px}90%,to{left:calc(100% - 100% / var(--n) + 41px)}}
+.pl-s{position:relative;z-index:1;display:flex;flex-direction:column;gap:6px;min-width:0}
+.pl-s b{font-size:17px;letter-spacing:-.02em;margin-top:8px}.pl-s span{color:var(--grey);font-size:14px;line-height:1.4}
+.pl-i{width:92px;height:92px;border-radius:24px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);animation:plon var(--run) linear infinite;animation-delay:var(--d)}
+.pl-i svg{width:56px;height:56px;overflow:visible}
+@keyframes plon{0%{border-color:var(--ink);transform:translateY(-5px);box-shadow:0 18px 30px -18px rgba(14,18,15,.45)}12%{border-color:var(--ink);transform:translateY(-5px);box-shadow:0 18px 30px -18px rgba(14,18,15,.45)}20%,100%{border-color:var(--line);transform:none;box-shadow:none}}
+.pl-i .dr{stroke-dasharray:3 3;animation:march 1.4s linear infinite}
+@keyframes march{to{stroke-dashoffset:-12}}
+.pl-i .sw{stroke-dasharray:36;stroke-dashoffset:36;animation:sweep 2.4s var(--ease) infinite}
+@keyframes sweep{0%{stroke-dashoffset:36}50%,100%{stroke-dashoffset:0}}
+.pl-i .pu{animation:pu 1.6s ease-in-out infinite}
+@keyframes pu{50%{opacity:.25}}
+.pl-i .ck,.pl-i .ck2{animation:ck 3s ease-in-out infinite}
+@keyframes ck{0%,30%{opacity:0}45%,90%{opacity:1}100%{opacity:0}}
+.pl-i .wv{animation:pu 1.2s ease-in-out infinite}
+.pl-i .sw2{animation:scan 2.2s ease-in-out infinite alternate}
+@keyframes scan{from{transform:translateX(-8px)}to{transform:translateX(8px)}}
+.pl-i .nd{animation:nd 1.6s ease-in-out infinite}
+@keyframes nd{50%{transform:translateX(2px)}}
+@media (max-width:820px){.pl{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:28px}.pl::before,.pl::after{display:none}.pl-i{width:72px;height:72px;border-radius:20px}.pl-i svg{width:44px;height:44px}}
+@media (max-width:520px){.pl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* research track */
+.rtrk{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,44px);margin-top:clamp(36px,4vw,52px);padding-top:22px}
+.rtrk::before{content:"";position:absolute;left:0;right:0;top:6px;height:2px;background:var(--line)}
+.rtrk .rt-f{position:absolute;left:0;top:6px;height:2px;width:12%;background:var(--ok);animation:rtf 4s var(--ease) infinite alternate}
+@keyframes rtf{from{width:4%}to{width:18%}}
+.rt-n{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.rt-n em{position:absolute;left:0;top:-22px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:2px solid var(--line)}
+.rt-n.on{color:var(--ok)}.rt-n.on em{border-color:var(--ok);background:var(--ok);box-shadow:0 0 0 0 rgba(31,122,77,.35);animation:ring 2s ease-out infinite}
+@keyframes ring{to{box-shadow:0 0 0 12px rgba(31,122,77,0)}}
+.tri.ri{margin-top:clamp(24px,3vw,36px)}
+.tri .ri-a{border-top:0;padding-top:0;margin:4px 0 16px}.ri-a svg{width:100%;max-width:260px;height:auto;display:block;overflow:visible}
+.ri-sh{animation:march2 1.6s linear infinite}
+@keyframes march2{to{stroke-dashoffset:-24}}
+.ri-r{fill:none;stroke:#DADDD8;stroke-width:1.6}.ri-r.k{fill:#1F7A4D;stroke:#1F7A4D}
+.ri-r:not(.k){animation:rir 6s ease-in-out infinite;animation-delay:calc(var(--k)*1.2s)}
+@keyframes rir{0%,70%,100%{stroke:#DADDD8}20%,40%{stroke:#8A6412;stroke-dasharray:4 3}}
+.ri-g{stroke-dasharray:116;stroke-dashoffset:116;animation:rig 3.2s var(--ease) infinite}
+@keyframes rig{0%{stroke-dashoffset:116}60%,100%{stroke-dashoffset:0}}
+.ri-p{animation:rip 3.2s var(--ease) infinite}
+@keyframes rip{0%{transform:translateX(0)}60%,100%{transform:translateX(132px)}}
+@media (max-width:820px){.rtrk{grid-template-columns:1fr;gap:14px;padding:0 0 0 26px}.rtrk::before{left:6px;right:auto;top:0;bottom:0;width:2px;height:auto}.rtrk .rt-f{display:none}.rt-n em{left:-26px;top:0}}
+/* teach: text and steps left, the training demo right */
+.teach h2{font-size:clamp(38px,4vw,66px)}
+.teach .mri-win{border-color:var(--line);box-shadow:0 40px 90px -50px rgba(14,18,15,.45);background:#E9EAE7}
+.tl{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.tl li{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:baseline;padding:11px 0 11px 18px;border-bottom:1px solid var(--line);position:relative;animation:tl calc(var(--n)*1.6s) linear infinite;animation-delay:calc(var(--k)*1.6s)}
+.tl li::before{content:"";position:absolute;left:0;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--line);animation:tld calc(var(--n)*1.6s) linear infinite;animation-delay:calc(var(--k)*1.6s)}
+.tl b{font-size:17px;letter-spacing:-.02em}.tl span{color:var(--grey);font-size:15px}
+@keyframes tl{0%,18%{background:var(--card)}22%,100%{background:transparent}}
+@keyframes tld{0%,18%{background:var(--ok)}22%,100%{background:var(--line)}}
+/* AI Lab: the private cell */
+.cell{margin-top:clamp(36px,4vw,56px);display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:clamp(14px,2vw,24px);align-items:stretch}
+.cell-b{position:relative;border-radius:28px;padding:44px clamp(16px,2.4vw,30px) 22px;background:var(--card);background-image:repeating-linear-gradient(90deg,var(--ok) 0 10px,transparent 10px 18px),repeating-linear-gradient(90deg,var(--ok) 0 10px,transparent 10px 18px),repeating-linear-gradient(0deg,var(--ok) 0 10px,transparent 10px 18px),repeating-linear-gradient(0deg,var(--ok) 0 10px,transparent 10px 18px);background-size:100% 2px,100% 2px,2px 100%,2px 100%;background-position:0 0,0 100%,0 0,100% 0;background-repeat:no-repeat;animation:ants 3s linear infinite}
+@keyframes ants{to{background-position:36px 0,-36px 100%,0 -36px,100% 36px}}
+.cell-l{position:absolute;left:clamp(16px,2.4vw,30px);top:16px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ok)}
+.cell-row{display:grid;grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr);align-items:center}
+.cn{border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:4px;background:var(--paper);min-width:0}
+.cn b{font-size:15.5px;letter-spacing:-.02em;line-height:1.15}.cn span{font-size:13px;color:var(--grey);line-height:1.35}
+.cn.own{background:var(--ink);color:var(--paper);border-color:var(--ink)}.cn.own span{color:var(--fog)}
+.ca{position:relative;height:2px;background:var(--line);margin:0 4px;overflow:visible}
+.ca::after{content:"";position:absolute;top:-3px;left:0;width:8px;height:8px;border-radius:50%;background:var(--ok);animation:ca 1.8s linear infinite}
+@keyframes ca{from{left:0;opacity:0}20%{opacity:1}80%{opacity:1}to{left:calc(100% - 8px);opacity:0}}
+.gate{margin-top:18px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;align-items:center;border:1px solid var(--wait);background:var(--wait-bg);border-radius:16px;padding:12px 14px}
+.gate i{grid-row:span 2;width:30px;height:30px;border-radius:9px;background:var(--wait);position:relative;animation:gate 3s ease-in-out infinite}
+.gate i::after{content:"";position:absolute;left:10px;top:7px;width:7px;height:12px;border:solid #fff;border-width:0 2.4px 2.4px 0;transform:rotate(45deg)}
+@keyframes gate{0%,100%{box-shadow:0 0 0 0 rgba(138,100,18,.35)}50%{box-shadow:0 0 0 8px rgba(138,100,18,0)}}
+.gate b{font-size:15px}.gate span{font-size:13.5px;color:#6B5420}
+.cell-o{display:grid;gap:14px;align-content:center}
+.cell-o > div{border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:4px;background:var(--card)}
+.cell-o b{font-size:15.5px}.cell-o span{font-size:13.5px;color:var(--grey)}
+.cell-x{position:relative}
+.cell-x::before{content:"";position:absolute;left:-28px;top:50%;width:22px;height:2px;background:#B4553F}
+.cell-x::after{content:"×";position:absolute;left:-23px;top:50%;transform:translateY(-55%);color:#B4553F;font-weight:700;font-size:18px;background:var(--paper);line-height:1;padding:0 2px}
+.cell-x span{color:#B4553F!important;font-weight:500}
+@media (max-width:1000px){.cell{grid-template-columns:1fr}.cell-x::before,.cell-x::after{display:none}}
+@media (max-width:760px){.cell-row{grid-template-columns:1fr;gap:0}.ca{width:2px;height:24px;margin:2px auto}.ca::after{left:-3px!important;top:0;animation-name:cav}}
+@keyframes cav{from{top:0;opacity:0}20%,80%{opacity:1}to{top:calc(100% - 8px);opacity:0}}
+/* imaging: scanner board */
+.sb{margin-top:clamp(30px,4vw,48px);border:1px solid var(--line);border-radius:22px;background:var(--card);padding:clamp(14px,2vw,24px);display:grid;gap:8px;overflow:hidden}
+.sb-r{display:grid;grid-template-columns:64px repeat(8,minmax(0,1fr));gap:6px;align-items:center}
+.sb-r > span{font-size:11px;color:var(--grey);letter-spacing:.04em}
+.sb-r i{height:30px;border-radius:8px;background:#E4E7E2;display:block}
+.sb-r i.op{background:transparent;border:1.5px dashed var(--line)}
+.sb-r i.fx{animation:fx 7s ease-in-out infinite}
+@keyframes fx{0%,15%{background:#E4E7E2}22%,45%{background:#F4DDD6;box-shadow:inset 0 0 0 1.5px #B4553F}55%,90%{background:var(--ok);box-shadow:none}100%{background:#E4E7E2}}
+.sb-h em{font-style:normal;font-size:10px;color:var(--soft);text-align:center}
+.sb-k{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:8px;font-size:13px;color:var(--grey);align-items:center}
+.sb-k span{display:inline-flex;gap:7px;align-items:center}.sb-k i{width:14px;height:14px;border-radius:4px;background:#E4E7E2;display:inline-block}
+.sb-k i.fx{background:var(--ok)}.sb-k i.op{background:transparent;border:1.5px dashed var(--line)}
+.sb-k .mono{margin-left:auto;font-size:11px;color:var(--soft)}
+@media (max-width:640px){.sb-r{grid-template-columns:44px repeat(8,minmax(0,1fr));gap:3px}.sb-r i{height:22px;border-radius:5px}.sb-h em{font-size:8px}.sb-k .mono{margin-left:0}}
+@media (prefers-reduced-motion:reduce){.pl::after,.pl-i,.pl-i *,.rtrk *,.ri-a *,.tl li,.tl li::before,.cell-b,.ca::after,.gate i,.sb-r i{animation:none!important}.pl-i .sw,.ri-g{stroke-dashoffset:0}.pl-i .ck,.pl-i .ck2{opacity:1}.ri-p{transform:translateX(132px)}.sb-r i.fx{background:var(--ok)}.tl li:last-child{background:var(--card)}.tl li:last-child::before{background:var(--ok)}}
 </style>
 <style id="lang-switch">.langsw{display:inline-flex;align-items:center;gap:2px;font:500 12px/1 var(--mono,'IBM Plex Mono',monospace);letter-spacing:.06em;border:1px solid var(--line,#d9dad4);border-radius:999px;padding:3px;flex:none}
 .langsw a,.langsw span{padding:6px 8px;border-radius:999px;color:var(--grey,#62655f);text-decoration:none}
@@ -1034,13 +1183,13 @@ footer .wm{font-size:18px;color:var(--ink)}
 <section class="stage-hero">
   <div class="wrap">
     <div class="mono crumb" style="text-align:center"><a href="/">Nextcore Medical</a> · Hospitals and health systems</div>
-    <h1 class="st-h1"><span>Hospitals.</span><span class="sv">Less time chasing payment.</span></h1>
-    <p class="st-lede" data-r>Hospitals spend billions collecting from insurers and months onboarding clinicians. NextOS puts agents on denials, payer calls, credentialing and patient access, inside the systems you already run. Your teams approve every step.</p>
+    <h1 class="st-h1"><span>Hospitals.</span><span class="sv">The whole back office, on one page.</span></h1>
+    <p class="st-lede" data-r>A hospital runs on hundreds of queues: packets, estimates, authorizations, pre-op papers, deposits, vendor files and claims. NextOS puts an agent on each one, inside the systems you already run, and gives leadership one report every morning. Your people approve every step.</p>
     <div class="st-ctas" data-r="2"><a class="pill" href="#features">See every demo <span class="arr">↓</span></a><a class="pill ghost" href="#contact">Talk to us</a></div>
   </div>
   <div class="stagex" data-r="2">
     <div class="stage-glow" aria-hidden="true"></div>
-    <div class="stage-frame" style="background:#F6F5F1 url(/demos/denials-appeals/poster.png) center/cover"><iframe src="/demos/denials-appeals/" title="NextOS demo for hospitals and health systems (fictional, sample data)"></iframe></div>
+    <div class="stage-frame" style="background:#F6F5F1 url(/demos/morning-report/poster.png) center/cover"><iframe src="/demos/morning-report/" title="NextOS demo for hospitals and health systems (fictional, sample data)"></iframe></div>
     <p class="stage-cap mono"><span class="htag setup">Set up with you</span><span>Fictional hospital · sample data</span></p>
   </div>
 </section>
@@ -1057,45 +1206,73 @@ footer .wm{font-size:18px;color:var(--ink)}
     </div>
   </div>
 </section>
+<section id="map" style="padding-top:0">
+  <div class="wrap">
+    <div class="kicker mono" data-r><b>The hospital back office</b>One patient, start to finish</div>
+    <h2 data-r="2">Follow one knee replacement.<br><span class="sv">Eight handoffs. One system.</span></h2>
+    <p class="lede" data-r="3">A fictional patient, from referral to paid claim. Click any step to watch the agent do it, and see who still makes the call.</p>
+    <div class="jr" data-r="3"><div class="jr-track" role="tablist" aria-label="Steps in the patient's path"><div class="jr-rail"><div class="jr-fill"></div></div><button class="jr-s on" role="tab" aria-selected="true" data-i="0" style="--x:0.0000"><i></i><b class="mono">Day −21</b><span>Referral</span></button><button class="jr-s" role="tab" aria-selected="false" data-i="1" style="--x:0.1429"><i></i><b class="mono">Day −18</b><span>Estimate</span></button><button class="jr-s" role="tab" aria-selected="false" data-i="2" style="--x:0.2857"><i></i><b class="mono">Day −14</b><span>Authorization</span></button><button class="jr-s" role="tab" aria-selected="false" data-i="3" style="--x:0.4286"><i></i><b class="mono">Day −7</b><span>Clearance</span></button><button class="jr-s" role="tab" aria-selected="false" data-i="4" style="--x:0.5714"><i></i><b class="mono">Day −3</b><span>Booked</span></button><button class="jr-s or" role="tab" aria-selected="false" data-i="5" style="--x:0.7143"><i></i><b class="mono">Day 0</b><span>Surgery</span></button><button class="jr-s" role="tab" aria-selected="false" data-i="6" style="--x:0.8571"><i></i><b class="mono">Day +21</b><span>Payment</span></button><button class="jr-s" role="tab" aria-selected="false" data-i="7" style="--x:1.0000"><i></i><b class="mono">Day +30</b><span>Appeal</span></button></div>
+    <div class="jr-stage"><div class="jr-p on" role="tabpanel" data-i="0"><div class="jr-t"><span class="mono">Day −21 · Step 1 of 8</span><h3>Referral and intake packet</h3><p>The referral lands. The agent checks the ID, insurance card, consent, order and referral the same day, and drafts a request for anything missing.</p><div class="jr-o"><span class="mono">Who decides</span>Registration approves each request to the patient.</div><a class="jr-more" href="/work/intake-packets/">The full story <span class="arr">→</span></a></div><div class="jr-dw"><iframe src="/demos/intake-packet/?focus=1" title="Demo: Referral and intake packet (fictional, sample data)" loading="lazy" tabindex="-1"></iframe></div></div><div class="jr-p" role="tabpanel" data-i="1"><div class="jr-t"><span class="mono">Day −18 · Step 2 of 8</span><h3>Benefits and estimate</h3><p>The agent reads the plan's benefits in the payer portal and builds the patient's estimate from your contracted rates.</p><div class="jr-o"><span class="mono">Who decides</span>A financial counselor approves every estimate.</div><a class="jr-more" href="/work/financial-clearance/">The full story <span class="arr">→</span></a></div><div class="jr-dw"><iframe data-src="/demos/financial-clearance/?focus=1" title="Demo: Benefits and estimate (fictional, sample data)" loading="lazy" tabindex="-1"></iframe></div></div><div class="jr-p" role="tabpanel" data-i="2"><div class="jr-t"><span class="mono">Day −14 · Step 3 of 8</span><h3>Prior authorization</h3><p>The agent fills the payer portal from the chart, attaches the notes and checks the status every day until it's approved.</p><div class="jr-o"><span class="mono">Who decides</span>A named person approves before it's submitted.</div><a class="jr-more" href="/work/prior-auth/">The full story <span class="arr">→</span></a></div><div class="jr-dw"><iframe data-src="/demos/prior-auth/?focus=1" title="Demo: Prior authorization (fictional, sample data)" loading="lazy" tabindex="-1"></iframe></div></div><div class="jr-p" role="tabpanel" data-i="3"><div class="jr-t"><span class="mono">Day −7 · Step 4 of 8</span><h3>Medical clearance</h3><p>A week ahead, the agent gathers the history and physical, labs, EKG and signed consent, and chases what's late.</p><div class="jr-o"><span class="mono">Who decides</span>The anesthesia team and the surgeon decide who is ready.</div><a class="jr-more" href="/work/medical-clearance/">The full story <span class="arr">→</span></a></div><div class="jr-dw"><iframe data-src="/demos/medical-clearance/?focus=1" title="Demo: Medical clearance (fictional, sample data)" loading="lazy" tabindex="-1"></iframe></div></div><div class="jr-p" role="tabpanel" data-i="4"><div class="jr-t"><span class="mono">Day −3 · Step 5 of 8</span><h3>Case booked</h3><p>The agent checks the case request for equipment, implants and authorization before the slot is held.</p><div class="jr-o"><span class="mono">Who decides</span>The scheduler decides what is booked.</div><a class="jr-more" href="/work/surgery-requests/">The full story <span class="arr">→</span></a></div><div class="jr-dw"><iframe data-src="/demos/surgery-request/?focus=1" title="Demo: Case booked (fictional, sample data)" loading="lazy" tabindex="-1"></iframe></div></div><div class="jr-p" role="tabpanel" data-i="5"><div class="jr-t"><span class="mono">Day 0 · Step 6 of 8</span><h3>Surgery day</h3><p>No agent in the operating room. The team walks in with every paper already done.</p><div class="jr-o"><span class="mono">Who decides</span>The surgeon and the care team.</div></div><div class="jr-dw jr-ready"><div><span class="mono">7:00 AM · OR 3</span><h4>Everything is ready.</h4><ul><li style="--d:0.00s"><span>✓</span>Intake packet complete</li><li style="--d:0.12s"><span>✓</span>Estimate signed</li><li style="--d:0.24s"><span>✓</span>Authorization approved</li><li style="--d:0.36s"><span>✓</span>Cleared by anesthesia</li><li style="--d:0.48s"><span>✓</span>Implants and tray confirmed</li></ul></div></div></div><div class="jr-p" role="tabpanel" data-i="6"><div class="jr-t"><span class="mono">Day +21 · Step 7 of 8</span><h3>EOB posted</h3><p>The insurer pays. The agent reads the EOB, matches it to the bank deposit to the cent and flags anything paid below the contract.</p><div class="jr-o"><span class="mono">Who decides</span>A person approves every batch.</div><a class="jr-more" href="/work/payment-posting/">The full story <span class="arr">→</span></a></div><div class="jr-dw"><iframe data-src="/demos/payment-posting/?focus=1" title="Demo: EOB posted (fictional, sample data)" loading="lazy" tabindex="-1"></iframe></div></div><div class="jr-p" role="tabpanel" data-i="7"><div class="jr-t"><span class="mono">Day +30 · Step 8 of 8</span><h3>Denial appealed</h3><p>One line was denied. The agent reads the denial and drafts the appeal with the records attached, before the clock runs out.</p><div class="jr-o"><span class="mono">Who decides</span>A billing specialist signs every letter.</div><a class="jr-more" href="/work/denials-appeals/">The full story <span class="arr">→</span></a></div><div class="jr-dw"><iframe data-src="/demos/denials-appeals/?focus=1" title="Demo: Denial appealed (fictional, sample data)" loading="lazy" tabindex="-1"></iframe></div></div></div>
+    <div class="jr-bk"><span class="mono">Also running behind the scenes</span><div><a href="/work/morning-report/">Morning report</a><a href="/work/scheduling/">Scheduling</a><a href="/work/vendor-compliance/">Vendor compliance</a><a href="/work/cash-reconciliation/">Daily cash</a><a href="/work/rcm-oversight/">Billing vendor oversight</a><a href="/work/credentialing/">Credentialing</a><a href="/work/cfo-reporting/">CFO reporting</a></div></div></div>
+  </div>
+</section>
 <section id="features">
   <div class="wrap">
     <div class="kicker mono" data-r><b>What NextOS does here</b>Watch each one</div>
     <h2 data-r="2">The jobs<br><span class="sv">agents take on.</span></h2>
     <div class="fzs">
     <article class="fz" data-r>
-      <div class="fz-card t1"><div class="fz-win" style="background:#F6F5F1 url(/demos/denials-appeals/poster.png) center/cover"><iframe src="/demos/denials-appeals/?focus=1" title="NextOS demo: Denials and appeals" loading="lazy"></iframe></div></div>
+      <div class="fz-card t1"><div class="fz-win" style="background:#F6F5F1 url(/demos/morning-report/poster-f.png) center/cover"><iframe src="/demos/morning-report/?focus=1" title="NextOS demo: Morning report" loading="lazy"></iframe></div></div>
       <div class="fz-text">
-        <span class="mono fz-k">01 · Denials and appeals · <span class="htag setup">Set up with you</span></span>
-        <h3>Denials and appeals: drafted, not written off.</h3>
-        <p>The agent reads each denial and its reason, pulls the notes, orders and authorization that answer it, and drafts the appeal letter. A billing specialist reviews and signs it before it goes out.</p>
-        <ul><li>Every denial read the day it lands</li><li>The appeal drafted with the records attached</li><li>A person signs every letter</li></ul>
+        <span class="mono fz-k">01 · Morning report · <span class="htag setup">Set up with you</span></span>
+        <h3>The morning report: where you are stuck, before 8 AM.</h3>
+        <p>The agent reads the five queues that hurt hospitals most, prior authorization, medical clearance, scheduling, vendor compliance and EOB processing, then writes one page: what's past due, which patients may be delayed and which EOBs came back underpaid or denied. Leadership approves the follow-ups.</p>
+        <ul><li>One page across the five hardest queues, every morning</li><li>Ranked by patients and revenue at risk</li><li>Each number links back to its queue</li></ul>
       </div>
     </article>
     <article class="fz rev" data-r>
-      <div class="fz-card t2"><div class="fz-win" style="background:#F6F5F1 url(/demos/payer-call/poster.png) center/cover"><iframe src="/demos/payer-call/?focus=1" title="NextOS demo: Phone agents" loading="lazy"></iframe></div></div>
+      <div class="fz-card t2"><div class="fz-win" style="background:#F6F5F1 url(/demos/prior-auth/poster-f.png) center/cover"><iframe src="/demos/prior-auth/?focus=1" title="NextOS demo: Prior authorization" loading="lazy"></iframe></div></div>
       <div class="fz-text">
-        <span class="mono fz-k">02 · Phone agents · <span class="htag live">Live in NextOS</span></span>
-        <h3>Phone agents: on hold, so your staff aren't.</h3>
-        <p>NextOS places and answers calls. It works the payer's phone menu, waits on hold, asks for the status and the reference number, and writes it back. When patients call, it says it's an automated assistant, speaks English and Spanish, and takes the callback.</p>
-        <ul><li>The agent holds; your staff keep working</li><li>Every call answered, and it says it's automated</li><li>A transcript and the captured fields for every call, private numbers masked</li></ul>
-      </div>
-    </article>
-    <article class="fz" data-r>
-      <div class="fz-card t3"><div class="fz-win" style="background:#F6F5F1 url(/demos/credentialing/poster.png) center/cover"><iframe src="/demos/credentialing/?focus=1" title="NextOS demo: Credentialing" loading="lazy"></iframe></div></div>
-      <div class="fz-text">
-        <span class="mono fz-k">03 · Credentialing · <span class="htag setup">Set up with you</span></span>
-        <h3>Credentialing: no expiry goes unnoticed.</h3>
-        <p>The agent keeps every clinician's file current: licenses, board certifications, malpractice and references. It finds what's expiring, updates the credentialing portal, and asks the medical staff office to approve.</p>
-        <ul><li>Every expiry tracked, months ahead</li><li>Portal profiles kept current</li><li>The medical staff office approves each change</li></ul>
-      </div>
-    </article>
-    <article class="fz rev" data-r>
-      <div class="fz-card t4"><div class="fz-win" style="background:#F6F5F1 url(/demos/prior-auth/poster.png) center/cover"><iframe src="/demos/prior-auth/?focus=1" title="NextOS demo: Prior authorization" loading="lazy"></iframe></div></div>
-      <div class="fz-text">
-        <span class="mono fz-k">04 · Prior authorization · <span class="htag setup">Set up with you</span></span>
+        <span class="mono fz-k">02 · Prior authorization · <span class="htag setup">Set up with you</span></span>
         <h3>Prior authorization: filed before anyone has to ask.</h3>
         <p>The agent reads the order and the chart notes, fills the payer's portal with its own login, and waits for your approval before it submits. Then it checks the status every day until there's a decision.</p>
         <ul><li>The packet is built from the chart the day the order lands</li><li>A named person approves before anything is submitted</li><li>Status checked daily, and stalls listed for a person</li></ul>
+      </div>
+    </article>
+    <article class="fz" data-r>
+      <div class="fz-card t3"><div class="fz-win" style="background:#F6F5F1 url(/demos/medical-clearance/poster-f.png) center/cover"><iframe src="/demos/medical-clearance/?focus=1" title="NextOS demo: Pre-op packets" loading="lazy"></iframe></div></div>
+      <div class="fz-text">
+        <span class="mono fz-k">03 · Pre-op packets · <span class="htag setup">Set up with you</span></span>
+        <h3>Pre-op packets: every paper there a week ahead.</h3>
+        <p>The agent checks each surgical case for the history and physical, labs, EKG and signed consent, searches outside records for what's missing, and drafts requests to the offices that have it. It only gathers documents. The anesthesia team and the surgeon decide who is ready for surgery.</p>
+        <ul><li>Every packet checked a week ahead</li><li>Outside records searched first</li><li>Clinicians review a complete packet and decide</li></ul>
+      </div>
+    </article>
+    <article class="fz rev" data-r>
+      <div class="fz-card t4"><div class="fz-win" style="background:#F6F5F1 url(/demos/scheduling/poster-f.png) center/cover"><iframe src="/demos/scheduling/?focus=1" title="NextOS demo: Scheduling and the waitlist" loading="lazy"></iframe></div></div>
+      <div class="fz-text">
+        <span class="mono fz-k">04 · Scheduling and the waitlist · <span class="htag setup">Set up with you</span></span>
+        <h3>Scheduling: every cancelled slot, filled.</h3>
+        <p>When a case or a visit cancels, the agent finds who on your waitlist fits the slot under your rules, calls them, and holds the time. A person confirms the change before it's booked.</p>
+        <ul><li>Openings offered within minutes</li><li>Your rules decide who goes first</li><li>Staff confirm with one click</li></ul>
+      </div>
+    </article>
+    <article class="fz" data-r>
+      <div class="fz-card t5"><div class="fz-win" style="background:#F6F5F1 url(/demos/vendor-compliance/poster-f.png) center/cover"><iframe src="/demos/vendor-compliance/?focus=1" title="NextOS demo: Vendor compliance" loading="lazy"></iframe></div></div>
+      <div class="fz-text">
+        <span class="mono fz-k">05 · Vendor compliance · <span class="htag setup">Set up with you</span></span>
+        <h3>Vendor compliance: no expired paper in the file.</h3>
+        <p>The agent checks every vendor file for a current W-9, insurance certificate, business associate agreement where one is needed, and contract dates. It drafts the requests and flags the gaps that matter. The compliance officer approves what goes out.</p>
+        <ul><li>Every vendor file checked on a schedule</li><li>Requests drafted for each missing document</li><li>The compliance officer approves and decides</li></ul>
+      </div>
+    </article>
+    <article class="fz rev" data-r>
+      <div class="fz-card t6"><div class="fz-win" style="background:#F6F5F1 url(/demos/payment-posting/poster-f.png) center/cover"><iframe src="/demos/payment-posting/?focus=1" title="NextOS demo: Insurance payment posting" loading="lazy"></iframe></div></div>
+      <div class="fz-text">
+        <span class="mono fz-k">06 · Insurance payment posting · <span class="htag supervised">Live in NextOS · supervised</span></span>
+        <h3>Payment posting: matched to the cent.</h3>
+        <p>The agent reads each payer's remittance, finds the patient in your system, matches the payment to the bank deposit to the cent, and prepares the accounting file. Your billing lead approves the batch before anything is written.</p>
+        <ul><li>Every payment matched to the deposit</li><li>Anything that doesn't match is held for a person</li><li>The accounting file prepared for one approval</li></ul>
       </div>
     </article>
     </div>
@@ -1105,34 +1282,35 @@ footer .wm{font-size:18px;color:var(--ink)}
   <div class="wrap mri">
     <div>
       <div class="kicker mono" data-r><b>MRI AI</b>Research program</div>
-      <h2 data-r="2">Measured first.<br><span class="sv">Read by a radiologist.</span></h2>
-      <p class="lede" data-r="3" style="color:var(--fog)">MRI AI outlines the structures on every slice, takes the standard measurements, compares them with the prior study and fills a structured draft. The radiologist edits and signs the description, and the surgeon decides what to do. Nothing reaches a patient without that review.</p>
-      <div class="status" data-r="3"><span>Research stage</span><span>Not FDA-cleared</span><span>Not for diagnosis</span><span>A radiologist makes every read</span></div>
+      <h2 data-r="2">Measured first.<br><span class="sv">Read by a surgeon.</span></h2>
+      <p class="lede" data-r="3" style="color:var(--fog)">MRI AI outlines the structures on every slice, takes the standard measurements, compares them with the prior study and sorts each study for the surgeon. The surgeon checks every number with one tap and makes the call, and every tap teaches the next model. Radiologists still describe the study. Nothing reaches a patient without the surgeon.</p>
+      <div class="status" data-r="3"><span>Research stage</span><span>Not FDA-cleared</span><span>Not for diagnosis</span><span>The surgeon decides</span></div>
       <div class="e-ctas" data-r="4" style="margin-top:30px"><a class="pill light" href="/mri-ai/">How MRI AI works <span class="arr">→</span></a></div>
     </div>
     <div class="mri-win" data-r="2"><iframe src="/demos/mri-read/?focus=1" title="MRI AI demo on published, open-licensed teaching MRIs" loading="lazy"></iframe></div>
   </div>
   <div class="wrap"><p class="mono" style="font-size:11px;color:var(--fog);opacity:.7;margin-top:14px">Scans: published teaching images, not Nextcore patients. Sagittal: Ptrump16, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license noopener" style="color:inherit;text-decoration:underline">CC BY-SA 4.0</a>, cropped. Coronal: Lefevre et al., Radiology Research and Practice 2016, <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" style="color:inherit;text-decoration:underline">CC BY 4.0</a>. Findings in the demo are sample text.</p></div>
 </section>
+
 <section id="example">
   <div class="wrap">
     <div class="kicker mono" data-r><b>Example</b>Proposed pilot · sample data</div>
-    <h2 data-r="2">One service line.<br><span class="sv">Ninety days.</span></h2>
+    <h2 data-r="2">Three departments.<br><span class="sv">Ninety days.</span></h2>
     <article class="example" data-r id="example">
       <div>
-        <span class="lbl mono">Proposed pilot · hospital revenue cycle</span>
-        <h3>Appeal packets drafted before your team sits down.</h3>
-        <p class="before"><b>Before:</b> each denied claim meant pulling records from three systems and writing the appeal by hand, so many small denials were written off.</p>
+        <span class="lbl mono">Proposed pilot · hospital operations</span>
+        <h3>One report from every queue, before 8 AM.</h3>
+        <p class="before"><b>Before:</b> department leads sent status by email, and problems surfaced after a patient was delayed or a deadline passed.</p>
       </div>
       <div>
         <ol>
-        <li><span>Read the denial and its reason code</span><span class="chip">Read</span></li>
-        <li><span>Pull the notes, orders and authorization</span><span class="chip">Gathered</span></li>
-        <li><span>Draft the appeal letter</span><span class="chip">Drafted</span></li>
-        <li><span><span class="h">Billing specialist reviews and signs</span></span><span class="chip">Signed</span></li>
-        <li><span>File it and track the deadline</span><span class="chip wait">Tracking</span></li>
+        <li><span>Read prior auth, clearance, scheduling and vendor queues</span><span class="chip">Read</span></li>
+        <li><span>Check the EOBs that came back underpaid or denied</span><span class="chip">Checked</span></li>
+        <li><span>Rank what puts patients at risk of a delay</span><span class="chip">Ranked</span></li>
+        <li><span><span class="h">The operations leader approves the report</span></span><span class="chip">Approved</span></li>
+        <li><span>Send it at 7:45 AM with follow-ups to each owner</span><span class="chip">Sent</span></li>
         </ol>
-        <p class="meas">Measured by staff hours per appeal and the share of denials overturned, against your own baseline.</p>
+        <p class="meas">Measured by items past due, patients delayed for paperwork and staff hours on manual work, against your own baseline.</p>
       </div>
     </article>
   </div>
@@ -1155,18 +1333,20 @@ footer .wm{font-size:18px;color:var(--ink)}
   <div class="wrap" style="display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,5vw,72px)">
     <div><div class="kicker mono" data-r><b>Questions</b>Straight answers</div></div>
     <div class="faq2" data-r="2">
-      <details><summary>Who signs for a pilot like this?</summary><p>Usually the revenue cycle leader for appeals, the medical staff office for credentialing, and the CMIO for the AI Lab.</p></details>
+      <details><summary>Where do hospitals usually start?</summary><p>With the morning report and two or three queues where staff spend the most time by hand, often intake packets, pre-op packets or daily cash.</p></details>
+      <details><summary>Does the AI clear patients for surgery or book cases?</summary><p>No. It gathers documents and checks requests. The anesthesia team and the surgeon decide who is ready, and the scheduler decides what is booked.</p></details>
+      <details><summary>We outsource billing. Does this still help?</summary><p>Yes. The agent checks your billing vendor's work against the payers' own records, so you see stale claims and missed appeals early.</p></details>
+      <details><summary>Who signs for a pilot like this?</summary><p>Usually the chief operating officer, with the leaders of the departments in the pilot.</p></details>
       <details><summary>Does it work with our EHR?</summary><p>Agents work inside the systems you already use, each with its own login and only the access its job needs. Where there's no interface, the agent uses its own browser.</p></details>
-      <details><summary>Can we build our own AI with you?</summary><p>Yes. That's the AI Lab: your data stays in your own private environment, your clinicians label it, and the model is yours to validate.</p></details>
     </div>
   </div>
 </section>
 <section class="mani" id="contact">
   <div class="wrap">
-    <h2 data-r>Pick one service line.<br><span class="sv">We'll show you the hours.</span></h2>
+    <h2 data-r>Pick three queues.<br><span class="sv">We'll show you what's waiting.</span></h2>
     <form class="madlib" id="madlib" autocomplete="on" data-subject="Nextcore Medical" style="margin-top:clamp(40px,5vw,64px)">
       <p>
-        I need <input class="i-need" id="mNeed" name="need" value="a pilot on denial appeals" aria-label="What you need">.
+        I need <input class="i-need" id="mNeed" name="need" value="a hospital operations pilot" aria-label="What you need">.
         I'm <input class="i-name" id="mName" name="name" placeholder="your name" aria-label="Your name" autocomplete="name">
         at <input class="i-co" id="mCo" name="company" placeholder="organization" aria-label="Organization" autocomplete="organization">,
         <select id="mInd" name="industry" aria-label="Type of organization"><option selected>a hospital</option><option>a surgery center</option><option>a surgical group</option><option>a specialty practice</option><option>an imaging center</option><option>another organization</option></select>.
@@ -1215,5 +1395,11 @@ footer .wm{font-size:18px;color:var(--ink)}
 </script><script>
 (function(){var f=document.querySelector('.libf');if(!f)return;var bs=[].slice.call(f.querySelectorAll('button')),cs=[].slice.call(document.querySelectorAll('.caps .cap-c'));
 bs.forEach(function(b){b.addEventListener('click',function(){bs.forEach(function(x){x.classList.toggle('on',x===b)});var k=b.dataset.k;cs.forEach(function(c){c.classList.toggle('hide',k!=='all'&&(' '+c.dataset.k+' ').indexOf(' '+k+' ')<0)})})});})();
+(function(){var j=document.querySelector('.jr');if(!j)return;var ss=[].slice.call(j.querySelectorAll('.jr-s')),ps=[].slice.call(j.querySelectorAll('.jr-p')),fill=j.querySelector('.jr-fill'),cur=0,auto=true,t;
+function go(i,user){cur=i;if(user){auto=false;clearTimeout(t)}ss.forEach(function(b,k){b.classList.toggle('on',k===i);b.classList.toggle('done',k<i);b.setAttribute('aria-selected',k===i?'true':'false')});
+ps.forEach(function(p,k){var on=k===i;p.classList.toggle('on',on);var f=p.querySelector('iframe[data-src]');if(on&&f){f.src=f.getAttribute('data-src');f.removeAttribute('data-src')}});
+fill.style.width=(i/(ss.length-1)*100)+'%';if(auto){clearTimeout(t);t=setTimeout(function(){if(auto)go((cur+1)%ss.length)},i===5?6000:16000)}}
+ss.forEach(function(b,k){b.addEventListener('click',function(){go(k,true)});b.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(d){e.preventDefault();var n=(k+d+ss.length)%ss.length;go(n,true);ss[n].focus()}})});
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.disconnect();go(0)}})},{threshold:.3});io.observe(j);})();
 </script>
 </body></html>

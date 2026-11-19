@@ -87,5 +87,9 @@ html:has(body.focus){background:transparent}
 /* poster mode: no motion, everything in its end state */
 .nxfinal *,.nxfinal *::before,.nxfinal *::after{transition:none!important;animation:none!important}
 
+/* embedded in a site frame: the frame supplies the rounding and shadow */
+html.nxembed,html.nxembed body{background:var(--bg)}
+html.nxembed .app{border-radius:0;box-shadow:none}
+
 /* Spanish: longer disclaimer chips may wrap */
 .chip.no{white-space:normal;line-height:1.3}

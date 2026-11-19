@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-op packets · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Pre-op packets
+NX.agentDemo({
+  ws:'harborPeri', agent:'Pre-op Packet Agent', topSub:'Next week’s cases', tag:'Set up with you', badge:2,
+  q:'Get the pre-op packets ready for next week’s cases.',
+  portal:{ name:'Harbor EHR', url:'ehr.harborregional.example/periop/packets', nav:['Cases','Outside records','Requests','Summary'], views:{
+    cases:{ type:'table', nav:'Cases', url:'ehr.harborregional.example/periop/packets?week=next', title:'Pre-op packets', sub:'22 cases',
+      cols:['PATIENT','PROCEDURE','DATE','H&P','LABS','EKG','CONSENT'], w:'1fr 1.2fr .7fr .6fr .6fr .6fr .7fr',
+      rows:[['James C.','Hip replacement','Nov 20','[ok]Yes','[wt]No','[ok]Yes','[ok]Yes'],['Emily B.','Laminectomy','Nov 18','[ok]Yes','[ok]Yes','[wt]No','[ok]Yes'],['Thomas N.','Shoulder repair','Nov 14','[wt]No','[ok]Yes','[ok]Yes','[ok]Yes'],['Elena G.','Hernia repair','Nov 17','[ok]Yes','[ok]Yes','[ok]Yes','[wt]No']], hl:[0,1,2,3] },
+    outside:{ type:'table', site:'Health information exchange', nav:'Outside records', url:'hie.regional.example/patient/james-c/results', title:'Outside results · James C.', sub:'last 30 days',
+      cols:['RESULT','DATE','FROM'], w:'1.4fr 1fr 1.4fr',
+      rows:[['Basic metabolic panel','Nov 3','Bayside Family Medicine'],['Complete blood count','Nov 3','Bayside Family Medicine']], okr:[0,1] },
+    req:{ type:'form', nav:'Requests', url:'ehr.harborregional.example/periop/requests/new', title:'Records request · draft', sub:'not sent',
+      fields:[['To','Westside Primary Care · fax on file'],['Patient','Thomas N. · shoulder repair, Nov 14'],['Needed','History and physical, within 30 days'],['Reply to','Pre-op office fax line']], btns:['Save draft','Send'] },
+    sum:{ type:'table', nav:'Summary', url:'ehr.harborregional.example/periop/packets/gaps', title:'Packets with a gap', sub:'7 of 22',
+      cols:['MISSING','CASES','STATUS'], w:'1.3fr .6fr 1.5fr',
+      rows:[['Lab results','2','[ok]1 found in outside records'],['History and physical','3','[wt]Requests drafted'],['EKG','1','[wt]Request drafted'],['Signed consent','1','[wt]Sent for e-signature']] }
+  }},
+  steps:[
+    {k:'Checking next week’s packets', d:'22 cases, 7 with a gap', v:'cases'},
+    {k:'Searching outside records', d:'labs found for James C.', v:'outside', flash:0},
+    {k:'Drafting the requests', d:'to each office that has the document', v:'req', fill:true},
+    {k:'Listing what’s left', d:'for the pre-op nurses', v:'sum'}
+  ],
+  answer:[
+    '<p>15 of 22 packets are complete. For James C., the missing labs were already in the outside records, so I attached them. For the other six, I drafted requests for 3 histories and physicals, 1 EKG and 1 consent.</p>',
+    '<p class="muted">I only gather documents. Whether a patient is ready for surgery is decided by the anesthesia team and the surgeon.</p>'
+  ],
+  approve:{ title:'Send 6 requests?', lines:['Faxes to 4 primary care offices and 1 cardiology office','1 consent sent to the patient for e-signature','Complete packets go to the pre-op nurses for review'], btn:'Approve' },
+  result:[['ok','6 requests sent'],['gy','Recheck · daily until surgery']],
+  after:['<p class="muted">Missing papers are found a week ahead, not the morning of surgery.</p>'],
+  caps:['Ask for next week’s pre-op packets','The agent checks each packet and searches outside records','It drafts a request for each missing document','Clinicians review the packet and decide who is ready'],
+  len:36
+});
+
+</script></body></html>

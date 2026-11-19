@@ -8,13 +8,13 @@
 // title: AI lab with your hospital
 NX.labDemo({
   ws:'lab', agent:'Lab Assistant', topSub:'Knee MRI model · run 7', tag:'Research program', badge:1, acts:['Data use agreement','Review board'],
-  kpis:[['Studies in the private cell','12,480','de-identified · never leave'],['Labeled by your radiologists','3,214','2 readers per study'],['Agreement with reference','0.91','sample number · run 7'],['Where the model lives','Your cloud','your account, your keys']],
+  kpis:[['Studies in the private cell','12,480','de-identified · never leave'],['Labeled by your clinicians','3,214','2 readers per study'],['Agreement with reference','0.91','sample number · run 7'],['Where the model lives','Your cloud','your account, your keys']],
   pipeTitle:'Run 7 · knee MRI, meniscus findings',
-  pipe:[['Pull studies from the imaging archive','12,480'],['Remove names, dates and IDs','checked twice'],['Radiologists label in the queue','3,214 done'],['Train in the hospital’s private cell','run 7'],['Validate against radiologist reads','held-out set'],['Report to the review board','draft']],
-  chartTitle:'Agreement with radiologists, by run (sample)',
+  pipe:[['Pull studies from the imaging archive','12,480'],['Remove names, dates and IDs','checked twice'],['Surgeons and radiologists label in the queue','3,214 done'],['Train in the hospital’s private cell','run 7'],['Validate against your clinicians\' reads','held-out set'],['Report to the review board','draft']],
+  chartTitle:'Agreement with your clinicians, by run (sample)',
   chart:'<svg viewBox="0 0 320 150" aria-label="Agreement by run, sample data"><g stroke="#E7E8E6"><line x1="30" y1="20" x2="310" y2="20"/><line x1="30" y1="60" x2="310" y2="60"/><line x1="30" y1="100" x2="310" y2="100"/><line x1="30" y1="130" x2="310" y2="130"/></g><g font-family="IBM Plex Mono,monospace" font-size="8" fill="#A3A7A5"><text x="2" y="23">0.95</text><text x="2" y="63">0.85</text><text x="2" y="103">0.75</text><text x="40" y="145">run 1</text><text x="280" y="145">run 7</text></g><line x1="30" y1="40" x2="310" y2="40" stroke="#F2C14E" stroke-dasharray="4 3"/><text x="214" y="35" font-family="IBM Plex Mono,monospace" font-size="8" fill="#8A5B0B">pilot threshold</text><path class="ln" d="M44 118 L88 104 L132 90 L176 74 L220 58 L264 44 L300 32"/><circle cx="300" cy="32" r="3.5" fill="#0F5C57"/></svg>',
-  approve:{ title:'Approve run 7 for a supervised pilot?', lines:['Reading support only; radiologists still sign every report','Hospital owns the model, the data and the results','Review board minutes attached'], btn:'Approve for pilot' },
-  caps:['Your data stays in your hospital’s private cell','Your clinicians label; the lab removes identifiers first','Each run is checked against your radiologists','Your review board decides; the model is yours'],
+  approve:{ title:'Approve run 7 for a supervised pilot?', lines:['Research support only; clinicians make every decision','Hospital owns the model, the data and the results','Review board minutes attached'], btn:'Approve for pilot' },
+  caps:['Your data stays in your hospital’s private cell','Your clinicians label; the lab removes identifiers first','Each run is checked against your clinicians','Your review board decides; the model is yours'],
   len:22
 });
 

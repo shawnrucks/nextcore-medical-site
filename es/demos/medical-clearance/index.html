@@ -1,0 +1,42 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paquetes preoperatorios · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Pre-op packets
+NX.agentDemo({
+  ws:'harborPeri', agent:'Agente de paquetes preoperatorios', topSub:'Casos de la próxima semana', tag:'Se configura con usted', badge:2,
+  q:'Prepare los paquetes preoperatorios de los casos de la próxima semana.',
+  portal:{ name:'EHR de Harbor', url:'ehr.harborregional.example/periop/packets', nav:['Casos','Expedientes externos','Solicitudes','Resumen'], views:{
+    cases:{ type:'table', nav:'Casos', url:'ehr.harborregional.example/periop/packets?week=next', title:'Paquetes preoperatorios', sub:'22 cases',
+      cols:['PATIENT','PROCEDURE','DATE','H&P','LABS','EKG','CONSENT'], w:'1fr 1.2fr .7fr .6fr .6fr .6fr .7fr',
+      rows:[['James C.','Reemplazo de cadera','20 nov','[ok]Sí','[wt]No','[ok]Sí','[ok]Sí'],['Emily B.','Laminectomía','18 nov','[ok]Sí','[ok]Sí','[wt]No','[ok]Sí'],['Thomas N.','Reparación de hombro','14 nov','[wt]No','[ok]Sí','[ok]Sí','[ok]Sí'],['Elena G.','Reparación de hernia','17 nov','[ok]Sí','[ok]Sí','[ok]Sí','[wt]No']], hl:[0,1,2,3] },
+    outside:{ type:'table', site:'Intercambio de información de salud', nav:'Expedientes externos', url:'hie.regional.example/patient/james-c/results', title:'Resultados externos · James C.', sub:'últimos 30 días',
+      cols:['RESULT','DATE','FROM'], w:'1.4fr 1fr 1.4fr',
+      rows:[['Panel metabólico básico','3 nov','Bayside Family Medicine'],['Hemograma completo','3 nov','Bayside Family Medicine']], okr:[0,1] },
+    req:{ type:'form', nav:'Solicitudes', url:'ehr.harborregional.example/periop/requests/new', title:'Solicitud de expedientes · borrador', sub:'not sent',
+      fields:[['Para','Westside Primary Care · fax registrado'],['Paciente','Thomas N. · reparación de hombro, 14 nov'],['Falta','Historia clínica y examen físico, de los últimos 30 días'],['Responder a','Línea de fax de preoperatorio']], btns:['Guardar borrador','Enviar'] },
+    sum:{ type:'table', nav:'Resumen', url:'ehr.harborregional.example/periop/packets/gaps', title:'Paquetes con faltantes', sub:'7 de 22',
+      cols:['MISSING','CASES','STATUS'], w:'1.3fr .6fr 1.5fr',
+      rows:[['Resultados de laboratorio','2','[ok]1 encontrado en expedientes externos'],['Historia clínica y examen físico','3','[wt]Solicitudes redactadas'],['EKG','1','[wt]Solicitud redactada'],['Consentimiento firmado','1','[wt]Enviado para firma electrónica']] }
+  }},
+  steps:[
+    {k:'Revisando los paquetes de la próxima semana', d:'22 casos, 7 con faltantes', v:'cases'},
+    {k:'Buscando en expedientes externos', d:'laboratorios encontrados para James C.', v:'outside', flash:0},
+    {k:'Redactando las solicitudes', d:'a cada consultorio que tiene el documento', v:'req', fill:true},
+    {k:'Listando lo pendiente', d:'para las enfermeras preoperatorias', v:'sum'}
+  ],
+  answer:[
+    '<p>15 de 22 paquetes están completos. Para James C., los laboratorios faltantes ya estaban en los expedientes externos, así que los adjunté. Para los otros seis, redacté solicitudes de 3 historias clínicas y exámenes físicos, 1 EKG y 1 consentimiento.</p>',
+    '<p class="muted">Solo reúno documentos. Si un paciente está listo para la cirugía lo deciden el equipo de anestesia y el cirujano.</p>'
+  ],
+  approve:{ title:'¿Enviar 6 solicitudes?', lines:['Faxes a 4 consultorios de atención primaria y 1 de cardiología','1 consentimiento enviado al paciente para firma electrónica','Los paquetes completos pasan a las enfermeras preoperatorias para revisión'], btn:'Aprobar' },
+  result:[['ok','6 solicitudes enviadas'],['gy','Nueva revisión · a diario hasta la cirugía']],
+  after:['<p class="muted">Los documentos faltantes se detectan una semana antes, no la mañana de la cirugía.</p>'],
+  caps:['Pida los paquetes preoperatorios de la próxima semana','El agente revisa cada paquete y busca en expedientes externos','Redacta una solicitud por cada documento faltante','Los clínicos revisan el paquete y deciden quién está listo'],
+  len:36
+});
+
+</script></body></html>

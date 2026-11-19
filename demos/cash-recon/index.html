@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily cash reconciliation · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Daily cash reconciliation
+NX.agentDemo({
+  ws:'harborFin', agent:'Reconciliation Agent', topSub:'Daily close', tag:'Set up with you', badge:2,
+  q:'Reconcile yesterday’s deposits.',
+  portal:{ name:'Harbor finance', url:'finance.harborregional.example/recon', nav:['Sources','Settlement','Spreadsheet','Books'], views:{
+    src:{ type:'table', nav:'Sources', url:'finance.harborregional.example/recon/2026-11-17', title:'Deposits · Nov 17', sub:'4 sources',
+      cols:['SOURCE','PAYMENT LOG','BANK','BOOKS','DIFFERENCE'], w:'1.2fr 1fr 1fr 1fr 1fr',
+      rows:[['Card batch','$12,450.00','$12,021.84','$12,450.00','[wt]−$428.16'],['Patient payments','$4,200.00','$4,200.00','$4,200.00','[ok]$0.00'],['Lockbox checks','$28,950.00','$28,950.00','$0.00','[wt]Not in books'],['Insurance EFT','$45,600.00','$45,600.00','$45,600.00','[ok]$0.00']], hl:[0,2] },
+    set:{ type:'doc', site:'Card processor portal', nav:'Settlement', url:'merchant.cardprocessor.example/settlements/1117', title:'Settlement report · Nov 17', sub:'PDF · 2 pages',
+      html:'<p><b>Gross sales</b> $12,450.00</p><p><b>Monthly processing fee</b> −$428.16</p><p><b>Net deposit</b> $12,021.84</p><p class="muted">Deposited Nov 18 to account ending 4417</p>' },
+    sheet:{ type:'table', nav:'Spreadsheet', url:'finance.harborregional.example/recon/settlement-rows', title:'Settlement rows', sub:'from the PDF',
+      cols:['DATE','TYPE','AMOUNT','MATCHED TO'], w:'.8fr 1.4fr 1fr 1.2fr',
+      rows:[['Nov 17','Card sales (212)','$12,450.00','Payment log'],['Nov 17','Processing fee','−$428.16','[wt]No entry yet'],['Nov 18','Net deposit','$12,021.84','Bank']], okr:[0,2], hl:[1] },
+    books:{ type:'form', site:'Accounting system', nav:'Books', url:'books.harborregional.example/journal/new', title:'Journal entries · draft', sub:'not posted',
+      fields:[['Entry 1','Card processing fee · $428.16'],['Account','Bank and card fees'],['Entry 2','Lockbox deposit · $28,950.00 · 11 checks'],['Account','Patient accounts receivable'],['Support','Settlement report and check list attached']], btns:['Save draft','Post'] }
+  }},
+  steps:[
+    {k:'Comparing four sources', d:'payment log, bank, books', v:'src'},
+    {k:'Opening the settlement report', d:'the card shortfall is the monthly fee', v:'set'},
+    {k:'Turning the PDF into rows', d:'each line matched', v:'sheet', flash:1},
+    {k:'Drafting the entries', d:'with the support attached', v:'books', fill:true}
+  ],
+  answer:[
+    '<p>Two of four sources match. The card batch is $428.16 short, and the processor’s settlement report shows that’s the monthly processing fee. The $28,950 lockbox deposit is in the bank but not in the books. I drafted both entries with the support attached.</p>'
+  ],
+  approve:{ title:'Post 2 entries to the books?', lines:['$428.16 card processing fee, from the settlement report','$28,950.00 lockbox deposit, 11 checks listed','Settlement rows saved as a spreadsheet in the close file'], btn:'Approve' },
+  result:[['ok','Nov 17 reconciled'],['ok','2 entries posted'],['gy','Next run · 7 AM']],
+  after:['<p class="muted">The controller reviews two exceptions, not four statements.</p>'],
+  caps:['Ask for yesterday’s close','The agent compares the log, bank and books','It reads the PDFs and drafts the entries','The controller approves what is posted'],
+  len:36
+});
+
+</script></body></html>

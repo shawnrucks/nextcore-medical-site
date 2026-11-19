@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morning report: the five queues that hurt most · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Morning report: the five queues that hurt most
+NX.agentDemo({
+  ws:'harborExec', agent:'Morning Report Agent', topSub:'7:45 AM report', tag:'Set up with you', badge:5,
+  q:'Where are we stuck before 8 AM?',
+  portal:{ name:'Harbor work queues', url:'ops.harborregional.example/queues', nav:['Queues','EOBs','Report','Owners'], views:{
+    q:{ type:'table', nav:'Queues', url:'ops.harborregional.example/queues', title:'The five queues that hurt most', sub:'today',
+      cols:['QUEUE','OPEN','PAST DUE','PATIENTS AFFECTED'], w:'1.5fr .7fr .8fr 1fr',
+      rows:[['Prior authorization','38','[wt]14','[wt]9'],['Medical clearance','22','[wt]9','[wt]7'],['Scheduling','31','[wt]6','[wt]6'],['Vendor compliance','17','[wt]4','—'],['EOB processing','64','[wt]12','—']], hl:[0,1,2,3,4] },
+    eob:{ type:'table', site:'Harbor remittances', nav:'EOBs', url:'remits.harborregional.example/eobs', title:'EOBs waiting to post', sub:'64 received',
+      cols:['ISSUE','EOBS','AMOUNT'], w:'1.6fr .6fr 1fr',
+      rows:[['Paid below the contract rate','7','[wt]$18,420'],['Denied, appeal clock running','5','[wt]$24,430'],['Matched and ready to post','52','$311,400']], hl:[0,1] },
+    rep:{ type:'doc', nav:'Report', url:'ops.harborregional.example/reports/morning', title:'Morning report · Nov 18', sub:'draft',
+      html:'<p><b>172</b> open items · <b>45</b> past due · <b>22</b> patients at risk of a delay</p><p><b>1. Prior authorization:</b> 14 requests older than 48 hours, for cases next week</p><p><b>2. Medical clearance:</b> 9 pre-op packets missing labs or a cardiology note</p><p><b>3. Scheduling:</b> 6 cases booked without a confirmed clearance date</p><p><b>4. Vendor compliance:</b> 4 vendors with expiring insurance or no business associate agreement</p><p><b>5. EOB processing:</b> 12 EOBs flagged, $42,850 underpaid or denied</p>' },
+    own:{ type:'table', nav:'Owners', url:'ops.harborregional.example/reports/morning/owners', title:'Follow-ups', sub:'5 drafted',
+      cols:['QUEUE','OWNER','ASK'], w:'1.2fr 1fr 1.5fr',
+      rows:[['Prior authorization','Auth manager','[wt]Clear the 14 oldest today'],['Medical clearance','Pre-op nurses','[wt]Requests out by noon'],['Scheduling','OR scheduler','[wt]Hold 6 cases until cleared'],['Vendor compliance','Compliance lead','[wt]Send 4 document requests'],['EOB processing','Billing lead','[wt]Appeal 5, dispute 7']] }
+  }},
+  steps:[
+    {k:'Reading the five queues', d:'172 open items, 45 past due', v:'q'},
+    {k:'Checking the EOBs', d:'12 underpaid or denied', v:'eob'},
+    {k:'Writing the report', d:'ranked by patients and dollars at risk', v:'rep'},
+    {k:'Drafting follow-ups', d:'one per owner', v:'own'}
+  ],
+  answer:[
+    '<p>45 items are past due across your five hardest queues. 14 authorizations are aging for cases next week, 9 pre-op packets are missing documents, 6 cases are booked before clearance, 4 vendors have file gaps, and 12 EOBs came back underpaid or denied, $42,850 in all. I drafted a follow-up for each owner.</p>'
+  ],
+  approve:{ title:'Send the report and 5 follow-ups?', lines:['Report to the leadership team at 7:45 AM','Follow-ups to auth, pre-op, scheduling, compliance and billing','Every number links back to the queue it came from'], btn:'Approve' },
+  result:[['ok','Report sent'],['ok','5 follow-ups sent'],['gy','Tomorrow · 7:45 AM']],
+  after:['<p class="muted">The roll-up that used to take a week is ready before the first meeting.</p>'],
+  caps:['Ask where you are stuck','The agent reads prior auth, clearance, scheduling, vendor files and EOBs','It ranks what puts patients and revenue at risk','You approve what goes to the team'],
+  len:34
+});
+
+</script></body></html>

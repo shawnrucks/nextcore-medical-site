@@ -1,32 +1,44 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Apoyo para la lectura de resonancias · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<title>IA para resonancia · vista del cirujano · demo de Nextcore Medical</title><meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
 <div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
 <script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
 <script>
-// title: MRI reading support
+// title: MRI AI · surgeon one-look
 (function(){
   var T = 'font-family="IBM Plex Mono,monospace" paint-order="stroke" stroke="#000" stroke-width="3"';
-  var sag = '<svg viewBox="0 0 612 700" preserveAspectRatio="xMidYMid meet">'+
+  var sag = '<svg viewBox="60 150 520 420" preserveAspectRatio="xMidYMid slice">'+
     '<image href="../_/mri/knee-sag.jpg" width="612" height="700"/>'+
-    '<g class="meas"><circle cx="346" cy="380" r="26" fill="none" stroke="#F2C14E" stroke-width="3" stroke-dasharray="8 6"/><line x1="368" y1="364" x2="430" y2="300" stroke="#F2C14E" stroke-width="2"/><text x="360" y="288" fill="#F2C14E" font-size="22" '+T+'>menisco · revisar</text></g>'+
-    '<g class="meas"><line x1="150" y1="392" x2="320" y2="392" stroke="#7FD1C3" stroke-width="2"/><text x="150" y="430" fill="#7FD1C3" font-size="22" '+T+'>espacio articular · 4.1 mm</text></g>'+
+    '<g class="meas"><circle cx="346" cy="380" r="26" fill="none" stroke="#F2C14E" stroke-width="3" stroke-dasharray="8 6"/><line x1="368" y1="364" x2="420" y2="300" stroke="#F2C14E" stroke-width="2"/><text x="380" y="290" fill="#F2C14E" font-size="24" '+T+'>meniscus</text></g>'+
+    '<g class="meas"><line x1="150" y1="392" x2="320" y2="392" stroke="#7FD1C3" stroke-width="2"/><text x="120" y="436" fill="#7FD1C3" font-size="24" '+T+'>espacio articular 4.1 mm</text></g>'+
     '</svg>';
-  var cor = '<svg viewBox="0 0 304 308" preserveAspectRatio="xMidYMid meet">'+
+  var cor = '<svg viewBox="40 40 264 230" preserveAspectRatio="xMidYMid slice">'+
     '<image href="../_/mri/knee-cor.jpg" width="304" height="308"/>'+
-    '<g class="meas"><circle cx="262" cy="183" r="15" fill="none" stroke="#F2C14E" stroke-width="1.6" stroke-dasharray="4 3"/><text x="150" y="222" fill="#F2C14E" font-size="11" '+T+'>medial · señal</text></g>'+
-    '<g class="meas"><line x1="160" y1="118" x2="160" y2="150" stroke="#7FD1C3" stroke-width="1.2"/><text x="166" y="108" fill="#7FD1C3" font-size="11" '+T+'>LCA intacto</text></g>'+
+    '<g class="meas"><circle cx="262" cy="183" r="15" fill="none" stroke="#F2C14E" stroke-width="1.6" stroke-dasharray="4 3"/><text x="170" y="222" fill="#F2C14E" font-size="12" '+T+'>señal medial</text></g>'+
+    '<g class="meas"><line x1="160" y1="118" x2="160" y2="150" stroke="#7FD1C3" stroke-width="1.2"/><text x="166" y="108" fill="#7FD1C3" font-size="12" '+T+'>ACL</text></g>'+
     '</svg>';
-  NX.readDemo({
-    ws:'north', agent:'Cola de lectura', topSub:'Estudios pendientes de revisión', tag:'Programa de investigación', badge:1, acts:['Lista de trabajo','Estudios previos'],
+  NX.surgeonDemo({
+    ws:'ortho', agent:'IA para resonancia', topSub:'Resonancias de rodilla de hoy', tag:'Programa de investigación', badge:1, acts:['Lista de trabajo','Estudios previos'],
+    listTitle:'Resonancias de rodilla de hoy',
+    lanes:[['Le necesita','3',[['Paciente de muestra A','Posible desgarro de menisco'],['Paciente de muestra B','Derrame mayor que en el previo']],'2'],['Dudoso','2',[['Paciente de muestra C','Movimiento en 2 cortes']]],['Rutina','9']],
+    banner:'Fase de investigación · sin autorización de la FDA · mediciones para revisar, no un diagnóstico',
+    patient:'Paciente de muestra A · 46', patientSub:'Resonancia de rodilla derecha · estudio previo hace 8 meses',
+    sugLead:'La IA para resonancia sugiere:', sugLane:'Le necesita', sugWhy:'posible desgarro del menisco medial, derrame mayor que en el previo',
     images:[{lab:'SAGITAL · DP FS', svg:sag, note:'Resonancia real · Ptrump16 · CC BY-SA 4.0'},{lab:'CORONAL · DP', svg:cor, note:'Resonancia real · Lefevre et al. 2016 · CC BY 4.0'}],
-    chips:[['no','Etapa de investigación · sin autorización de la FDA'],['gy','Un radiólogo hace cada lectura']],
-    study:'Resonancia de rodilla sin contraste', studySub:'Lista de trabajo de muestra · imágenes docentes publicadas · clínica ficticia',
-    fields:[['Menisco medial','Desgarro, del cuerpo al cuerno posterior','Señal intrasustancia grado 2; sin desgarro que llegue a la superficie'],['Menisco lateral','Intacto',null],['LCA','Intacto',null],['Derrame articular','Pequeño','Mínimo'],['Cartílago','Conservado',null]],
-    approve:{ title:'¿Firmar el informe?', lines:['3 hallazgos confirmados, 2 cambiados por el radiólogo','El informe firmado va al cirujano, que decide el tratamiento','Los pacientes nunca ven borradores ni cifras de la IA'], btn:'Firmar informe' },
-    caps:['El estudio se abre con sugerencias de IA dibujadas como borradores','El radiólogo revisa cada hallazgo','Los cambios se guardan, así el modelo aprende dónde se equivocó','El radiólogo describe; el cirujano decide'],
-    len:30
+    btns:['Correcto','Cambiar','Necesito más'],
+    rows:[['Menisco medial','Desgarro, cuerno posterior','Señal grado 2 · sin desgarro en superficie'],['Espacio articular medial','4.1 mm',null],['LCA','Intacto',null],['Derrame','Pequeño · mayor que en el previo',null],['Cartílago medial','Adelgazamiento grado 1',null]],
+    rightNote:'Correcto · guardado como etiqueta de entrenamiento', changedNote:'Cambiado por la Dra. Reyes · guardado como etiqueta de entrenamiento · antes:', changedBy:'Cambiado por la Dra. Reyes', doneBy:'Listo · fisioterapia y vigilancia · Dra. Reyes',
+    labelNote:'5 toques guardados como etiquetas de entrenamiento · el estudio en pantalla nunca cambia durante la consulta',
+    saysTitle:'La paciente dice', sampleWord:'sample',
+    says:[['Dolor ahora','4/10'],['Peor dolor','7/10'],['Función de rodilla','62/100']],
+    steps:[7.1,6.8,7.4,6.2,6.6,5.9,5.2,5.6,4.9,5.1,4.4,4.8,4.2,4.5], stepsLabel:'Pasos, 14 días', stepsNote:'37% menos desde la lesión · del teléfono del paciente',
+    callTitle:'Su decisión', calls:['Cirugía','Inyección','Fisioterapia y vigilancia','Todavía no'], pick:2,
+    msgTitle:'Mensaje al paciente', msgDraft:'Borrador', msgSent:'Enviado',
+    msg:'Su resonancia muestra desgaste en el cojín de la rodilla, pero no un desgarro. Empezaremos fisioterapia y volveremos a revisarla en seis semanas.',
+    msgSig:'Dra. Elena Reyes, Cedar Orthopedic Group', sendBtn:'Confirmar y enviar', msgNote:'Sin cifras de la IA · con sus palabras, firmado por usted',
+    caps:['La IA para resonancia mide cada estudio y lo clasifica en un carril','El cirujano revisa las cifras: Correcto, Cambiar o Necesito más','El cirujano decide; el paciente lo escucha del cirujano','Cada toque es una etiqueta de entrenamiento para el próximo modelo'],
+    len:34
   });
 })();
 

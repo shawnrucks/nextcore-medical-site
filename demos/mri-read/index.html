@@ -1,32 +1,44 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MRI reading support · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<title>MRI AI · surgeon one-look · Nextcore Medical demo</title><meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
 <div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
 <script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
 <script>
-// title: MRI reading support
+// title: MRI AI · surgeon one-look
 (function(){
   var T = 'font-family="IBM Plex Mono,monospace" paint-order="stroke" stroke="#000" stroke-width="3"';
-  var sag = '<svg viewBox="0 0 612 700" preserveAspectRatio="xMidYMid meet">'+
+  var sag = '<svg viewBox="60 150 520 420" preserveAspectRatio="xMidYMid slice">'+
     '<image href="../_/mri/knee-sag.jpg" width="612" height="700"/>'+
-    '<g class="meas"><circle cx="346" cy="380" r="26" fill="none" stroke="#F2C14E" stroke-width="3" stroke-dasharray="8 6"/><line x1="368" y1="364" x2="430" y2="300" stroke="#F2C14E" stroke-width="2"/><text x="360" y="288" fill="#F2C14E" font-size="22" '+T+'>meniscus · check</text></g>'+
-    '<g class="meas"><line x1="150" y1="392" x2="320" y2="392" stroke="#7FD1C3" stroke-width="2"/><text x="150" y="430" fill="#7FD1C3" font-size="22" '+T+'>joint space · 4.1 mm</text></g>'+
+    '<g class="meas"><circle cx="346" cy="380" r="26" fill="none" stroke="#F2C14E" stroke-width="3" stroke-dasharray="8 6"/><line x1="368" y1="364" x2="420" y2="300" stroke="#F2C14E" stroke-width="2"/><text x="380" y="290" fill="#F2C14E" font-size="24" '+T+'>meniscus</text></g>'+
+    '<g class="meas"><line x1="150" y1="392" x2="320" y2="392" stroke="#7FD1C3" stroke-width="2"/><text x="120" y="436" fill="#7FD1C3" font-size="24" '+T+'>joint space 4.1 mm</text></g>'+
     '</svg>';
-  var cor = '<svg viewBox="0 0 304 308" preserveAspectRatio="xMidYMid meet">'+
+  var cor = '<svg viewBox="40 40 264 230" preserveAspectRatio="xMidYMid slice">'+
     '<image href="../_/mri/knee-cor.jpg" width="304" height="308"/>'+
-    '<g class="meas"><circle cx="262" cy="183" r="15" fill="none" stroke="#F2C14E" stroke-width="1.6" stroke-dasharray="4 3"/><text x="150" y="222" fill="#F2C14E" font-size="11" '+T+'>medial · signal</text></g>'+
-    '<g class="meas"><line x1="160" y1="118" x2="160" y2="150" stroke="#7FD1C3" stroke-width="1.2"/><text x="166" y="108" fill="#7FD1C3" font-size="11" '+T+'>ACL intact</text></g>'+
+    '<g class="meas"><circle cx="262" cy="183" r="15" fill="none" stroke="#F2C14E" stroke-width="1.6" stroke-dasharray="4 3"/><text x="170" y="222" fill="#F2C14E" font-size="12" '+T+'>medial signal</text></g>'+
+    '<g class="meas"><line x1="160" y1="118" x2="160" y2="150" stroke="#7FD1C3" stroke-width="1.2"/><text x="166" y="108" fill="#7FD1C3" font-size="12" '+T+'>ACL</text></g>'+
     '</svg>';
-  NX.readDemo({
-    ws:'north', agent:'Read Queue', topSub:'Studies awaiting review', tag:'Research program', badge:1, acts:['Worklist','Prior studies'],
+  NX.surgeonDemo({
+    ws:'ortho', agent:'MRI AI', topSub:'Today\'s knee MRIs', tag:'Research program', badge:1, acts:['Worklist','Prior studies'],
+    listTitle:'Today\'s knee MRIs',
+    lanes:[['Needs you','3',[['Sample patient A','Possible meniscus tear'],['Sample patient B','Effusion up since prior']],'2'],['Unsure','2',[['Sample patient C','Motion blur on 2 slices']]],['Routine','9']],
+    banner:'Research stage · not FDA-cleared · measurements for review, not a diagnosis',
+    patient:'Sample patient A · 46', patientSub:'Right knee MRI · prior study 8 months ago',
+    sugLead:'MRI AI suggests:', sugLane:'Needs you', sugWhy:'possible medial meniscus tear, effusion up since prior',
     images:[{lab:'SAGITTAL · PD FS', svg:sag, note:'Real MRI · Ptrump16 · CC BY-SA 4.0'},{lab:'CORONAL · PD', svg:cor, note:'Real MRI · Lefevre et al. 2016 · CC BY 4.0'}],
-    chips:[['no','Research stage · not FDA-cleared'],['gy','A radiologist makes every read']],
-    study:'MRI knee without contrast', studySub:'Sample worklist · published teaching images · fictional clinic',
-    fields:[['Medial meniscus','Tear, body to posterior horn','Grade 2 intrasubstance signal; no tear reaching the surface'],['Lateral meniscus','Intact',null],['ACL','Intact',null],['Joint effusion','Small','Trace'],['Cartilage','Preserved',null]],
-    approve:{ title:'Sign the report?', lines:['3 findings confirmed, 2 changed by the radiologist','The signed report goes to the surgeon, who decides on treatment','Patients never see AI drafts or AI numbers'], btn:'Sign report' },
-    caps:['A study opens with AI suggestions drawn as drafts','The radiologist checks each finding','Changes are kept, so the model learns where it was wrong','The radiologist describes; the surgeon decides'],
-    len:30
+    btns:['Right','Change','I need more'],
+    rows:[['Medial meniscus','Tear, posterior horn','Grade 2 signal · no surface tear'],['Medial joint space','4.1 mm',null],['ACL','Intact',null],['Effusion','Small · up since prior',null],['Medial cartilage','Grade 1 thinning',null]],
+    rightNote:'Right · saved as a training label', changedNote:'Changed by Dr. Reyes · saved as a training label · was', changedBy:'Changed by Dr. Reyes', doneBy:'Done · PT and watch · Dr. Reyes',
+    labelNote:'5 taps saved as training labels · the scan on screen never changes mid-clinic',
+    saysTitle:'Patient says', sampleWord:'sample',
+    says:[['Pain now','4/10'],['Worst pain','7/10'],['Knee function','62/100']],
+    steps:[7.1,6.8,7.4,6.2,6.6,5.9,5.2,5.6,4.9,5.1,4.4,4.8,4.2,4.5], stepsLabel:'Steps, 14 days', stepsNote:'Down 37% since the injury · from the patient\'s phone',
+    callTitle:'Your call', calls:['Surgery','Injection','PT and watch','Not yet'], pick:2,
+    msgTitle:'Message to the patient', msgDraft:'Draft', msgSent:'Sent',
+    msg:'Your MRI shows wear in the cushion of your knee, but no tear. We will start physical therapy and check in again in six weeks.',
+    msgSig:'Dr. Elena Reyes, Cedar Orthopedic Group', sendBtn:'Confirm and send', msgNote:'No AI numbers · in your words, signed by you',
+    caps:['MRI AI measures every study and sorts it into a lane','The surgeon checks the numbers: Right, Change or I need more','The surgeon decides; the patient hears it from the surgeon','Every tap is a training label for the next model'],
+    len:34
   });
 })();
 

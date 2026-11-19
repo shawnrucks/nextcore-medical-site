@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case request check · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Case request check
+NX.agentDemo({
+  ws:'harborPeri', agent:'Surgery Desk Agent', topSub:'New case requests', tag:'Set up with you', badge:2,
+  q:'Check the new case requests before the schedulers see them.',
+  portal:{ name:'Harbor OR scheduling', url:'or.harborregional.example/requests', nav:['Requests','Request','Message','Summary'], views:{
+    inbox:{ type:'table', nav:'Requests', url:'or.harborregional.example/requests?status=new', title:'New case requests', sub:'9 today',
+      cols:['SURGEON','PROCEDURE','DATE','BLOCK','LENGTH','MISSING'], w:'1fr 1.2fr .7fr .8fr .6fr 1fr',
+      rows:[['Dr. Smith','Knee arthroscopy','Nov 12','AM 1','90 min','[wt]Equipment'],['Dr. Jones','Cataract surgery','Nov 13','PM 2','45 min','[ok]None'],['Dr. Patel','Hip replacement','Nov 20','AM 1','180 min','[wt]Implant vendor'],['Dr. Khan','Hernia repair','Nov 21','AM 2','75 min','[wt]Authorization']], hl:[0,2,3] },
+    req:{ type:'form', nav:'Request', url:'or.harborregional.example/requests/sr-6206', title:'Request · Dr. Patel', sub:'hip replacement',
+      fields:[['Procedure','Total hip replacement · right'],['Requested','Nov 20 · AM block 1 · 180 min'],['Equipment','Hip system tray, fluoroscopy'],['Implant vendor','Not listed','att'],['Authorization','Approved · case number on file']], btns:['Save'] },
+    msg:{ type:'form', nav:'Message', url:'or.harborregional.example/requests/sr-6206/message', title:'Note to Dr. Patel’s office · draft', sub:'not sent',
+      fields:[['To','Dr. Patel’s surgery scheduler'],['About','Hip replacement, Nov 20'],['Needed','Implant vendor and rep, so the tray can be ordered'],['Reply by','Friday noon']], btns:['Save draft','Send'] },
+    sum:{ type:'table', nav:'Summary', url:'or.harborregional.example/requests/review', title:'Today’s requests', sub:'9 checked',
+      cols:['GROUP','COUNT','NEXT'], w:'1.3fr .6fr 1.5fr',
+      rows:[['Complete','4','[ok]In the scheduler’s queue'],['No equipment list','3','[wt]Notes drafted'],['No implant vendor','1','[wt]Note drafted'],['No authorization yet','1','[wt]Sent to prior auth']] }
+  }},
+  steps:[
+    {k:'Reading the new requests', d:'9 from 5 surgeons’ offices', v:'inbox'},
+    {k:'Checking each request', d:'Dr. Patel’s has no implant vendor', v:'req', fill:true},
+    {k:'Drafting notes to the offices', d:'only what’s missing', v:'msg', fill:true},
+    {k:'Sorting for the scheduler', d:'4 ready to review', v:'sum'}
+  ],
+  answer:[
+    '<p>Four requests are complete and in the scheduler’s queue. Five are missing something: three have no equipment list, one has no implant vendor, and one has no authorization yet, so I sent it to the prior authorization queue.</p>',
+    '<p class="muted">I don’t book cases. The scheduler decides what goes on the board.</p>'
+  ],
+  approve:{ title:'Send 4 notes to surgeons’ offices?', lines:['Each note lists only what is missing','Complete requests stay in the scheduler’s queue','Nothing is booked until the scheduler approves it'], btn:'Approve' },
+  result:[['ok','4 notes sent'],['gy','Replies tracked · Friday noon']],
+  after:['<p class="muted">Schedulers spend their time deciding, not chasing.</p>'],
+  caps:['Ask for the new case requests','The agent checks each request for what the scheduler needs','It asks surgeons’ offices for the gaps','The scheduler decides what goes on the board'],
+  len:36
+});
+
+</script></body></html>

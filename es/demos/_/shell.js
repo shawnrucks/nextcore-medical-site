@@ -37,7 +37,12 @@
     var focus = /[?&]focus=1/.test(location.search);
     if (focus) { document.body.classList.add('focus'); W.baseW = 920; }
     var bw = focus ? 940 : 1300, bh = focus ? 680 : 820;
-    function scale(){ var s = Math.min(innerWidth/bw, innerHeight/bh); fit.style.transform = 'translate(-50%,-50%) scale('+s+')'; }
+    // inside a page frame (or ?embed=1): fill the frame edge to edge, no margins, no letterbox
+    var embed = /[?&]embed=1/.test(location.search); try { embed = embed || window.self !== window.top; } catch(e){ embed = true; }
+    if (embed) { document.documentElement.classList.add('nxembed'); bw = focus ? 920 : 1280; bh = focus ? 660 : 800; }
+    function scale(){ var s = Math.min(innerWidth/bw, innerHeight/bh);
+      if (embed) { fit.style.width = (innerWidth/s)+'px'; fit.style.height = (innerHeight/s)+'px'; }
+      fit.style.transform = 'translate(-50%,-50%) scale('+s+')'; }
     addEventListener('resize', scale); scale();
     W.fit = fit;
     W.reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

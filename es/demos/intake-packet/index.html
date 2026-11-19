@@ -1,0 +1,41 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión de paquetes de admisión · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Intake packet check
+NX.agentDemo({
+  ws:'harborAccess', agent:'Agente de ingreso', topSub:'Paquetes de mañana', tag:'Se configura con usted', badge:3,
+  q:'Revise los paquetes de admisión de las 41 visitas de mañana.',
+  portal:{ name:'Admisión de Harbor', url:'reg.harborregional.example/packets', nav:['Paquetes','Documentos','Contacto','Resumen'], views:{
+    list:{ type:'table', nav:'Paquetes', url:'reg.harborregional.example/packets?date=tomorrow', title:'Paquetes de admisión · mañana', sub:'41 visits',
+      cols:['PATIENT','VISIT','ID','INSURANCE','CONSENT','ORDER','REFERRAL'], w:'1.1fr 1fr .6fr .8fr .7fr .6fr .8fr',
+      rows:[['Maria L.','Cardiología','[ok]Sí','[ok]Sí','[ok]Firmado','[ok]Sí','[ok]Sí'],['David M.','Ortopedia','[ok]Sí','[ok]Sí','[wt]Sin firmar','[ok]Sí','[ok]Sí'],['Angela R.','Oftalmología','[ok]Sí','[wt]Tarjeta antigua','[ok]Firmado','[ok]Sí','[ok]Sí'],['Priya S.','Oncología','[ok]Sí','[ok]Sí','[ok]Firmado','[ok]Sí','[wt]Falta']], hl:[1,2,3] },
+    docs:{ type:'table', nav:'Documentos', url:'reg.harborregional.example/packets/david-m', title:'Paquete · David M.', sub:'Ortopedia · 9:30 AM',
+      cols:['DOCUMENT','RECEIVED','STATUS'], w:'1.4fr 1fr 1fr',
+      rows:[['Identificación con foto','12 nov','[ok]En archivo'],['Tarjeta del seguro','12 nov','[ok]Vigente'],['Consentimiento para tratamiento','—','[wt]Sin firmar'],['Política financiera','12 nov','[ok]Firmado']], hl:[2] },
+    out:{ type:'form', nav:'Contacto', url:'reg.harborregional.example/outreach/new', title:'Mensaje al paciente · borrador', sub:'not sent',
+      fields:[['Para','David M. · celular registrado'],['Canal','Texto, inglés'],['Mensaje','Por favor firme su formulario de consentimiento antes de la visita de mañana. Enlace seguro incluido.'],['Si no responde','Admisión llama a las 7 AM']], btns:['Guardar borrador','Enviar'] },
+    sum:{ type:'table', nav:'Resumen', url:'reg.harborregional.example/packets/gaps', title:'Elementos faltantes', sub:'8 de 41',
+      cols:['ITEM','PATIENTS','REQUEST'], w:'1.3fr .8fr 1.4fr',
+      rows:[['Consentimiento firmado','5','[wt]Texto redactado'],['Tarjeta de seguro vigente','2','[wt]Texto redactado'],['Referido de atención primaria','1','[wt]Fax redactado']] }
+  }},
+  steps:[
+    {k:'Abriendo los paquetes de mañana', d:'41 visitas, 6 elementos cada una', v:'list'},
+    {k:'Revisando cada documento', d:'David M. tiene un consentimiento sin firmar', v:'docs', flash:2},
+    {k:'Redactando las solicitudes', d:'en el idioma que prefiere cada paciente', v:'out', fill:true},
+    {k:'Listando los faltantes', d:'8 paquetes con faltantes', v:'sum'}
+  ],
+  answer:[
+    '<p>33 de 41 paquetes están completos. A ocho les falta algo: cinco consentimientos sin firmar, dos tarjetas de seguro desactualizadas y un referido de un consultorio de atención primaria. Redacté un mensaje de texto para cada paciente y un fax para el referido.</p>'
+  ],
+  approve:{ title:'¿Enviar 8 solicitudes?', lines:['7 mensajes de texto a pacientes, en inglés o español, con un enlace seguro para subir documentos','1 fax al consultorio que refiere','Nueva revisión a las 6 PM; lo que siga faltando pasa a admisión a las 7 AM'], btn:'Aprobar' },
+  result:[['ok','8 solicitudes enviadas'],['gy','Nueva revisión · 6 PM']],
+  after:['<p class="muted">Admisión empieza mañana con una lista corta en lugar de 41 carpetas.</p>'],
+  caps:['Pida los paquetes de un día completo a la vez','El agente revisa cada documento de cada paquete','Redacta la solicitud por cada elemento faltante','Una persona aprueba lo que se envía a los pacientes'],
+  len:34
+});
+
+</script></body></html>

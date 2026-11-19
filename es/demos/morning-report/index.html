@@ -1,0 +1,41 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informe matutino: las cinco colas que más duelen · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Morning report: the five queues that hurt most
+NX.agentDemo({
+  ws:'harborExec', agent:'Agente de informe matutino', topSub:'Informe de las 7:45 AM', tag:'Se configura con usted', badge:5,
+  q:'¿Dónde estamos atascados antes de las 8 AM?',
+  portal:{ name:'Colas de trabajo de Harbor', url:'ops.harborregional.example/queues', nav:['Colas','EOBs','Informe','Responsables'], views:{
+    q:{ type:'table', nav:'Colas', url:'ops.harborregional.example/queues', title:'Las cinco colas que más duelen', sub:'today',
+      cols:['QUEUE','OPEN','VENCIDOS','PACIENTES AFECTADOS'], w:'1.5fr .7fr .8fr 1fr',
+      rows:[['Autorización previa','38','[wt]14','[wt]9'],['Autorización médica','22','[wt]9','[wt]7'],['Programación','31','[wt]6','[wt]6'],['Cumplimiento de proveedores','17','[wt]4','—'],['Procesamiento de EOB','64','[wt]12','—']], hl:[0,1,2,3,4] },
+    eob:{ type:'table', site:'Remesas de Harbor', nav:'EOBs', url:'remits.harborregional.example/eobs', title:'EOB por registrar', sub:'64 received',
+      cols:['ISSUE','EOBS','AMOUNT'], w:'1.6fr .6fr 1fr',
+      rows:[['Pagadas por debajo de la tarifa del contrato','7','[wt]$18,420'],['Denegadas, plazo de apelación corriendo','5','[wt]$24,430'],['Conciliadas y listas para registrar','52','$311,400']], hl:[0,1] },
+    rep:{ type:'doc', nav:'Informe', url:'ops.harborregional.example/reports/morning', title:'Informe matutino · 18 nov', sub:'draft',
+      html:'<p><b>172</b> pendientes · <b>45</b> vencidos · <b>22</b> pacientes en riesgo de retraso</p><p><b>1. Autorización previa:</b> 14 solicitudes con más de 48 horas, para casos de la próxima semana</p><p><b>2. Autorización médica:</b> a 9 paquetes preoperatorios les faltan análisis o una nota de cardiología</p><p><b>3. Programación:</b> 6 casos programados sin fecha de autorización médica confirmada</p><p><b>4. Cumplimiento de proveedores:</b> 4 proveedores con seguro por vencer o sin acuerdo de socio comercial</p><p><b>5. Procesamiento de EOB:</b> 12 EOB marcadas, $42,850 pagados de menos o denegados</p>' },
+    own:{ type:'table', nav:'Responsables', url:'ops.harborregional.example/reports/morning/owners', title:'Seguimientos', sub:'5 drafted',
+      cols:['QUEUE','OWNER','ASK'], w:'1.2fr 1fr 1.5fr',
+      rows:[['Autorización previa','Gerente de autorizaciones','[wt]Resolver hoy las 14 más antiguas'],['Autorización médica','Enfermeras preoperatorias','[wt]Solicitudes enviadas antes del mediodía'],['Programación','Programador de quirófano','[wt]Retener 6 casos hasta la autorización'],['Cumplimiento de proveedores','Líder de cumplimiento','[wt]Enviar 4 solicitudes de documentos'],['Procesamiento de EOB','Líder de facturación','[wt]Apelar 5, reclamar 7']] }
+  }},
+  steps:[
+    {k:'Leyendo las cinco colas', d:'172 pendientes, 45 vencidos', v:'q'},
+    {k:'Revisando las EOB', d:'12 pagadas de menos o denegadas', v:'eob'},
+    {k:'Escribiendo el informe', d:'ordenado por pacientes y dinero en riesgo', v:'rep'},
+    {k:'Redactando seguimientos', d:'uno por responsable', v:'own'}
+  ],
+  answer:[
+    '<p>Hay 45 pendientes vencidos en sus cinco colas más difíciles. 14 autorizaciones envejecen para casos de la próxima semana, a 9 paquetes preoperatorios les faltan documentos, 6 casos están programados antes de la autorización médica, 4 proveedores tienen expedientes incompletos y 12 EOB llegaron pagadas de menos o denegadas, $42,850 en total. Redacté un seguimiento para cada responsable.</p>'
+  ],
+  approve:{ title:'¿Enviar el informe y 5 seguimientos?', lines:['Informe al equipo directivo a las 7:45 AM','Seguimientos a autorizaciones, preoperatorio, programación, cumplimiento y facturación','Cada número enlaza a la cola de donde salió'], btn:'Aprobar' },
+  result:[['ok','Informe enviado'],['ok','5 seguimientos enviados'],['gy','Mañana · 7:45 AM']],
+  after:['<p class="muted">El resumen que antes tomaba una semana está listo antes de la primera reunión.</p>'],
+  caps:['Pregunte dónde está atascado','El agente lee autorizaciones previas, autorizaciones médicas, programación, expedientes de proveedores y EOB','Ordena lo que pone en riesgo a pacientes e ingresos','Usted aprueba lo que se envía al equipo'],
+  len:34
+});
+
+</script></body></html>

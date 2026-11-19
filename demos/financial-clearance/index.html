@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patient estimates · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Patient estimates
+NX.agentDemo({
+  ws:'harborAccess', agent:'Estimates Agent', topSub:'Next week’s procedures', tag:'Set up with you', badge:3,
+  q:'Build patient estimates for next week’s scheduled procedures.',
+  portal:{ name:'Harbor patient access', url:'access.harborregional.example/estimates', nav:['Worklist','Benefits','Estimate','Summary'], views:{
+    list:{ type:'table', nav:'Worklist', url:'access.harborregional.example/estimates?week=next', title:'Estimates needed', sub:'14 procedures',
+      cols:['PATIENT','SERVICE','PAYER','STATUS'], w:'1fr 1.2fr 1.1fr 1fr',
+      rows:[['David M.','Knee arthroscopy','Bluewater PPO','[wt]Pending'],['Angela R.','Cataract surgery','Harborline HMO','[wt]Pending'],['Thomas N.','Shoulder repair','Summit Health Plan','[wt]Pending'],['Robert J.','Colonoscopy','Bluewater PPO','[ok]Ready']], hl:[0] },
+    ben:{ type:'table', site:'Bluewater PPO provider portal', nav:'Benefits', url:'provider.bluewaterppo.example/benefits', title:'Benefits · David M.', sub:'outpatient surgery',
+      cols:['ITEM','PLAN','USED','LEFT'], w:'1.3fr 1fr 1fr 1fr',
+      rows:[['Deductible','$2,500','$1,900','$600'],['Coinsurance','20%','—','—'],['Out-of-pocket max','$6,000','$2,310','$3,690']], okr:[0] },
+    est:{ type:'form', nav:'Estimate', url:'access.harborregional.example/estimates/david-m', title:'Estimate · David M.', sub:'draft',
+      fields:[['Service','Knee arthroscopy · outpatient'],['Contracted rate','$4,200.00'],['Deductible left','$600.00'],['Coinsurance 20%','$720.00'],['Estimated patient share','$1,320.00'],['Source','Payer benefits page · today']], btns:['Save','Send to patient'] },
+    sum:{ type:'table', nav:'Summary', url:'access.harborregional.example/estimates/summary', title:'Next week', sub:'14 procedures',
+      cols:['GROUP','COUNT','NEXT STEP'], w:'1.3fr .6fr 1.5fr',
+      rows:[['Estimate ready','11','[wt]Waiting for approval'],['Coinsurance not shown online','2','[wt]Financial counselor'],['Asked about a payment plan','1','[wt]Financial counselor']] }
+  }},
+  steps:[
+    {k:'Pulling next week’s procedures', d:'14 need an estimate', v:'list'},
+    {k:'Reading each plan’s benefits', d:'in the payer’s own portal', v:'ben', flash:0},
+    {k:'Building the estimate', d:'from your contracted rates', v:'est', fill:true},
+    {k:'Sorting the exceptions', d:'3 for a financial counselor', v:'sum'}
+  ],
+  answer:[
+    '<p>11 estimates are built from each plan’s benefits and your contracted rates. Three need a financial counselor: two plans don’t show the coinsurance online, and one patient asked about a payment plan.</p>'
+  ],
+  approve:{ title:'Send 11 estimates to patients?', lines:['Each estimate saved with the visit, with the benefits it used','Sent by text and email, with a number to call','3 cases to the financial counselor’s queue'], btn:'Approve' },
+  result:[['ok','11 estimates sent'],['gy','3 with the counselor']],
+  after:['<p class="muted">Patients know their share before the day of service.</p>'],
+  caps:['Ask for next week’s estimates','The agent reads each plan’s benefits in the payer portal','It builds the estimate from your contracted rates','A financial counselor approves before patients see it'],
+  len:34
+});
+
+</script></body></html>

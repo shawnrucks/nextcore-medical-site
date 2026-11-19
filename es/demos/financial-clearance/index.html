@@ -1,0 +1,41 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estimaciones para pacientes · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Patient estimates
+NX.agentDemo({
+  ws:'harborAccess', agent:'Agente de estimaciones', topSub:'Procedimientos de la próxima semana', tag:'Se configura con usted', badge:3,
+  q:'Prepare las estimaciones de los procedimientos programados de la próxima semana.',
+  portal:{ name:'Acceso de pacientes de Harbor', url:'access.harborregional.example/estimates', nav:['Lista de trabajo','Beneficios','Estimación','Resumen'], views:{
+    list:{ type:'table', nav:'Lista de trabajo', url:'access.harborregional.example/estimates?week=next', title:'Estimaciones necesarias', sub:'14 procedures',
+      cols:['PATIENT','SERVICE','PAYER','STATUS'], w:'1fr 1.2fr 1.1fr 1fr',
+      rows:[['David M.','Artroscopía de rodilla','Bluewater PPO','[wt]Pendiente'],['Angela R.','Cirugía de cataratas','Harborline HMO','[wt]Pendiente'],['Thomas N.','Reparación de hombro','Summit Health Plan','[wt]Pendiente'],['Robert J.','Colonoscopía','Bluewater PPO','[ok]Lista']], hl:[0] },
+    ben:{ type:'table', site:'Portal de proveedores de Bluewater PPO', nav:'Beneficios', url:'provider.bluewaterppo.example/benefits', title:'Beneficios · David M.', sub:'outpatient surgery',
+      cols:['ITEM','PLAN','USED','LEFT'], w:'1.3fr 1fr 1fr 1fr',
+      rows:[['Deducible','$2,500','$1,900','$600'],['Coseguro','20%','—','—'],['Máximo de gastos de bolsillo','$6,000','$2,310','$3,690']], okr:[0] },
+    est:{ type:'form', nav:'Estimación', url:'access.harborregional.example/estimates/david-m', title:'Estimación · David M.', sub:'draft',
+      fields:[['Servicio','Artroscopía de rodilla · ambulatoria'],['Tarifa contratada','$4,200.00'],['Deducible restante','$600.00'],['Coseguro 20%','$720.00'],['Parte estimada del paciente','$1,320.00'],['Fuente','Página de beneficios de la aseguradora · hoy']], btns:['Guardar','Enviar al paciente'] },
+    sum:{ type:'table', nav:'Resumen', url:'access.harborregional.example/estimates/summary', title:'Próxima semana', sub:'14 procedures',
+      cols:['GROUP','COUNT','SIGUIENTE PASO'], w:'1.3fr .6fr 1.5fr',
+      rows:[['Estimación lista','11','[wt]Esperando aprobación'],['Coseguro no visible en línea','2','[wt]Asesor financiero'],['Preguntó por un plan de pagos','1','[wt]Asesor financiero']] }
+  }},
+  steps:[
+    {k:'Obteniendo los procedimientos de la próxima semana', d:'14 necesitan estimación', v:'list'},
+    {k:'Leyendo los beneficios de cada plan', d:'en el propio portal de la aseguradora', v:'ben', flash:0},
+    {k:'Preparando la estimación', d:'con sus tarifas contratadas', v:'est', fill:true},
+    {k:'Clasificando las excepciones', d:'3 para un asesor financiero', v:'sum'}
+  ],
+  answer:[
+    '<p>11 estimaciones están preparadas con los beneficios de cada plan y sus tarifas contratadas. Tres necesitan un asesor financiero: dos planes no muestran el coseguro en línea y un paciente preguntó por un plan de pagos.</p>'
+  ],
+  approve:{ title:'¿Enviar 11 estimaciones a los pacientes?', lines:['Cada estimación se guarda con la visita, con los beneficios que usó','Enviada por mensaje de texto y correo, con un número de contacto','3 casos a la cola del asesor financiero'], btn:'Aprobar' },
+  result:[['ok','11 estimaciones enviadas'],['gy','3 con el asesor']],
+  after:['<p class="muted">Los pacientes conocen su parte antes del día del servicio.</p>'],
+  caps:['Pida las estimaciones de la próxima semana','El agente lee los beneficios de cada plan en el portal de la aseguradora','Prepara la estimación con sus tarifas contratadas','Un asesor financiero aprueba antes de que los pacientes la vean'],
+  len:34
+});
+
+</script></body></html>

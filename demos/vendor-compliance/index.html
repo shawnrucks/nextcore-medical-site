@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor compliance · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Vendor compliance
+NX.agentDemo({
+  ws:'harborComp', agent:'Vendor Compliance Agent', topSub:'Vendor files', tag:'Set up with you', badge:2,
+  q:'Which vendors have missing or expiring documents?',
+  portal:{ name:'Harbor vendor files', url:'vendors.harborregional.example/files', nav:['Vendors','Contract','Request','Summary'], views:{
+    list:{ type:'table', nav:'Vendors', url:'vendors.harborregional.example/files', title:'Vendor files', sub:'86 vendors',
+      cols:['VENDOR','SERVICE','W-9','INSURANCE','AGREEMENT','CONTRACT'], w:'1.2fr 1fr .6fr .9fr .9fr .9fr',
+      rows:[['Apex Billing Services','Billing','[ok]Yes','[wt]Dec 15','[ok]Yes','[ok]2027'],['DataVault IT','Hosting','[ok]Yes','[ok]2027','[wt]None','[ok]2026'],['CleanCare','Janitorial','[wt]Missing','[ok]2027','N/A','[ok]2027'],['Imaging Equipment Co','Lease','[ok]Yes','[ok]2027','N/A','[wt]Dec 1']], hl:[0,1,2,3] },
+    con:{ type:'doc', site:'Contract folder', nav:'Contract', url:'vendors.harborregional.example/files/datavault/contract', title:'DataVault IT · master agreement', sub:'signed 2024',
+      html:'<p><b>Services:</b> hosting for the patient billing archive</p><p><b>Handles patient information:</b> yes</p><p><b>Business associate agreement:</b> <span class="tag wt">Not on file</span></p>' },
+    req:{ type:'form', nav:'Request', url:'vendors.harborregional.example/requests/new', title:'Request to DataVault IT · draft', sub:'not sent',
+      fields:[['To','Account manager on file'],['From','Compliance mailbox'],['Needed','Signed business associate agreement'],['Reply by','Dec 1']], btns:['Save draft','Send'] },
+    sum:{ type:'table', nav:'Summary', url:'vendors.harborregional.example/gaps', title:'Needs action', sub:'5 of 86',
+      cols:['VENDOR','ITEM','STATUS'], w:'1.2fr 1.2fr 1.2fr',
+      rows:[['Apex Billing Services','Insurance certificate, Dec 15','[wt]Request drafted'],['DataVault IT','Business associate agreement','[no]Flagged to compliance'],['SecureShred','Insurance certificate lapsed','[wt]Request drafted'],['CleanCare','W-9','[wt]Request drafted'],['Imaging Equipment Co','Lease ends Dec 1','[wt]Reminder drafted']] }
+  }},
+  steps:[
+    {k:'Checking every vendor file', d:'86 vendors, 5 with a gap', v:'list'},
+    {k:'Reading the contract', d:'DataVault handles patient information', v:'con'},
+    {k:'Drafting the requests', d:'one per vendor', v:'req', fill:true},
+    {k:'Listing what needs action', d:'with due dates', v:'sum'}
+  ],
+  answer:[
+    '<p>Five of 86 vendors need something. Two insurance certificates are expiring or lapsed, one W-9 is missing, and the imaging equipment lease ends Dec 1. DataVault IT hosts patient billing records and has no business associate agreement on file, so I flagged it to you.</p>'
+  ],
+  approve:{ title:'Send 4 requests and 1 reminder?', lines:['Vendor emails from the compliance mailbox, each listing only what is missing','Lease reminder to the imaging director','DataVault IT stays flagged until you decide the next step'], btn:'Approve' },
+  result:[['ok','4 requests sent'],['ok','1 reminder sent'],['gy','Next scan · Monday']],
+  after:['<p class="muted">Every check records what was found and when, for the next audit.</p>'],
+  caps:['Ask about every vendor at once','The agent reads each vendor file and contract','It drafts a request for each missing document','The compliance officer approves what goes out'],
+  len:34
+});
+
+</script></body></html>

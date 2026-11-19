@@ -1,0 +1,25 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Los cirujanos enseñan al modelo · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Surgeons teach the model
+NX.trainDemo({
+  ws:'ortho', agent:'Cola de entrenamiento', topSub:'Toques del cirujano · próximo modelo', tag:'Programa de investigación', badge:1, acts:['Conjunto de prueba bloqueado','Historial del modelo'],
+  kpis:[['Toques de cirujanos esta semana',412,'sample'],['Correcto',318,'cuenta como etiqueta'],['Cambiados',71,'se conserva el valor del cirujano'],['Necesito más',23,'devuelto para revisión']],
+  queueTitle:'Cola de correcciones',
+  queue:[['Menisco medial','Desgarro → señal grado 2, sin desgarro en superficie','Cambiado por la Dra. Reyes','ed'],['LCA','Intacto','Correcto · Dr. Osei','ok'],['Derrame','Pequeño → mínimo','Cambiado por el Dr. Lin','ed'],['Cartílago medial','Adelgazamiento grado 1','Necesito más · Dra. Reyes','mo'],['Espacio articular','4.1 mm','Correcto · Dr. Osei','ok']],
+  pipeTitle:'Reentrenamiento nocturno',
+  pipe:[['Reunir los toques de la semana','412 labels'],['Reentrenar de noche','2:00 AM'],['Probar con casos bloqueados','600 nunca usados para entrenar'],['Comparar con v7','listo a las 5 AM']],
+  pipeNote:'Solo se reentrena de noche. Un estudio ya abierto conserva el mismo modelo, así que nada cambia durante la consulta.',
+  resTitle:'Resultados de la prueba bloqueada', sampleWord:'sample numbers',
+  metrics:[['Omitidos','meta 0','2','0',100],['Concordancia con los cirujanos','más alto es mejor','86%','91%',91]],
+  verOld:'v7 live', verNew:'v8 activo a las 6 AM',
+  approve:{ title:'¿Activar v8?', lines:['0 omitidos de 600 casos bloqueados (meta 0)','Concordancia con los cirujanos 91%, antes 86%','Se activa antes de la consulta, nunca durante'], btn:'Aprobar v8', wait:'Esperando al cirujano líder', done:'Aprobado por la Dra. Elena Reyes, cirujana líder' },
+  caps:['Cada toque del cirujano se guarda como etiqueta','El modelo se reentrena de noche, nunca durante la consulta','Se prueba con casos bloqueados que nunca vio','Un cirujano líder aprueba antes de activarlo'],
+  len:30
+});
+
+</script></body></html>

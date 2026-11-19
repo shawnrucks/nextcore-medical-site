@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Surgeons teach the model · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Surgeons teach the model
+NX.trainDemo({
+  ws:'ortho', agent:'Training Queue', topSub:'Surgeon taps · next model', tag:'Research program', badge:1, acts:['Locked test set','Model history'],
+  kpis:[['Surgeon taps this week',412,'sample'],['Right',318,'counts as a label'],['Changed',71,'the surgeon\'s value is kept'],['I need more',23,'sent back for review']],
+  queueTitle:'Correction queue',
+  queue:[['Medial meniscus','Tear → grade 2 signal, no surface tear','Changed by Dr. Reyes','ed'],['ACL','Intact','Right · Dr. Osei','ok'],['Effusion','Small → trace','Changed by Dr. Lin','ed'],['Medial cartilage','Grade 1 thinning','I need more · Dr. Reyes','mo'],['Joint space','4.1 mm','Right · Dr. Osei','ok']],
+  pipeTitle:'Overnight retrain',
+  pipe:[['Collect this week\'s taps','412 labels'],['Retrain overnight','2:00 AM'],['Test on locked cases','600 never trained on'],['Compare with v7','ready by 5 AM']],
+  pipeNote:'Retrains only overnight. A scan already open keeps the same model, so nothing changes mid-clinic.',
+  resTitle:'Locked test results', sampleWord:'sample numbers',
+  metrics:[['Missed','target 0','2','0',100],['Agreement with surgeons','higher is better','86%','91%',91]],
+  verOld:'v7 live', verNew:'v8 live at 6 AM',
+  approve:{ title:'Put v8 live?', lines:['Missed 0 of 600 locked cases (target 0)','Agreement with surgeons 91%, up from 86%','Goes live before clinic, never during it'], btn:'Approve v8', wait:'Waiting for the surgeon lead', done:'Approved by Dr. Elena Reyes, surgeon lead' },
+  caps:['Every surgeon tap is saved as a label','The model retrains overnight, never mid-clinic','It is tested on locked cases it never saw','A surgeon lead approves before it goes live'],
+  len:30
+});
+
+</script></body></html>

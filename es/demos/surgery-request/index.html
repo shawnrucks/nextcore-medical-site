@@ -1,0 +1,41 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión de solicitudes de caso · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Case request check
+NX.agentDemo({
+  ws:'harborPeri', agent:'Agente de mesa de cirugía', topSub:'Solicitudes de caso nuevas', tag:'Se configura con usted', badge:2,
+  q:'Revise las solicitudes de caso nuevas antes de que las vean los programadores.',
+  portal:{ name:'Programación de quirófanos de Harbor', url:'or.harborregional.example/requests', nav:['Solicitudes','Solicitud','Mensaje','Resumen'], views:{
+    inbox:{ type:'table', nav:'Solicitudes', url:'or.harborregional.example/requests?status=new', title:'Solicitudes de caso nuevas', sub:'9 today',
+      cols:['SURGEON','PROCEDURE','DATE','BLOCK','LENGTH','MISSING'], w:'1fr 1.2fr .7fr .8fr .6fr 1fr',
+      rows:[['Dr. Smith','Artroscopía de rodilla','12 nov','AM 1','90 min','[wt]Equipo'],['Dr. Jones','Cirugía de cataratas','13 nov','PM 2','45 min','[ok]Ninguno'],['Dr. Patel','Reemplazo de cadera','20 nov','AM 1','180 min','[wt]Proveedor de implantes'],['Dr. Khan','Reparación de hernia','21 nov','AM 2','75 min','[wt]Autorización']], hl:[0,2,3] },
+    req:{ type:'form', nav:'Solicitud', url:'or.harborregional.example/requests/sr-6206', title:'Solicitud · Dr. Patel', sub:'hip replacement',
+      fields:[['Procedimiento','Reemplazo total de cadera · derecha'],['Solicitado','20 nov · bloque AM 1 · 180 min'],['Equipo','Bandeja del sistema de cadera, fluoroscopía'],['Proveedor de implantes','No indicado','att'],['Autorización','Aprobada · número de caso en archivo']], btns:['Guardar'] },
+    msg:{ type:'form', nav:'Mensaje', url:'or.harborregional.example/requests/sr-6206/message', title:'Nota al consultorio del Dr. Patel · borrador', sub:'not sent',
+      fields:[['Para','Programador de cirugías del Dr. Patel'],['Asunto','Reemplazo de cadera, 20 nov'],['Falta','Proveedor de implantes y representante, para pedir la bandeja'],['Responder antes de','Viernes al mediodía']], btns:['Guardar borrador','Enviar'] },
+    sum:{ type:'table', nav:'Resumen', url:'or.harborregional.example/requests/review', title:'Solicitudes de hoy', sub:'9 checked',
+      cols:['GROUP','COUNT','NEXT'], w:'1.3fr .6fr 1.5fr',
+      rows:[['Completas','4','[ok]En la cola del programador'],['Sin lista de equipo','3','[wt]Notas redactadas'],['Sin proveedor de implantes','1','[wt]Nota redactada'],['Aún sin autorización','1','[wt]Enviada a autorizaciones previas']] }
+  }},
+  steps:[
+    {k:'Leyendo las solicitudes nuevas', d:'9 de 5 consultorios de cirujanos', v:'inbox'},
+    {k:'Revisando cada solicitud', d:'A la del Dr. Patel le falta el proveedor de implantes', v:'req', fill:true},
+    {k:'Redactando notas a los consultorios', d:'solo lo que falta', v:'msg', fill:true},
+    {k:'Ordenando para el programador', d:'4 listas para revisar', v:'sum'}
+  ],
+  answer:[
+    '<p>Cuatro solicitudes están completas y en la cola del programador. A cinco les falta algo: tres no tienen lista de equipo, una no tiene proveedor de implantes y una aún no tiene autorización, así que la envié a la cola de autorizaciones previas.</p>',
+    '<p class="muted">No agendo casos. El programador decide qué entra en el tablero.</p>'
+  ],
+  approve:{ title:'¿Enviar 4 notas a los consultorios de los cirujanos?', lines:['Cada nota indica solo lo que falta','Las solicitudes completas quedan en la cola del programador','No se agenda nada hasta que el programador lo apruebe'], btn:'Aprobar' },
+  result:[['ok','4 notas enviadas'],['gy','Respuestas en seguimiento · viernes al mediodía']],
+  after:['<p class="muted">Los programadores dedican su tiempo a decidir, no a perseguir.</p>'],
+  caps:['Pida las solicitudes de caso nuevas','El agente revisa cada solicitud para ver lo que necesita el programador','Pide a los consultorios de los cirujanos lo que falta','El programador decide qué entra en el tablero'],
+  len:36
+});
+
+</script></body></html>

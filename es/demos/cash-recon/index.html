@@ -1,0 +1,40 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conciliación diaria de caja · demo de Nextcore Medical</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Daily cash reconciliation
+NX.agentDemo({
+  ws:'harborFin', agent:'Agente de conciliación', topSub:'Cierre diario', tag:'Se configura con usted', badge:2,
+  q:'Concilie los depósitos de ayer.',
+  portal:{ name:'Finanzas de Harbor', url:'finance.harborregional.example/recon', nav:['Fuentes','Liquidación','Hoja de cálculo','Contabilidad'], views:{
+    src:{ type:'table', nav:'Fuentes', url:'finance.harborregional.example/recon/2026-11-17', title:'Depósitos · 17 nov', sub:'4 sources',
+      cols:['SOURCE','REGISTRO DE PAGOS','BANK','BOOKS','DIFFERENCE'], w:'1.2fr 1fr 1fr 1fr 1fr',
+      rows:[['Lote de tarjetas','$12,450.00','$12,021.84','$12,450.00','[wt]−$428.16'],['Pagos de pacientes','$4,200.00','$4,200.00','$4,200.00','[ok]$0.00'],['Cheques de lockbox','$28,950.00','$28,950.00','$0.00','[wt]No está en contabilidad'],['EFT de seguros','$45,600.00','$45,600.00','$45,600.00','[ok]$0.00']], hl:[0,2] },
+    set:{ type:'doc', site:'Portal del procesador de tarjetas', nav:'Liquidación', url:'merchant.cardprocessor.example/settlements/1117', title:'Informe de liquidación · 17 nov', sub:'PDF · 2 páginas',
+      html:'<p><b>Ventas brutas</b> $12,450.00</p><p><b>Comisión mensual de procesamiento</b> −$428.16</p><p><b>Depósito neto</b> $12,021.84</p><p class="muted">Depositado el 18 nov en la cuenta terminada en 4417</p>' },
+    sheet:{ type:'table', nav:'Hoja de cálculo', url:'finance.harborregional.example/recon/settlement-rows', title:'Filas de la liquidación', sub:'del PDF',
+      cols:['DATE','TYPE','AMOUNT','CONCILIADO CON'], w:'.8fr 1.4fr 1fr 1.2fr',
+      rows:[['17 nov','Ventas con tarjeta (212)','$12,450.00','Registro de pagos'],['17 nov','Comisión de procesamiento','−$428.16','[wt]Aún sin asiento'],['18 nov','Depósito neto','$12,021.84','Banco']], okr:[0,2], hl:[1] },
+    books:{ type:'form', site:'Sistema contable', nav:'Contabilidad', url:'books.harborregional.example/journal/new', title:'Asientos contables · borrador', sub:'not posted',
+      fields:[['Asiento 1','Comisión de procesamiento de tarjetas · $428.16'],['Cuenta','Comisiones bancarias y de tarjetas'],['Asiento 2','Depósito de lockbox · $28,950.00 · 11 cheques'],['Cuenta','Cuentas por cobrar de pacientes'],['Respaldo','Informe de liquidación y lista de cheques adjuntos']], btns:['Guardar borrador','Registrar'] }
+  }},
+  steps:[
+    {k:'Comparando cuatro fuentes', d:'registro de pagos, banco, contabilidad', v:'src'},
+    {k:'Abriendo el informe de liquidación', d:'el faltante de tarjetas es la comisión mensual', v:'set'},
+    {k:'Convirtiendo el PDF en filas', d:'cada línea conciliada', v:'sheet', flash:1},
+    {k:'Redactando los asientos', d:'con el respaldo adjunto', v:'books', fill:true}
+  ],
+  answer:[
+    '<p>Dos de cuatro fuentes cuadran. Al lote de tarjetas le faltan $428.16, y el informe de liquidación del procesador muestra que es la comisión mensual de procesamiento. El depósito de lockbox de $28,950 está en el banco pero no en la contabilidad. Redacté ambos asientos con el respaldo adjunto.</p>'
+  ],
+  approve:{ title:'¿Registrar 2 asientos en la contabilidad?', lines:['Comisión de procesamiento de tarjetas de $428.16, según el informe de liquidación','Depósito de lockbox de $28,950.00, 11 cheques detallados','Filas de la liquidación guardadas como hoja de cálculo en el archivo de cierre'], btn:'Aprobar' },
+  result:[['ok','17 nov conciliado'],['ok','2 asientos registrados'],['gy','Próxima ejecución · 7 AM']],
+  after:['<p class="muted">El contralor revisa dos excepciones, no cuatro estados de cuenta.</p>'],
+  caps:['Pida el cierre de ayer','El agente compara el registro, el banco y la contabilidad','Lee los PDF y redacta los asientos','El contralor aprueba lo que se registra'],
+  len:36
+});
+
+</script></body></html>

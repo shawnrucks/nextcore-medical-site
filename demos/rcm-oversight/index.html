@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Billing vendor oversight · Nextcore Medical demo</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../_/shell.css"><link rel="stylesheet" href="../_/med-demo.css"></head><body>
+<div class="fit" id="fit"><div class="app"><aside class="side" id="side"></aside><section class="main"></section></div></div>
+<script src="../_/shell.js"></script><script src="../_/med-demo.js"></script>
+<script>
+// title: Billing vendor oversight
+NX.agentDemo({
+  ws:'harborRev', agent:'Billing Oversight Agent', topSub:'Outsourced billing', tag:'Set up with you', badge:2,
+  q:'How is our billing vendor doing on claims over 90 days?',
+  portal:{ name:'Vendor billing report', url:'billing.vendorportal.example/harbor/aging', nav:['Aging','Payer check','Scorecard','Note'], views:{
+    aging:{ type:'table', nav:'Aging', url:'billing.vendorportal.example/harbor/aging?over=90', title:'Claims over 90 days', sub:'212 claims · $486,300',
+      cols:['CLAIM','PAYER','BALANCE','LAST WORKED','ISSUE'], w:'.9fr 1.1fr .9fr .9fr 1.3fr',
+      rows:[['CLM-90113','Bluewater PPO','$6,800','Sep 10','[wt]No activity 60 days'],['CLM-90116','Summit Health Plan','$5,100','Aug 20','[wt]No vendor note'],['CLM-90115','Harborline HMO','$3,900','Oct 1','[wt]Denied, no next step'],['CLM-90118','Bluewater PPO','$8,200','Oct 10','[wt]No payer reference']], hl:[0,1,2,3] },
+    payer:{ type:'table', site:'Bluewater PPO provider portal', nav:'Payer check', url:'provider.bluewaterppo.example/claims/status', title:'Claim status · CLM-90113', sub:'payer’s own record',
+      cols:['DATE','STATUS','NOTE'], w:'.8fr 1fr 1.6fr',
+      rows:[['Sep 2','Denied','Authorization not on file'],['Sep 10','Appeal window open','Closes Dec 1']], hl:[1] },
+    score:{ type:'table', nav:'Scorecard', url:'billing.vendorportal.example/harbor/scorecard', title:'Vendor scorecard', sub:'this month',
+      cols:['MEASURE','PROMISED','ACTUAL'], w:'1.5fr 1fr 1fr',
+      rows:[['Claims touched within 14 days','95%','[wt]82%'],['Denials with a next step in 5 days','100%','[wt]88%'],['Payer reference in notes','100%','[wt]91%']] },
+    note:{ type:'form', nav:'Note', url:'mail.harborregional.example/compose', title:'Note to the billing vendor · draft', sub:'not sent',
+      fields:[['To','Account manager, billing vendor'],['Cc','Director, Revenue Cycle'],['Attached','38 stale claims, 4 open denials with deadlines'],['Ask','Next step on each claim by Friday']], btns:['Save draft','Send'] }
+  }},
+  steps:[
+    {k:'Reading the vendor’s aging report', d:'212 claims over 90 days', v:'aging'},
+    {k:'Checking the payer’s own record', d:'a denial with no appeal started', v:'payer', flash:1},
+    {k:'Scoring the vendor', d:'against the contract’s promises', v:'score'},
+    {k:'Drafting the follow-up', d:'with the exact claims', v:'note', fill:true}
+  ],
+  answer:[
+    '<p>The vendor holds 212 claims over 90 days, worth $486,300. 38 haven’t been touched in 30 days, against a 14-day promise. I checked the 12 largest in the payer portals: 4 were denied with no appeal started, and 3 have no payer reference in the notes.</p>'
+  ],
+  approve:{ title:'Send the follow-up to the billing vendor?', lines:['38 stale claims, listed with balances','4 denials with no next step, with appeal deadlines','Recheck in 7 days'], btn:'Approve' },
+  result:[['ok','Follow-up sent'],['gy','Recheck · in 7 days']],
+  after:['<p class="muted">You see the vendor’s work the way the payers see it.</p>'],
+  caps:['Ask how the outsourced billing is going','The agent checks the vendor’s work against the payer portals','It drafts a follow-up with the exact claims','The revenue cycle director approves what goes out'],
+  len:34
+});
+
+</script></body></html>
