@@ -963,6 +963,10 @@ footer .wm{font-size:18px;color:var(--ink)}
 .libf button{font:inherit;font-family:var(--mono);font-size:12.5px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);cursor:pointer;color:var(--ink)}
 .libf button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .cap-c.hide{display:none}
+.libn i{font-style:normal}.libn{margin:18px 0 0;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.cap-c.pop{animation:cpop .5s var(--ease) both}
+@keyframes cpop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.cap-c.pop{animation:none}}
 /* numbers */
 .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(14px,2vw,22px);margin-top:clamp(40px,5vw,64px)}
 .num-c{display:flex;flex-direction:column;gap:12px;border-top:1.5px solid var(--ink);padding-top:18px;min-width:0}
@@ -1055,6 +1059,113 @@ footer .wm{font-size:18px;color:var(--ink)}
 @media (max-width:900px){.jr-p{grid-template-columns:minmax(0,1fr)}.jr-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:6px;padding-bottom:8px}.jr-s{flex:0 0 96px;scroll-snap-align:start}.jr-rail{display:none}}
 @media (prefers-reduced-motion:reduce){.jr-p.on,.jr-s.on i::after,.jr-p.on .jr-ready li{animation:none;opacity:1;transform:none}}
 </style><style>
+section.tight{padding-block:clamp(52px,7vw,88px)}
+.dark + section.tight{padding-top:clamp(56px,7vw,88px)!important}
+.fq-g{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,5vw,72px);align-items:start}
+.fq-l{position:sticky;top:110px}
+.fq-l h2{margin-top:14px}
+.fq-n{margin-top:22px;color:var(--grey);font-size:15px}.fq-n a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+@media (max-width:860px){.fq-g{grid-template-columns:minmax(0,1fr)}.fq-l{position:static}}
+.mp{background:radial-gradient(120% 90% at 100% 0%,#3a2a4a 0%,transparent 55%),radial-gradient(90% 80% at 0% 100%,#1d4a5a 0%,transparent 60%),linear-gradient(135deg,#0e3324,#122a22)!important;color:#fff}
+.mp-path{list-style:none;margin:clamp(32px,4vw,48px) 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:relative}
+.mp-path::before{content:"";position:absolute;left:10%;right:10%;top:9px;height:2px;background:linear-gradient(90deg,#F2A68F,#E8C877,#C5D3F3,#B9E3C9);opacity:.55}
+.mp-path li{position:relative;text-align:center;font-size:14px;color:rgba(255,255,255,.86)}
+.mp-path li i{display:block;width:20px;height:20px;margin:0 auto 10px;border-radius:50%;background:#0e3324;border:2px solid rgba(255,255,255,.5);position:relative;z-index:1}
+.mp-path li em{position:absolute;left:-50%;width:100%;top:-26px;font-style:normal;font-family:var(--mono);font-size:12px;color:#F2A68F;letter-spacing:.04em}
+.mp-path li:nth-child(5) em{color:#E8C877}
+.mp-dot{position:absolute;top:4px;left:10%;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.15),0 0 18px #F2A68F;z-index:2;animation:mpd 9s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes mpd{0%{left:10%}18%{left:30%}30%{left:30%}44%{left:50%}52%{left:50%}74%{left:70%}84%{left:70%}100%{left:89%}}
+.mp-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.6vw,18px);margin-top:clamp(36px,4vw,52px)}
+.mp-c{border-radius:20px;padding:24px 22px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-top:3px solid var(--c);display:flex;flex-direction:column;min-width:0}
+.mp-c b{font-family:var(--serif,Georgia);font-weight:400;font-size:clamp(40px,4.4vw,58px);line-height:1;color:var(--c);letter-spacing:-.02em}
+.mp-c p{margin:12px 0 18px;font-size:15px;line-height:1.45;color:rgba(255,255,255,.86)}
+.mp-bars{display:grid;gap:8px;margin-top:auto}
+.mp-b{display:grid;grid-template-columns:52px minmax(0,1fr) 42px;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.62)}
+.mp-b i{display:block;height:8px;border-radius:99px;background:var(--c);width:0;transition:width 1.4s var(--ease) .3s}
+.mp-b:first-child i{opacity:.4}
+.mp-c.in .mp-b i,html:not(.anim) .mp-b i{width:var(--w)}
+.mp-b em{font-style:normal;text-align:right;color:#fff}
+.mp-c a{margin-top:16px;font-size:11.5px;line-height:1.4;color:rgba(255,255,255,.55);text-decoration:underline;text-decoration-color:rgba(255,255,255,.25)}
+@media (max-width:1000px){.mp-g{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.mp-g{grid-template-columns:minmax(0,1fr)}.mp-path{grid-template-columns:repeat(5,minmax(0,1fr));font-size:11px}.mp-path li{font-size:11px}.mp-path li em{font-size:10px}}
+.mw{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px);margin-top:clamp(32px,4vw,48px)}
+.mw-c{border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;transition:transform .5s var(--ease)}
+.mw-c:hover{transform:translateY(-4px)}
+.mw-art{height:150px;display:grid;place-items:center}
+.mw-art svg{width:100%;height:100%}
+.mw-img .mw-art{background:linear-gradient(135deg,#f7e7cc,#f2d7b8)}
+.mw-rad .mw-art{background:linear-gradient(135deg,#dfe7f7,#cfdcf3)}
+.mw-surg .mw-art{background:linear-gradient(135deg,#dcefe2,#c6e3cf)}
+.mw-t{padding:22px 24px 26px}
+.mw-t .mono{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.mw-t h3{margin:8px 0 12px}
+.mw-t ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:15px;color:var(--ink-soft,#555)}
+.mw-ring{fill:#fff;stroke:#c99a55;stroke-width:3}.mw-hole{fill:#f2d7b8}
+.mw-arc{fill:none;stroke:#9a6a12;stroke-width:6;stroke-linecap:round;transform-origin:92px 70px;animation:mwr 2.4s linear infinite}
+@keyframes mwr{to{transform:rotate(360deg)}}
+.mw-sheet{fill:#fff;stroke:#c99a55;stroke-width:1.5;animation:mws 3.2s var(--ease) infinite}
+@keyframes mws{0%,20%{transform:translateX(-14px);opacity:0}40%,85%{transform:none;opacity:1}100%{transform:translateX(10px);opacity:0}}
+.mw-ln{fill:#e9cfa6}.mw-ln3{fill:#9a6a12}
+.mw-row{fill:#fff;opacity:.85}
+.mw-flag rect{fill:#3b5ba8}.mw-flag circle{fill:#fff}
+.mw-flag{animation:mwf 4s var(--ease) infinite}
+@keyframes mwf{0%,25%{transform:none}50%,85%{transform:translateY(-84px)}100%{transform:none}}
+.mw-list .mw-row{animation:mwd 4s var(--ease) infinite}
+@keyframes mwd{0%,25%{transform:none}50%,85%{transform:translateY(28px)}100%{transform:none}}
+.mw-sl{fill:#1c2b24}.mw-org{fill:none;stroke:#a9d3b6;stroke-width:2.5}.mw-org2{stroke:#fff}
+.mw-ms{stroke:#E8C877;stroke-width:2.5;stroke-dasharray:44;stroke-dashoffset:44;animation:mwm 3s var(--ease) infinite}
+@keyframes mwm{0%,15%{stroke-dashoffset:44}45%,100%{stroke-dashoffset:0}}
+.mw-ck{fill:#2f6148;animation:mwc 3s var(--ease) infinite;transform-origin:268px 70px}.mw-tick{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+@keyframes mwc{0%,45%{transform:scale(.6);opacity:.2}60%,100%{transform:scale(1);opacity:1}}
+@media (max-width:900px){.mw{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.mp-dot,.mw-arc,.mw-sheet,.mw-flag,.mw-list .mw-row,.mw-ms,.mw-ck{animation:none}.mw-ms{stroke-dashoffset:0}}
+.lab-svg{display:block;width:100%;height:auto;margin-top:clamp(28px,3vw,44px);font-family:inherit;overflow:visible}
+.cell.lab-fb{display:none}
+@media (max-width:760px){.lab-svg{display:none}.cell.lab-fb{display:grid}}
+.lb-wall{fill:var(--card);stroke:var(--ok);stroke-width:2.5;stroke-dasharray:12 9;animation:lbw 8s linear infinite}
+@keyframes lbw{to{stroke-dashoffset:-210}}
+.lb-lab{font-family:var(--mono);font-size:12px;letter-spacing:.08em;fill:var(--ok)}
+.lb-lock{stroke:var(--ok)!important}
+.lb-tile{fill:#F4F5F2;stroke:var(--line);stroke-width:1.5}
+.lb-own{fill:var(--card);stroke:var(--ink);stroke-width:2}
+.lb-t{font-size:17px;font-weight:600;fill:var(--ink);letter-spacing:-.02em}
+.lb-s{font-size:13.5px;fill:var(--grey)}
+.lb-k{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lb-c{fill:var(--card);stroke:var(--ink);stroke-width:2}
+.lb-film{fill:#141615}.lb-film2{fill:none;stroke:#C9CCC7;stroke-width:2}
+.lb-flow{stroke:#C9CCC7;stroke-width:2;stroke-dasharray:4 7;fill:none}
+.lb-dot{fill:var(--ok)}
+.lb-id{fill:#2B4A9A}
+.lb-red{fill:#141615;transform-box:fill-box;transform-origin:left center;animation:lbr 5s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes lbr{0%,12%{transform:scaleX(0)}28%,82%{transform:scaleX(1)}96%,100%{transform:scaleX(0)}}
+.lb-txt{fill:#D6D8D3}
+.lb-scan{fill:var(--ok);animation:lbs 5s linear infinite}
+@keyframes lbs{0%{transform:translateY(0);opacity:1}55%{transform:translateY(114px);opacity:1}60%,100%{transform:translateY(114px);opacity:0}}
+.lb-pill rect{fill:var(--card);stroke:#C9CCC7;stroke-width:1.5;animation:lbp 6s infinite;animation-delay:var(--d)}
+.lb-pill text{font-size:10px;fill:var(--ink);font-weight:500}
+@keyframes lbp{0%,3%{fill:var(--card);stroke:#C9CCC7}7%,27%{fill:#DDEFE3;stroke:var(--ok)}32%,100%{fill:var(--card);stroke:#C9CCC7}}
+.lb-plus{font-family:var(--mono);font-size:11px;fill:var(--ok);animation:lbu 2s ease-out infinite}
+@keyframes lbu{0%{opacity:0;transform:translateY(8px)}30%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+.lb-edge{stroke:#C9CCC7;stroke-width:1.2}
+.lb-n{fill:var(--card);stroke:var(--ink);stroke-width:2;animation:lbn 2.7s infinite;animation-delay:var(--d)}
+@keyframes lbn{0%,100%{fill:var(--card)}18%,38%{fill:var(--ok)}}
+.lb-gate{fill:var(--ink)}
+.lb-gt{fill:var(--paper);font-size:17px;font-weight:600;letter-spacing:-.02em}
+.lb-gs{fill:var(--fog);font-size:13.5px}
+.lb-stamp{fill:none;stroke:#B9E3C9;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:lbst 3s ease-in-out infinite}
+@keyframes lbst{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.15);opacity:.55}}
+.lb-ck{fill:none;stroke:#B9E3C9;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.lb-door{fill:var(--card)}
+.lb-arr{stroke:var(--ink);stroke-width:2;fill:none}
+.lb-out{fill:var(--card);stroke:var(--line);stroke-width:1.5}
+.lb-bad{stroke:#E2B4A8}
+.lb-badt{fill:#B4553F;font-size:13.5px;font-weight:500}
+.lb-leak{fill:#B4553F;animation:lbl 3s infinite}
+@keyframes lbl{0%,50%{opacity:1}56%,100%{opacity:0}}
+.lb-x{fill:#B4553F;font-weight:700;font-size:22px;animation:lbx 3s infinite}
+@keyframes lbx{0%,52%{opacity:0}58%,88%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.lab-svg *{animation:none!important}.lb-red{transform:none}}
+
 /* illustrations: inline SVG and CSS; still when reduced motion is on */
 .pl{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:clamp(10px,1.4vw,18px);margin-top:clamp(36px,4vw,56px);position:relative}
 .pl::before{content:"";position:absolute;left:46px;right:calc(100% / var(--n) - 30px);top:45px;height:2px;background:var(--line)}
@@ -1180,11 +1291,11 @@ footer .wm{font-size:18px;color:var(--ink)}
   </div>
 </header>
 <main id="top">
-<section class="stage-hero">
+<section class="tight stage-hero">
   <div class="wrap">
     <div class="mono crumb" style="text-align:center"><a href="/es/">Nextcore Medical</a> · IA para resonancia</div>
     <h1 class="st-h1"><span>IA para resonancia.</span><span class="sv">Medido primero. Leído por un cirujano.</span></h1>
-    <p class="st-lede" data-r>Los informes tardan más y los radiólogos se van más rápido. La IA para resonancia delinea, mide y compara en cada corte, y luego pone las cifras frente al cirujano, ordenadas por lo que le necesita. El cirujano revisa cada cifra con un toque y toma la decisión. Cada toque enseña al próximo modelo.</p>
+    <p class="st-lede" data-r>Los pacientes esperan semanas para ver a un especialista y luego vuelven a esperar el informe de la resonancia. MRI AI es software de investigación que mide primero cada corte, para que el cirujano revise las cifras con un toque y decida antes. Cada toque enseña al siguiente modelo.</p>
     <div class="st-ctas" data-r="2"><a class="pill" href="#how">Cómo funciona <span class="arr">↓</span></a><a class="pill ghost" href="#contact">Hable con nosotros</a></div>
   </div>
   <div class="stagex" data-r="2">
@@ -1193,18 +1304,18 @@ footer .wm{font-size:18px;color:var(--ink)}
     <p class="stage-cap mono"><span class="htag research">Programa de investigación</span><span>Resonancias docentes publicadas · hallazgos de muestra</span></p>
   </div>
 </section>
-<section class="" style="padding-top:0">
-  <div class="wrap">
-    <div class="kicker mono" data-r><b>Por qué la radiología necesita ayuda</b>Con fuentes</div>
-    <h2 data-r="2">Esperas más largas.<br><span class="sv">Menos radiólogos que se quedan.</span></h2>
-    
-    <div class="nums">
-      <div class="num-c" data-r="1"><b>+256%</b><p>más tarda en llegar un informe de resonancia, de 2014 a 2023, en imagenología ambulatoria de Medicare.</p><a href="https://www.diagnosticimaging.com/view/turnaround-times-radiology-reports-what-new-research-reveals" target="_blank" rel="noopener">Neiman Health Policy Institute, JACR, marzo de 2026, vía Diagnostic Imaging (en inglés)</a></div>
-      <div class="num-c" data-r="2"><b>2.5%</b><p>de los radiólogos se retira cada año, frente al 1.1 % en 2014.</p><a href="https://prod.acr.org/Clinical-Resources/Publications-and-Research/ACR-Bulletin/2026/radiologist-shortage-work-force-update" target="_blank" rel="noopener">Neiman Health Policy Institute, AJR 2025, vía ACR Bulletin, febrero de 2026 (en inglés)</a></div>
+<section class="tight dark mp" id="pain"><div class="wrap">
+    <div class="kicker mono" data-r><b>Lo que viven los pacientes</b>Cada cifra con su fuente</div>
+    <h2 data-r="2">Semanas para ver a un especialista.<br><span class="sv">Y más tiempo para el informe.</span></h2>
+    <ol class="mp-path" data-r="3"><b class="mp-dot" aria-hidden="true"></b><li><i></i><span>Remisión</span></li><li><i></i><span>Especialista</span><em>31 días</em></li><li><i></i><span>MRI</span></li><li><i></i><span>Informe</span><em>+256%</em></li><li><i></i><span>El cirujano decide</span></li></ol>
+    <div class="mp-g">
+      <div class="mp-c" data-r="1" style="--c:#F2A68F"><b>31 días</b><p>de espera promedio para una cita de paciente nuevo, frente a 26 días en 2022.</p><div class="mp-bars"><div class="mp-b"><span>2022</span><i style="--w:84%"></i><em>26</em></div><div class="mp-b"><span>2025</span><i style="--w:100%"></i><em>31</em></div></div><a href="https://www.techtarget.com/patientengagement/news/366624919/Average-patient-appointment-wait-time-is-31-days-in-2025" target="_blank" rel="noopener">Encuesta de AMN Healthcare sobre tiempos de espera para citas médicas, 15 áreas metropolitanas de EE. UU., 2025, vía TechTarget (en inglés)</a></div>
+      <div class="mp-c" data-r="2" style="--c:#E8C877"><b>+256%</b><p>más tarda en llegar un informe de resonancia, de 2014 a 2023, en imagenología ambulatoria de Medicare.</p><div class="mp-bars"><div class="mp-b"><span>2014</span><i style="--w:28%"></i><em>1×</em></div><div class="mp-b"><span>2023</span><i style="--w:100%"></i><em>3.6×</em></div></div><a href="https://www.diagnosticimaging.com/view/turnaround-times-radiology-reports-what-new-research-reveals" target="_blank" rel="noopener">Neiman Health Policy Institute, JACR, marzo de 2026, vía Diagnostic Imaging (en inglés)</a></div>
+      <div class="mp-c" data-r="3" style="--c:#C5D3F3"><b>2.5%</b><p>de los radiólogos se retira cada año, frente al 1.1 % en 2014.</p><div class="mp-bars"><div class="mp-b"><span>2014</span><i style="--w:44%"></i><em>1.1%</em></div><div class="mp-b"><span>2022</span><i style="--w:100%"></i><em>2.5%</em></div></div><a href="https://prod.acr.org/Clinical-Resources/Publications-and-Research/ACR-Bulletin/2026/radiologist-shortage-work-force-update" target="_blank" rel="noopener">Neiman Health Policy Institute, AJR 2025, vía ACR Bulletin, febrero de 2026 (en inglés)</a></div>
+      <div class="mp-c" data-r="4" style="--c:#B9E3C9"><b>1 de cada 10</b><p>radiólogos que EE. UU. necesitará en 2038 no estarán, según proyecciones federales.</p><div class="mp-bars"><div class="mp-b"><span>Necesidad</span><i style="--w:100%"></i><em>100%</em></div><div class="mp-b"><span>Oferta</span><i style="--w:90%"></i><em>90%</em></div></div><a href="https://prod.acr.org/Clinical-Resources/Publications-and-Research/ACR-Bulletin/2026/radiologist-shortage-work-force-update" target="_blank" rel="noopener">Proyecciones de personal de HRSA, diciembre de 2025, vía ACR Bulletin, febrero de 2026 (en inglés)</a></div>
     </div>
-  </div>
-</section>
-<section id="how"><div class="wrap"><div class="kicker mono" data-r><b>Cómo funciona</b>Con franqueza, por ahora</div>
+  </div></section>
+<section class="tight tight" id="how"><div class="wrap"><div class="kicker mono" data-r><b>Cómo funciona</b>Con franqueza, por ahora</div>
   <h2 data-r="2">Investigación temprana.<br><span class="sv">Hecha con cirujanos.</span></h2>
   <ol class="pl3">
    <li data-r="1"><span>01</span><p>Investigamos un software que mide una resonancia magnética como la lee cada cirujano.</p></li>
@@ -1212,7 +1323,7 @@ footer .wm{font-size:18px;color:var(--ink)}
    <li data-r="3"><span>03</span><p>Buscamos cirujanos que trabajen con nosotros. <a href="#contact">Hable con nosotros <span class="arr">→</span></a></p></li>
   </ol>
  </div></section>
-<section style="padding-top:0"><div class="wrap"><div class="kicker mono" data-r><b>En qué punto está</b>Sin rodeos</div>
+<section class="tight tight" style="padding-top:0"><div class="wrap"><div class="kicker mono" data-r><b>En qué punto está</b>Sin rodeos</div>
   <h2 data-r="2">Etapa de investigación.<br><span class="sv">Y lo decimos.</span></h2>
   <div class="rtrk" data-r aria-hidden="true"><i class="rt-f"></i><span class="rt-n on"><em></em>Piloto de investigación</span><span class="rt-n"><em></em>Validada región por región</span><span class="rt-n"><em></em>Autorización antes de cualquier uso diagnóstico</span></div>
   <div class="tri ri">
@@ -1222,18 +1333,18 @@ footer .wm{font-size:18px;color:var(--ink)}
   </div>
   <div class="status l" data-r style="margin-top:36px"><span>Etapa de investigación</span><span>Sin autorización de la FDA</span><span>No es para diagnóstico</span></div>
  </div></section>
-<section style="padding-top:0">
-  <div class="wrap">
+<section class="tight tight" style="padding-top:0"><div class="wrap">
     <div class="kicker mono" data-r><b>Para quién es</b>Donde falta tiempo de lectura</div>
     <h2 data-r="2">Centros de imagenología,<br><span class="sv">grupos de radiología, cirujanos.</span></h2>
-    <div class="tri">
-      <div data-r="1"><span class="mono">Centros de imagenología</span><h3>El tiempo de respuesta vende</h3><ul><li>Informes más rápidos para los consultorios que refieren</li><li>Mediciones uniformes entre lectores</li><li>Piloto de investigación en modo sombra</li></ul></div>
-      <div data-r="2"><span class="mono">Radiología hospitalaria</span><h3>El volumen sigue creciendo</h3><ul><li>Lista de trabajo ordenada por hallazgos marcados</li><li>Campos estructurados en cada lectura</li><li>Piloto bajo su revisión de investigación</li></ul></div>
-      <div data-r="3"><span class="mono">Grupos quirúrgicos</span><h3>La planificación empieza con la imagen</h3><ul><li>Un resumen de mediciones uniforme para el cirujano</li><li>Estudio previo y actual lado a lado</li><li>El cirujano revisa cada cifra</li></ul></div>
+    <div class="mw">
+    <div class="mw-c mw-img" data-r="1"><div class="mw-art"><svg viewBox="0 0 320 140" aria-hidden="true"><circle cx="92" cy="70" r="46" class="mw-ring"/><circle cx="92" cy="70" r="24" class="mw-hole"/><path d="M92 24a46 46 0 0 1 46 46" class="mw-arc"/>
+<rect x="172" y="34" width="96" height="72" rx="8" class="mw-sheet"/><rect x="186" y="50" width="56" height="7" rx="3.5" class="mw-ln"/><rect x="186" y="66" width="68" height="7" rx="3.5" class="mw-ln"/><rect x="186" y="82" width="40" height="7" rx="3.5" class="mw-ln mw-ln3"/></svg></div><div class="mw-t"><span class="mono">Centros de imagenología</span><h3>El tiempo de respuesta vende</h3><ul><li>Informes más rápidos para los consultorios que refieren</li><li>Mediciones uniformes entre lectores</li><li>Piloto de investigación en modo sombra</li></ul></div></div>
+    <div class="mw-c mw-rad" data-r="2"><div class="mw-art"><svg viewBox="0 0 320 140" aria-hidden="true"><g class="mw-list"><rect x="58" y="18" width="204" height="22" rx="6" class="mw-row"/><rect x="58" y="46" width="204" height="22" rx="6" class="mw-row"/><rect x="58" y="74" width="204" height="22" rx="6" class="mw-row"/><g class="mw-flag"><rect x="58" y="102" width="204" height="22" rx="6"/><circle cx="74" cy="113" r="5"/></g></g></svg></div><div class="mw-t"><span class="mono">Radiología hospitalaria</span><h3>El volumen sigue creciendo</h3><ul><li>Lista de trabajo ordenada por hallazgos marcados</li><li>Campos estructurados en cada lectura</li><li>Piloto bajo su revisión de investigación</li></ul></div></div>
+    <div class="mw-c mw-surg" data-r="3"><div class="mw-art"><svg viewBox="0 0 320 140" aria-hidden="true"><rect x="40" y="26" width="88" height="88" rx="10" class="mw-sl"/><rect x="146" y="26" width="88" height="88" rx="10" class="mw-sl"/><ellipse cx="84" cy="70" rx="20" ry="28" class="mw-org"/><ellipse cx="190" cy="70" rx="22" ry="30" class="mw-org mw-org2"/><line x1="168" y1="70" x2="212" y2="70" class="mw-ms"/>
+<circle cx="268" cy="70" r="20" class="mw-ck"/><path d="M259 70l6 6 12-13" class="mw-tick"/></svg></div><div class="mw-t"><span class="mono">Grupos quirúrgicos</span><h3>La planificación empieza con la imagen</h3><ul><li>Un resumen de mediciones uniforme para el cirujano</li><li>Estudio previo y actual lado a lado</li><li>El cirujano revisa cada cifra</li></ul></div></div>
     </div>
-  </div>
-</section>
-<section class="teach" id="teach">
+  </div></section>
+<section class="tight teach" id="teach">
   <div class="wrap mri">
     <div>
       <div class="kicker mono" data-r><b>Los cirujanos le enseñan</b>Cada toque es una etiqueta</div>
@@ -1244,17 +1355,19 @@ footer .wm{font-size:18px;color:var(--ink)}
     <div class="mri-win" style="background:#F6F5F1 url(/es/demos/mri-train/poster-f.png) center/cover"><iframe src="/es/demos/mri-train/?focus=1" title="Los cirujanos enseñan al modelo: cola de correcciones, reentrenamiento nocturno y aprobación, con datos de muestra" loading="lazy"></iframe></div>
   </div>
 </section>
-<section style="padding-top:0">
+<section class="tight tight" style="padding-top:0">
   <div class="wrap">
-    <div class="kicker mono" data-r><b>Construya el suyo</b>Con su hospital</div>
+    <div class="kicker mono" data-r><b>Construya el suyo</b>Con su hospital o clínica</div>
     <h2 data-r="2">¿Quiere un modelo<br><span class="sv">entrenado con sus datos?</span></h2>
     
     <div class="e-ctas" data-r="3" style="margin-top:28px"><a class="pill" href="/es/ai-lab/">Vea el Laboratorio de IA <span class="arr">→</span></a></div>
   </div>
 </section>
-<section>
-  <div class="wrap" style="display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,5vw,72px)">
-    <div><div class="kicker mono" data-r><b>Preguntas</b>Respuestas directas</div></div>
+<section class="tight fq">
+  <div class="wrap fq-g">
+    <div class="fq-l"><div class="kicker mono" data-r><b>Preguntas</b>Respuestas directas</div>
+      <h2 data-r="2">Preguntas.<br><span class="sv">Respuestas claras.</span></h2>
+      <p class="fq-n" data-r="3">¿No está aquí? <a href="#contact">Pregúntenos <span class="arr">→</span></a></p></div>
     <div class="faq2" data-r="2">
       <details><summary>¿La IA para resonancia tiene autorización de la FDA?</summary><p>No. Está en fase de investigación. Funciona como piloto de investigación junto a sus cirujanos y radiólogos y no afecta el informe clínico.</p></details>
       <details><summary>¿Qué regiones del cuerpo cubre?</summary><p>Validamos una región a la vez contra las lecturas de sus propios cirujanos y radiólogos. Pregúntenos qué regiones están hoy en piloto.</p></details>
@@ -1315,8 +1428,14 @@ footer .wm{font-size:18px;color:var(--ink)}
   });
 })();
 </script><script>
-(function(){var f=document.querySelector('.libf');if(!f)return;var bs=[].slice.call(f.querySelectorAll('button')),cs=[].slice.call(document.querySelectorAll('.caps .cap-c'));
-bs.forEach(function(b){b.addEventListener('click',function(){bs.forEach(function(x){x.classList.toggle('on',x===b)});var k=b.dataset.k;cs.forEach(function(c){c.classList.toggle('hide',k!=='all'&&(' '+c.dataset.k+' ').indexOf(' '+k+' ')<0)})})});})();
+(function(){var f=document.querySelector('.libf');if(!f)return;var g=document.querySelector('.caps');var bs=[].slice.call(f.querySelectorAll('button')),cs=[].slice.call(g.querySelectorAll('.cap-c'));cs.forEach(function(c,i){c.dataset.o=i});
+var n=document.querySelector('.libn');
+function run(b,first){bs.forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});var k=b.dataset.k,shown=[];
+cs.forEach(function(c){var ks=c.dataset.k.split(' '),i=ks.indexOf(k);var ok=k==='all'||i>=0;c.classList.toggle('hide',!ok);c.dataset.r2=ok?(k==='all'||k==='live'?+c.dataset.o:i*100+(+c.dataset.o)):9999;if(ok)shown.push(c)});
+shown.sort(function(a,b){return a.dataset.r2-b.dataset.r2}).forEach(function(c,i){c.style.order=i;if(!first){c.classList.remove('pop');void c.offsetWidth;c.style.animationDelay=(Math.min(i,8)*45)+'ms';c.classList.add('pop')}});
+if(n){n.querySelector('b').textContent=shown.length;n.querySelector('i').textContent=k==='all'?'':' · '+b.textContent}
+if(!first){var r=f.getBoundingClientRect();if(r.top<0)f.scrollIntoView({behavior:'smooth',block:'start'})}}
+bs.forEach(function(b){b.addEventListener('click',function(){run(b)})});run(bs[0],true);})();
 (function(){var j=document.querySelector('.jr');if(!j)return;var ss=[].slice.call(j.querySelectorAll('.jr-s')),ps=[].slice.call(j.querySelectorAll('.jr-p')),fill=j.querySelector('.jr-fill'),cur=0,auto=true,t;
 function go(i,user){cur=i;if(user){auto=false;clearTimeout(t)}ss.forEach(function(b,k){b.classList.toggle('on',k===i);b.classList.toggle('done',k<i);b.setAttribute('aria-selected',k===i?'true':'false')});
 ps.forEach(function(p,k){var on=k===i;p.classList.toggle('on',on);var f=p.querySelector('iframe[data-src]');if(on&&f){f.src=f.getAttribute('data-src');f.removeAttribute('data-src')}});
