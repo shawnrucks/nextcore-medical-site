@@ -11,14 +11,14 @@ NX.trainDemo({
   kpis:[['Surgeon taps this week',412,'sample'],['Right',318,'counts as a label'],['Changed',71,'the surgeon\'s value is kept'],['I need more',23,'sent back for review']],
   queueTitle:'Correction queue',
   queue:[['Medial meniscus','Tear → grade 2 signal, no surface tear','Changed by Dr. Reyes','ed'],['ACL','Intact','Right · Dr. Osei','ok'],['Effusion','Small → trace','Changed by Dr. Lin','ed'],['Medial cartilage','Grade 1 thinning','I need more · Dr. Reyes','mo'],['Joint space','4.1 mm','Right · Dr. Osei','ok']],
-  pipeTitle:'Overnight retrain',
+  pipeTitle:'Planned retrain',
   pipe:[['Collect this week\'s taps','412 labels'],['Retrain overnight','2:00 AM'],['Test on locked cases','600 never trained on'],['Compare with v7','ready by 5 AM']],
-  pipeNote:'Retrains only overnight. A scan already open keeps the same model, so nothing changes mid-clinic.',
+  pipeNote:'Planned: retrain only on a schedule. A scan already open keeps the same model, so nothing changes mid-clinic.',
   resTitle:'Locked test results', sampleWord:'sample numbers',
   metrics:[['Missed','target 0','2','0',100],['Agreement with surgeons','higher is better','86%','91%',91]],
   verOld:'v7 live', verNew:'v8 live at 6 AM',
   approve:{ title:'Put v8 live?', lines:['Missed 0 of 600 locked cases (target 0)','Agreement with surgeons 91%, up from 86%','Goes live before clinic, never during it'], btn:'Approve v8', wait:'Waiting for the surgeon lead', done:'Approved by Dr. Elena Reyes, surgeon lead' },
-  caps:['Every surgeon tap is saved as a label','The model retrains overnight, never mid-clinic','It is tested on locked cases it never saw','A surgeon lead approves before it goes live'],
+  caps:['Every surgeon tap is saved as a label','Planned: retrain on a schedule, never mid-clinic','It is tested on locked cases it never saw','A surgeon lead approves before it goes live'],
   len:30
 });
 
